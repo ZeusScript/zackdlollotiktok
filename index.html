@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Info Channel | TikTok Official</title>
+    <title>Info Channel | Zack & Lollo Lacustre</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -144,7 +144,7 @@
             padding: 16px;
             border-radius: 16px;
             text-decoration: none;
-            margin-top: 10px;
+            margin-bottom: 20px;
             transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
@@ -159,6 +159,63 @@
             fill: #000;
         }
 
+        /* Form di Contatto */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: var(--tiktok-cyan);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-main);
+            font-weight: 700;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            margin-top: 6px;
+        }
+
+        .submit-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         footer {
             text-align: center;
             color: var(--text-muted);
@@ -171,20 +228,24 @@
 
 <div class="container">
 
-    <!-- Header -->
     <div class="header">
         <div class="tiktok-badge">
-            <!-- Icona TikTok SVG -->
             <svg viewBox="0 0 448 512">
                 <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/>
             </svg>
             Profilo Informativo
         </div>
-        <h1>Benvenuto nel Canale</h1>
+        <h1>@zackdlollolacustre</h1>
         <p class="subtitle">Spiegazioni chiare, doppiaggi unici e contenuti divulgativi curati nei minimi dettagli.</p>
     </div>
 
-    <!-- Sezione 1: I Doppiaggi -->
+    <a href="https://www.tiktok.com/@zackdlollolacustre" target="_blank" class="cta-button">
+        <svg viewBox="0 0 448 512">
+            <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/>
+        </svg>
+        Profilo TikTok
+    </a>
+
     <div class="glass-card">
         <div class="card-header">
             <div class="icon-wrapper cyan">
@@ -193,11 +254,10 @@
             <div class="card-title">Doppiaggi & Voce</div>
         </div>
         <div class="card-body">
-            I video presenti su questo profilo utilizzano lo stile vocale ed l'audio di <strong>Lollo Lacustre</strong>. L'audio viene rielaborato e adattato per dare voce alle spiegazioni e rendere ogni contenuto dinamico ed esplicativo.
+            I video presenti su questo profilo utilizzano lo stile vocale e l'audio di <strong>Lollo Lacustre</strong>. L'audio viene rielaborato per dare voce alle spiegazioni e rendere ogni contenuto chiaro e coinvolgente.
         </div>
     </div>
 
-    <!-- Sezione 2: Contenuti visivi -->
     <div class="glass-card">
         <div class="card-header">
             <div class="icon-wrapper red">
@@ -206,33 +266,40 @@
             <div class="card-title">Visual & Zack D. Films</div>
         </div>
         <div class="card-body">
-            Le animazioni 3D e le clip visive mostrate appartengono al format di <strong>Zack D. Films</strong>. Utilizzo queste clip visive come supporto grafico per mostrare concetti e curiosità in modo semplice e visivamente chiaro.
+            Le animazioni 3D appartengono al format di <strong>Zack D. Films</strong>. Vengono usate come supporto visuale per spiegare concetti e curiosità in modo semplice.
         </div>
     </div>
 
-    <!-- Sezione 3: Scopo del Profilo -->
     <div class="glass-card">
         <div class="card-header">
             <div class="icon-wrapper white">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
-            <div class="card-title">Scopo Informativo</div>
+            <div class="card-title">Invia un messaggio</div>
         </div>
         <div class="card-body">
-            Questo account nasce esclusivamente a <strong>scopo informativo ed educativo</strong>. L'obiettivo principale è "far capire tutto": spiegare argomenti complessi, storie o curiosità rendendoli accessibili a chiunque attraverso il mix tra voce ed elementi visivi.
+            Puoi scrivermi direttamente su TikTok oppure compilare questo modulo per inviarmi un messaggio dal sito:
+            
+            <form action="https://formspree.io/f/LA_TUA_EMAIL" method="POST" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Nome o Username</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="Es. Mario" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">La tua Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="nome@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Messaggio</label>
+                    <textarea id="message" name="message" class="form-textarea" placeholder="Scrivi qui il tuo messaggio..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Invia Messaggio</button>
+            </form>
         </div>
     </div>
 
-    <!-- Pulsante TikTok -->
-    <a href="https://www.tiktok.com" target="_blank" class="cta-button">
-        <svg viewBox="0 0 448 512">
-            <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/>
-        </svg>
-        Guarda i video su TikTok
-    </a>
-
     <footer>
-        &copy; Account Fan-Made & Divulgativo. Tutti i diritti dei rispettivi creatori.
+        &copy; Account Divulgativo & Fan-Made. Tutti i diritti riservati ai rispettivi creatori.
     </footer>
 
 </div>
