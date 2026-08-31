@@ -3,145 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@zackdlollolacustre | Official Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <title>@zackdlollolacustre | Official Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #07080c;
-            --card: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
-            --cyan: #00f2fe;
+            --bg: #0f0f12;
+            --card-bg: #18191e;
+            --border: #2a2b32;
+            --accent: #00f2fe;
             --pink: #ff0050;
-            --text: #ffffff;
-            --sub: #94a3b8;
+            --text-main: #ffffff;
+            --text-sub: #9ea3b0;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
         body { 
-            background: var(--bg); 
-            color: var(--text); 
-            padding: 24px 16px; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            padding: 20px 16px; 
             display: flex; 
             justify-content: center;
-            background-image: 
-                radial-gradient(circle at 15% 10%, rgba(0, 242, 254, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 85% 90%, rgba(255, 0, 80, 0.12) 0%, transparent 45%);
-            min-height: 100vh;
         }
 
         .container { max-width: 440px; width: 100%; }
 
-        /* Header Profilo */
-        .header { text-align: center; margin-bottom: 24px; position: relative; }
-        .avatar-wrap {
-            width: 92px; height: 92px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--cyan), var(--pink));
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 14px; padding: 3px;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.35);
-            transition: transform 0.3s ease;
-        }
-        .avatar-wrap:hover { transform: scale(1.05); }
+        /* Header Profilo Classico */
+        .header { text-align: center; margin-bottom: 20px; }
         .avatar {
-            width: 100%; height: 100%; background: #0b0c10; border-radius: 50%;
+            width: 80px; height: 80px; border-radius: 50%;
+            background: #22232a; border: 2px solid var(--border);
             display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 12px;
         }
-        .avatar svg { width: 44px; height: 44px; fill: #fff; }
-        
-        h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-        .badge { 
-            display: inline-flex; align-items: center; gap: 6px; 
-            background: rgba(0,242,254,0.12); border: 1px solid rgba(0,242,254,0.3);
-            color: var(--cyan); font-size: 11px; font-weight: 800; 
-            padding: 5px 14px; border-radius: 20px; margin-top: 8px; 
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
-            letter-spacing: 0.5px;
-        }
-        p.sub { color: var(--sub); font-size: 13px; margin-top: 10px; line-height: 1.4; }
+        .avatar svg { width: 38px; height: 38px; fill: #fff; }
 
-        /* Pulsante Principale TikTok */
-        .btn-tiktok {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: linear-gradient(90deg, var(--cyan), var(--pink));
-            color: #000; font-weight: 800; font-size: 15px;
-            padding: 16px; border-radius: 16px; text-decoration: none;
-            box-shadow: 0 4px 25px rgba(255, 0, 80, 0.35);
-            margin-bottom: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        h1 { font-size: 22px; font-weight: 800; }
+        .badge { 
+            display: inline-block; background: #22242d; border: 1px solid var(--border);
+            color: var(--accent); font-size: 11px; font-weight: 700; 
+            padding: 4px 12px; border-radius: 12px; margin-top: 6px; 
         }
-        .btn-tiktok:active { transform: scale(0.98); }
-        .btn-tiktok svg { width: 22px; height: 22px; fill: #000; }
+        p.sub { color: var(--text-sub); font-size: 13px; margin-top: 8px; line-height: 1.4; }
+
+        /* Pulsante TikTok */
+        .btn-tiktok {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: #ffffff; color: #000000; font-weight: 800; font-size: 15px;
+            padding: 14px; border-radius: 12px; text-decoration: none;
+            margin-bottom: 20px;
+        }
+        .btn-tiktok svg { width: 20px; height: 20px; fill: #000; }
 
         /* Griglia Statistiche */
-        .stats { display: flex; gap: 8px; margin-bottom: 20px; }
+        .stats { display: flex; gap: 8px; margin-bottom: 16px; }
         .stat-box {
-            flex: 1; background: var(--card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 12px 6px; text-align: center;
-            backdrop-filter: blur(12px);
-            transition: border-color 0.3s;
+            flex: 1; background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 12px; padding: 10px 4px; text-align: center;
         }
-        .stat-box:hover { border-color: rgba(0, 242, 254, 0.3); }
-        .stat-box span { display: block; font-size: 15px; font-weight: 800; color: #fff; }
-        .stat-box label { font-size: 10px; color: var(--sub); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+        .stat-box span { display: block; font-size: 14px; font-weight: 700; color: #fff; }
+        .stat-box label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; font-weight: 600; }
 
-        /* Cards e Sezioni */
+        /* Riquadri / Schede */
         .card {
-            background: var(--card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px; margin-bottom: 16px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-            transition: border-color 0.3s;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 14px; padding: 16px; margin-bottom: 14px;
         }
-        .card:hover { border-color: rgba(255, 255, 255, 0.15); }
         
-        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-        .card-icon {
-            width: 38px; height: 38px; border-radius: 12px;
-            background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;
-            border: 1px solid var(--border);
+        .card-title { 
+            font-size: 15px; font-weight: 700; margin-bottom: 12px; 
+            display: flex; align-items: center; gap: 8px; 
         }
-        .card-icon svg { width: 20px; height: 20px; fill: var(--cyan); }
-        .card-title { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+        .card-title svg { width: 18px; height: 18px; fill: var(--accent); }
 
-        /* Video Principali Link */
+        /* Link Video Principali */
         .v-card {
             display: flex; align-items: center; justify-content: space-between;
-            background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); 
-            border: 1px solid var(--border);
-            padding: 14px 16px; border-radius: 14px; text-decoration: none; color: #fff;
-            margin-top: 10px; font-size: 13px; font-weight: 700;
-            transition: transform 0.2s, border-color 0.2s, background 0.2s;
+            background: #22242d; border: 1px solid var(--border);
+            padding: 12px 14px; border-radius: 10px; text-decoration: none; color: #fff;
+            margin-top: 8px; font-size: 13px; font-weight: 600;
         }
-        .v-card:active { transform: scale(0.98); }
-        .v-card:hover { border-color: var(--pink); background: rgba(255, 0, 80, 0.05); }
-        .v-card svg { width: 18px; height: 18px; fill: var(--pink); transition: transform 0.2s; }
-        .v-card:hover svg { transform: translateX(3px); }
+        .v-card svg { width: 16px; height: 16px; fill: var(--pink); }
 
         /* FAQ */
-        .faq-item { margin-top: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .faq-q { font-size: 13px; font-weight: 700; color: var(--cyan); }
-        .faq-a { font-size: 12px; color: var(--sub); margin-top: 3px; line-height: 1.4; }
+        .faq-item { margin-top: 10px; }
+        .faq-q { font-size: 13px; font-weight: 700; color: var(--accent); }
+        .faq-a { font-size: 12px; color: var(--text-sub); margin-top: 2px; line-height: 1.4; }
 
-        /* Form Messaggi */
-        form { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        /* Form Messaggio */
+        form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         input, textarea {
-            width: 100%; background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border); color: #fff; padding: 12px 14px;
-            border-radius: 12px; font-size: 13px; outline: none;
-            transition: border-color 0.2s;
+            width: 100%; background: #22242d;
+            border: 1px solid var(--border); color: #fff; padding: 10px 12px;
+            border-radius: 8px; font-size: 13px; outline: none;
         }
-        input:focus, textarea:focus { border-color: var(--cyan); background: rgba(0, 242, 254, 0.02); }
+        input:focus, textarea:focus { border-color: var(--accent); }
         button {
-            background: linear-gradient(90deg, rgba(0,242,254,0.3), rgba(255,0,80,0.3));
-            border: 1px solid rgba(255,255,255,0.25); color: #fff; font-weight: 800;
-            padding: 14px; border-radius: 12px; cursor: pointer; margin-top: 4px;
-            transition: transform 0.2s, background 0.2s;
+            background: var(--accent); border: none; color: #000; font-weight: 700;
+            padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 4px;
         }
-        button:active { transform: scale(0.98); }
 
-        footer { text-align: center; color: #555; font-size: 11px; margin-top: 24px; line-height: 1.5; }
+        footer { text-align: center; color: #666; font-size: 11px; margin-top: 20px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -149,14 +111,12 @@
 <div class="container">
 
     <div class="header">
-        <div class="avatar-wrap">
-            <div class="avatar">
-                <svg viewBox="0 0 448 512"><path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/></svg>
-            </div>
+        <div class="avatar">
+            <svg viewBox="0 0 448 512"><path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/></svg>
         </div>
         <h1>@zackdlollolacustre</h1>
         <div class="badge">PROFILO UFFICIALE</div>
-        <p class="sub">Spiegazioni chiare, doppiaggi unici e contenuti divulgativi quotidiani.</p>
+        <p class="sub">Spiegazioni chiare, doppiaggi unici e contenuti quotidiani.</p>
     </div>
 
     <a href="https://www.tiktok.com/@zackdlollolacustre" target="_blank" class="btn-tiktok">
@@ -171,11 +131,9 @@
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <div class="card-title">Video Principali</div>
+        <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            Video Principali
         </div>
         <a href="https://vm.tiktok.com/ZN8Fq784Y/" target="_blank" class="v-card">
             <span>Guarda Video #1 su TikTok</span>
@@ -188,40 +146,34 @@
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-            </div>
-            <div class="card-title">Il Format del Canale</div>
+        <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Il Format del Canale
         </div>
-        <p style="font-size:12px; color:var(--sub); line-height:1.5;">
+        <p style="font-size:12px; color:var(--text-sub); line-height:1.5;">
             Uniamo le animazioni 3D di <strong style="color:#fff;">Zack D. Films</strong> con lo stile vocale di <strong style="color:#fff;">Lollo Lacustre</strong> per spiegare curiosità e argomenti in modo semplice per la community italiana.
         </p>
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
-            </div>
-            <div class="card-title">Domande Frequenti</div>
+        <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+            Domande Frequenti
         </div>
         <div class="faq-item">
             <div class="faq-q">Perché la voce di Lollo Lacustre?</div>
             <div class="faq-a">Per rendere le spiegazioni più coinvolgenti e immediate per il pubblico.</div>
         </div>
-        <div class="faq-item">
+        <div class="faq-item" style="margin-top:8px;">
             <div class="faq-q">Programmazione uscite?</div>
             <div class="faq-a">Pubblico circa 1 video al giorno editato interamente da smartphone.</div>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-            </div>
-            <div class="card-title">Invia un messaggio</div>
+        <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+            Invia un messaggio
         </div>
         <form action="https://formspree.io/f/LA_TUA_EMAIL" method="POST">
             <input type="text" name="name" placeholder="Nome o Username" required>
