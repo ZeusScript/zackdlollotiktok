@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@zackdlollolacustre | Official Page</title>
+    <title>@zackdlollolacustre | Official Link</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,7 @@
             --accent: #00f2fe;
             --pink: #ff0050;
             --text-main: #ffffff;
-            --text-sub: #9ea3b0;
+            --text-sub: #9ea3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -28,7 +28,7 @@
 
         .container { max-width: 440px; width: 100%; }
 
-        /* Header Profilo Classico */
+        /* Header Profilo */
         .header { text-align: center; margin-bottom: 20px; }
         .avatar {
             width: 80px; height: 80px; border-radius: 50%;
@@ -55,7 +55,7 @@
         }
         .btn-tiktok svg { width: 20px; height: 20px; fill: #000; }
 
-        /* Griglia Statistiche */
+        /* Statistiche */
         .stats { display: flex; gap: 8px; margin-bottom: 16px; }
         .stat-box {
             flex: 1; background: var(--card-bg); border: 1px solid var(--border);
@@ -64,7 +64,7 @@
         .stat-box span { display: block; font-size: 14px; font-weight: 700; color: #fff; }
         .stat-box label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; font-weight: 600; }
 
-        /* Riquadri / Schede */
+        /* Card */
         .card {
             background: var(--card-bg); border: 1px solid var(--border);
             border-radius: 14px; padding: 16px; margin-bottom: 14px;
@@ -76,30 +76,42 @@
         }
         .card-title svg { width: 18px; height: 18px; fill: var(--accent); }
 
-        /* Link Video Principali */
-        .v-card {
-            display: flex; align-items: center; justify-content: space-between;
-            background: #22242d; border: 1px solid var(--border);
-            padding: 12px 14px; border-radius: 10px; text-decoration: none; color: #fff;
-            margin-top: 8px; font-size: 13px; font-weight: 600;
+        /* Schede Video Principali */
+        .video-card {
+            display: flex; gap: 12px; background: #22242d; 
+            border: 1px solid var(--border); border-radius: 12px; 
+            padding: 12px; margin-top: 10px; text-decoration: none; color: #fff;
+            align-items: center;
         }
-        .v-card svg { width: 16px; height: 16px; fill: var(--pink); }
+
+        .video-details { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .video-title { font-size: 14px; font-weight: 700; }
+        
+        .video-metrics {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;
+        }
+        .metric {
+            font-size: 11px; color: var(--text-sub); font-weight: 600;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .metric svg { width: 12px; height: 12px; fill: var(--pink); }
 
         /* FAQ */
         .faq-item { margin-top: 10px; }
         .faq-q { font-size: 13px; font-weight: 700; color: var(--accent); }
         .faq-a { font-size: 12px; color: var(--text-sub); margin-top: 2px; line-height: 1.4; }
 
-        /* Form Messaggio */
-        form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-        input, textarea {
+        /* Form Messaggio con Selezione Motivo */
+        form { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+        input, select, textarea {
             width: 100%; background: #22242d;
-            border: 1px solid var(--border); color: #fff; padding: 10px 12px;
+            border: 1px solid var(--border); color: #fff; padding: 11px 12px;
             border-radius: 8px; font-size: 13px; outline: none;
         }
-        input:focus, textarea:focus { border-color: var(--accent); }
+        select option { background: #18191e; color: #fff; }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
         button {
-            background: var(--accent); border: none; color: #000; font-weight: 700;
+            background: var(--accent); border: none; color: #000; font-weight: 800;
             padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 4px;
         }
 
@@ -135,13 +147,23 @@
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             Video Principali
         </div>
-        <a href="https://vm.tiktok.com/ZN8Fq784Y/" target="_blank" class="v-card">
-            <span>Guarda Video #1 su TikTok</span>
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+
+        <a href="https://vm.tiktok.com/ZN8Fq784Y/" target="_blank" class="video-card">
+            <div class="video-details">
+                <div class="video-title">▶ Video Principale #1</div>
+                <div class="video-metrics">
+                    <div class="metric"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Like / Views / Repost</div>
+                </div>
+            </div>
         </a>
-        <a href="https://vm.tiktok.com/ZN8FbRSrK/" target="_blank" class="v-card">
-            <span>Guarda Video #2 su TikTok</span>
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+
+        <a href="https://vm.tiktok.com/ZN8FbRSrK/" target="_blank" class="video-card">
+            <div class="video-details">
+                <div class="video-title">▶ Video Principale #2</div>
+                <div class="video-metrics">
+                    <div class="metric"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Like / Views / Repost</div>
+                </div>
+            </div>
         </a>
     </div>
 
@@ -176,10 +198,19 @@
             Invia un messaggio
         </div>
         <form action="https://formspree.io/f/LA_TUA_EMAIL" method="POST">
-            <input type="text" name="name" placeholder="Nome o Username" required>
+            <input type="text" name="name" placeholder="Nome o Username TikTok" required>
             <input type="email" name="email" placeholder="La tua Email" required>
-            <textarea name="message" placeholder="Scrivi qui il tuo messaggio..." rows="3" required></textarea>
-            <button type="submit">Invia Messaggio</button>
+            
+            <select name="reason" required>
+                <option value="" disabled selected>Seleziona motivo del messaggio...</option>
+                <option value="collaborazione">🤝 Proposta di Collaborazione</option>
+                <option value="richiesta_video">🎬 Richiesta per un Video</option>
+                <option value="domanda">❓ Domanda / Informazioni</option>
+                <option value="altro">💬 Altro</option>
+            </select>
+
+            <textarea name="message" placeholder="Scrivi qui i dettagli..." rows="3" required></textarea>
+            <button type="submit">INVIA MESSAGGIO</button>
         </form>
     </div>
 
