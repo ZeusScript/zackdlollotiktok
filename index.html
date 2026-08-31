@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b0c10;
-            --card-bg: #13141a;
-            --border: #232530;
+            --bg: #0f0f12;
+            --card-bg: #18191e;
+            --border: #2a2b32;
             --accent: #00f2fe;
             --pink: #ff0050;
             --text-main: #ffffff;
-            --text-sub: #8e95a5;
+            --text-sub: #9ea3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -32,17 +32,17 @@
         .header { text-align: center; margin-bottom: 20px; }
         .avatar {
             width: 80px; height: 80px; border-radius: 50%;
-            background: #1c1d24; border: 2px solid var(--border);
+            background: #22232a; border: 2px solid var(--border);
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 12px;
         }
         .avatar svg { width: 38px; height: 38px; fill: #fff; }
 
-        h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+        h1 { font-size: 22px; font-weight: 800; }
         .badge { 
-            display: inline-block; background: rgba(0,242,254,0.08); border: 1px solid rgba(0,242,254,0.2);
+            display: inline-block; background: #22242d; border: 1px solid var(--border);
             color: var(--accent); font-size: 11px; font-weight: 700; 
-            padding: 4px 12px; border-radius: 20px; margin-top: 6px; 
+            padding: 4px 12px; border-radius: 12px; margin-top: 6px; 
         }
         p.sub { color: var(--text-sub); font-size: 13px; margin-top: 8px; line-height: 1.4; }
 
@@ -55,7 +55,7 @@
         }
         .btn-tiktok svg { width: 20px; height: 20px; fill: #000; }
 
-        /* Statistiche Canale */
+        /* Statistiche */
         .stats { display: flex; gap: 8px; margin-bottom: 16px; }
         .stat-box {
             flex: 1; background: var(--card-bg); border: 1px solid var(--border);
@@ -64,10 +64,10 @@
         .stat-box span { display: block; font-size: 14px; font-weight: 700; color: #fff; }
         .stat-box label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; font-weight: 600; }
 
-        /* Sezioni Card */
+        /* Card */
         .card {
             background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 16px; padding: 16px; margin-bottom: 14px;
+            border-radius: 14px; padding: 16px; margin-bottom: 14px;
         }
         
         .card-title { 
@@ -76,67 +76,46 @@
         }
         .card-title svg { width: 18px; height: 18px; fill: var(--accent); }
 
-        /* Video Principali */
+        /* Schede Video Principali */
         .video-card {
-            display: block; background: #1a1c24; 
+            display: flex; gap: 12px; background: #22242d; 
             border: 1px solid var(--border); border-radius: 12px; 
             padding: 12px; margin-top: 10px; text-decoration: none; color: #fff;
-        }
-        .video-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; display: flex; justify-content: space-between; }
-        .live-tag { font-size: 10px; color: #00ff88; font-weight: 800; text-transform: uppercase; }
-
-        .metrics-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
-            background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px;
-        }
-        .m-item { text-align: center; }
-        .m-item val { display: block; font-size: 12px; font-weight: 800; color: #fff; }
-        .m-item lbl { font-size: 9px; color: var(--text-sub); text-transform: uppercase; font-weight: 600; }
-
-        /* Menu Selezione Personalizzato (No Stile Browser) */
-        .select-wrapper { position: relative; width: 100%; }
-        .select-wrapper select {
-            width: 100%;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: #1a1c24;
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-        }
-        .select-wrapper::after {
-            content: '▼';
-            font-size: 10px;
-            color: var(--accent);
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
+            align-items: center;
         }
 
-        /* Form Messaggi */
+        .video-details { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .video-title { font-size: 14px; font-weight: 700; }
+        
+        .video-metrics {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;
+        }
+        .metric {
+            font-size: 11px; color: var(--text-sub); font-weight: 600;
+            display: flex; align-items: center; gap: 4px;
+        }
+        .metric svg { width: 12px; height: 12px; fill: var(--pink); }
+
+        /* FAQ */
+        .faq-item { margin-top: 10px; }
+        .faq-q { font-size: 13px; font-weight: 700; color: var(--accent); }
+        .faq-a { font-size: 12px; color: var(--text-sub); margin-top: 2px; line-height: 1.4; }
+
+        /* Form Messaggio con Selezione Motivo */
         form { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-        input, textarea {
-            width: 100%; background: #1a1c24;
-            border: 1px solid var(--border); color: #fff; padding: 12px 14px;
-            border-radius: 10px; font-size: 13px; outline: none;
+        input, select, textarea {
+            width: 100%; background: #22242d;
+            border: 1px solid var(--border); color: #fff; padding: 11px 12px;
+            border-radius: 8px; font-size: 13px; outline: none;
         }
+        select option { background: #18191e; color: #fff; }
         input:focus, select:focus, textarea:focus { border-color: var(--accent); }
         button {
-            background: linear-gradient(90deg, var(--accent), #00a8ff); 
-            border: none; color: #000; font-weight: 800;
-            padding: 14px; border-radius: 10px; cursor: pointer; margin-top: 4px;
-            letter-spacing: 0.5px;
+            background: var(--accent); border: none; color: #000; font-weight: 800;
+            padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 4px;
         }
 
-        footer { text-align: center; color: #555; font-size: 11px; margin-top: 20px; line-height: 1.4; }
+        footer { text-align: center; color: #666; font-size: 11px; margin-top: 20px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -170,30 +149,47 @@
         </div>
 
         <a href="https://vm.tiktok.com/ZN8Fq784Y/" target="_blank" class="video-card">
-            <div class="video-title">
-                <span>▶ Video Principale #1</span>
-                <span class="live-tag">● Live Stats</span>
-            </div>
-            <div class="metrics-grid">
-                <div class="m-item"><val id="v1-views">--</val><lbl>Views</lbl></div>
-                <div class="m-item"><val id="v1-likes">--</val><lbl>Likes</lbl></div>
-                <div class="m-item"><val id="v1-repost">--</val><lbl>Repost</lbl></div>
-                <div class="m-item"><val id="v1-shares">--</val><lbl>Share</lbl></div>
+            <div class="video-details">
+                <div class="video-title">▶ Video Principale #1</div>
+                <div class="video-metrics">
+                    <div class="metric"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Like / Views / Repost</div>
+                </div>
             </div>
         </a>
 
         <a href="https://vm.tiktok.com/ZN8FbRSrK/" target="_blank" class="video-card">
-            <div class="video-title">
-                <span>▶ Video Principale #2</span>
-                <span class="live-tag">● Live Stats</span>
-            </div>
-            <div class="metrics-grid">
-                <div class="m-item"><val id="v2-views">--</val><lbl>Views</lbl></div>
-                <div class="m-item"><val id="v2-likes">--</val><lbl>Likes</lbl></div>
-                <div class="m-item"><val id="v2-repost">--</val><lbl>Repost</lbl></div>
-                <div class="m-item"><val id="v2-shares">--</val><lbl>Share</lbl></div>
+            <div class="video-details">
+                <div class="video-title">▶ Video Principale #2</div>
+                <div class="video-metrics">
+                    <div class="metric"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Like / Views / Repost</div>
+                </div>
             </div>
         </a>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Il Format del Canale
+        </div>
+        <p style="font-size:12px; color:var(--text-sub); line-height:1.5;">
+            Uniamo le animazioni 3D di <strong style="color:#fff;">Zack D. Films</strong> con lo stile vocale di <strong style="color:#fff;">Lollo Lacustre</strong> per spiegare curiosità e argomenti in modo semplice per la community italiana.
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="card-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+            Domande Frequenti
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">Perché la voce di Lollo Lacustre?</div>
+            <div class="faq-a">Per rendere le spiegazioni più coinvolgenti e immediate per il pubblico.</div>
+        </div>
+        <div class="faq-item" style="margin-top:8px;">
+            <div class="faq-q">Programmazione uscite?</div>
+            <div class="faq-a">Pubblico circa 1 video al giorno editato interamente da smartphone.</div>
+        </div>
     </div>
 
     <div class="card">
@@ -205,17 +201,15 @@
             <input type="text" name="name" placeholder="Nome o Username TikTok" required>
             <input type="email" name="email" placeholder="La tua Email" required>
             
-            <div class="select-wrapper">
-                <select name="reason" required>
-                    <option value="" disabled selected>Seleziona il motivo...</option>
-                    <option value="collaborazione">🤝 Collaborazione / Sponsorship</option>
-                    <option value="richiesta_video">🎬 Richiesta Nuovo Video</option>
-                    <option value="domanda">❓ Domande o Info</option>
-                    <option value="altro">💬 Altro</option>
-                </select>
-            </div>
+            <select name="reason" required>
+                <option value="" disabled selected>Seleziona motivo del messaggio...</option>
+                <option value="collaborazione">🤝 Proposta di Collaborazione</option>
+                <option value="richiesta_video">🎬 Richiesta per un Video</option>
+                <option value="domanda">❓ Domanda / Informazioni</option>
+                <option value="altro">💬 Altro</option>
+            </select>
 
-            <textarea name="message" placeholder="Scrivi qui i dettagli del messaggio..." rows="3" required></textarea>
+            <textarea name="message" placeholder="Scrivi qui i dettagli..." rows="3" required></textarea>
             <button type="submit">INVIA MESSAGGIO</button>
         </form>
     </div>
@@ -226,19 +220,6 @@
 
 </div>
 
-<script>
-    // Configurazione dati (Iscritti al servizio API o aggiornamento dinamico)
-    // Sostituisci i valori sottostanti con le chiamate alla tua API TikTok
-    document.getElementById('v1-views').innerText = '154K';
-    document.getElementById('v1-likes').innerText = '12.4K';
-    document.getElementById('v1-repost').innerText = '890';
-    document.getElementById('v1-shares').innerText = '1.2K';
-
-    document.getElementById('v2-views').innerText = '98K';
-    document.getElementById('v2-likes').innerText = '8.1K';
-    document.getElementById('v2-repost').innerText = '450';
-    document.getElementById('v2-shares').innerText = '610';
-</script>
-
 </body>
-</html>
+                    </html>
+    
