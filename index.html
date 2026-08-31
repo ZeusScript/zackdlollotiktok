@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Channel | TikTok Official</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0e12;
+            --card-bg: rgba(255, 255, 255, 0.04);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --tiktok-cyan: #00f2fe;
+            --tiktok-red: #ff0050;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 80, 0.08) 0%, transparent 40%);
+        }
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .tiktok-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--card-border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .tiktok-badge svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 60%, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .icon-wrapper {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .icon-wrapper.cyan { color: var(--tiktok-cyan); border: 1px solid rgba(0, 242, 254, 0.2); }
+        .icon-wrapper.red { color: var(--tiktok-red); border: 1px solid rgba(255, 0, 80, 0.2); }
+        .icon-wrapper.white { color: #fff; border: 1px solid rgba(255, 255, 255, 0.2); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .card-body {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .card-body strong {
+            color: var(--text-main);
+        }
+
+        .cta-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: linear-gradient(90deg, var(--tiktok-cyan), var(--tiktok-red));
+            color: #000;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .cta-button svg {
+            width: 20px;
+            height: 20px;
+            fill: #000;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="tiktok-badge">
+            <!-- Icona TikTok SVG -->
+            <svg viewBox="0 0 448 512">
+                <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/>
+            </svg>
+            Profilo Informativo
+        </div>
+        <h1>Benvenuto nel Canale</h1>
+        <p class="subtitle">Spiegazioni chiare, doppiaggi unici e contenuti divulgativi curati nei minimi dettagli.</p>
+    </div>
+
+    <!-- Sezione 1: I Doppiaggi -->
+    <div class="glass-card">
+        <div class="card-header">
+            <div class="icon-wrapper cyan">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+            </div>
+            <div class="card-title">Doppiaggi & Voce</div>
+        </div>
+        <div class="card-body">
+            I video presenti su questo profilo utilizzano lo stile vocale ed l'audio di <strong>Lollo Lacustre</strong>. L'audio viene rielaborato e adattato per dare voce alle spiegazioni e rendere ogni contenuto dinamico ed esplicativo.
+        </div>
+    </div>
+
+    <!-- Sezione 2: Contenuti visivi -->
+    <div class="glass-card">
+        <div class="card-header">
+            <div class="icon-wrapper red">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+            </div>
+            <div class="card-title">Visual & Zack D. Films</div>
+        </div>
+        <div class="card-body">
+            Le animazioni 3D e le clip visive mostrate appartengono al format di <strong>Zack D. Films</strong>. Utilizzo queste clip visive come supporto grafico per mostrare concetti e curiosità in modo semplice e visivamente chiaro.
+        </div>
+    </div>
+
+    <!-- Sezione 3: Scopo del Profilo -->
+    <div class="glass-card">
+        <div class="card-header">
+            <div class="icon-wrapper white">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="card-title">Scopo Informativo</div>
+        </div>
+        <div class="card-body">
+            Questo account nasce esclusivamente a <strong>scopo informativo ed educativo</strong>. L'obiettivo principale è "far capire tutto": spiegare argomenti complessi, storie o curiosità rendendoli accessibili a chiunque attraverso il mix tra voce ed elementi visivi.
+        </div>
+    </div>
+
+    <!-- Pulsante TikTok -->
+    <a href="https://www.tiktok.com" target="_blank" class="cta-button">
+        <svg viewBox="0 0 448 512">
+            <path d="M448 209.91a210.06 210.06 0 0 1-122.77-39.25V349.38A162.55 162.55 0 1 1 185 188.31V258.2a93.62 93.62 0 1 0 68.23 89.89V0h69a139.73 139.73 0 0 0 125.77 125.77z"/>
+        </svg>
+        Guarda i video su TikTok
+    </a>
+
+    <footer>
+        &copy; Account Fan-Made & Divulgativo. Tutti i diritti dei rispettivi creatori.
+    </footer>
+
+</div>
+
+</body>
+</html>
