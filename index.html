@@ -209,9 +209,22 @@
         </div>
         
         <form id="discordForm">
-            <input type="text" id="name" placeholder="Nome o Username TikTok" required>
-            <input type="text" id="contact" placeholder="Email o tuo Contatto (Instagram/Discord)" required>
+            <input type="text" id="name" placeholder="Il tuo Nome" required>
+            <input type="email" id="email" placeholder="La tua Email (Obbligatoria)" required>
             
+            <!-- Selezione Piattaforma Social -->
+            <div class="select-wrapper">
+                <select id="platformSelect" required>
+                    <option value="" disabled selected>Seleziona il tuo Social...</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Instagram">Instagram</option>
+                    <option value="Discord">Discord</option>
+                </select>
+            </div>
+
+            <!-- Username Social dinamico -->
+            <input type="text" id="username" placeholder="Seleziona prima un Social" required disabled>
+
             <div class="select-wrapper">
                 <select id="reason" required>
                     <option value="" disabled selected>Seleziona il motivo...</option>
@@ -234,10 +247,19 @@
 </div>
 
 <script>
+// Gestione dinamica campo Username Social
+const platformSelect = document.getElementById('platformSelect');
+const usernameInput = document.getElementById('username');
+
+platformSelect.addEventListener('change', function() {
+    const selectedPlatform = this.value;
+    usernameInput.disabled = false;
+    usernameInput.placeholder = `Inserisci il tuo Username ${selectedPlatform}`;
+});
+
 document.getElementById('discordForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Link Webhook inserito e configurato
     const webhookURL = "https://discord.com/api/webhooks/1544255865345941555/tY3hKImgDPImLx_lhAEvGzMJYMzo5FtEgbZoaXB1j5L9taHBvwGZ_yqQIbEmJZiUmO-b";
 
     const btn = document.getElementById('btnSubmit');
@@ -245,7 +267,9 @@ document.getElementById('discordForm').addEventListener('submit', function(e) {
     btn.disabled = true;
 
     const name = document.getElementById('name').value;
-    const contact = document.getElementById('contact').value;
+    const email = document.getElementById('email').value;
+    const platform = document.getElementById('platformSelect').value;
+    const username = document.getElementById('username').value;
     const reason = document.getElementById('reason').value;
     const message = document.getElementById('message').value;
 
@@ -255,7 +279,8 @@ document.getElementById('discordForm').addEventListener('submit', function(e) {
             color: 62207,
             fields: [
                 { name: "👤 Mittente", value: name, inline: true },
-                { name: "📱 Contatto", value: contact, inline: true },
+                { name: "✉️ Email", value: email, inline: true },
+                { name: `📱 ${platform}`, value: `@${username.replace('@', '')}`, inline: true },
                 { name: "📌 Motivo", value: reason, inline: false },
                 { name: "💬 Messaggio", value: message, inline: false }
             ],
@@ -273,6 +298,8 @@ document.getElementById('discordForm').addEventListener('submit', function(e) {
         if (response.ok) {
             alert("✅ Messaggio inviato con successo!");
             document.getElementById('discordForm').reset();
+            usernameInput.disabled = true;
+            usernameInput.placeholder = "Seleziona prima un Social";
         } else {
             alert("❌ Errore durante l'invio. Riprova.");
         }
