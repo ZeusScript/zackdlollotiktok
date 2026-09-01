@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@zackdlollolacustre | Official Link</title>
+    <title>@zackdlollolacustre | Official Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,7 @@
             --accent: #00f2fe;
             --pink: #ff0050;
             --text-main: #ffffff;
-            --text-sub: #9ea3b8;
+            --text-sub: #9ea3b0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -55,7 +55,7 @@
         }
         .btn-tiktok svg { width: 20px; height: 20px; fill: #000; }
 
-        /* Statistiche */
+        /* Statistiche Canale */
         .stats { display: flex; gap: 8px; margin-bottom: 16px; }
         .stat-box {
             flex: 1; background: var(--card-bg); border: 1px solid var(--border);
@@ -64,7 +64,7 @@
         .stat-box span { display: block; font-size: 14px; font-weight: 700; color: #fff; }
         .stat-box label { font-size: 10px; color: var(--text-sub); text-transform: uppercase; font-weight: 600; }
 
-        /* Card */
+        /* Schede */
         .card {
             background: var(--card-bg); border: 1px solid var(--border);
             border-radius: 14px; padding: 16px; margin-bottom: 14px;
@@ -76,44 +76,62 @@
         }
         .card-title svg { width: 18px; height: 18px; fill: var(--accent); }
 
-        /* Schede Video Principali */
-        .video-card {
-            display: flex; gap: 12px; background: #22242d; 
-            border: 1px solid var(--border); border-radius: 12px; 
-            padding: 12px; margin-top: 10px; text-decoration: none; color: #fff;
-            align-items: center;
+        /* Link Video Principali */
+        .v-card {
+            display: flex; align-items: center; justify-content: space-between;
+            background: #22242d; border: 1px solid var(--border);
+            padding: 12px 14px; border-radius: 10px; text-decoration: none; color: #fff;
+            margin-top: 8px; font-size: 13px; font-weight: 600;
         }
+        .v-card svg { width: 16px; height: 16px; fill: var(--pink); }
 
-        .video-details { flex: 1; display: flex; flex-direction: column; gap: 6px; }
-        .video-title { font-size: 14px; font-weight: 700; }
-        
-        .video-metrics {
-            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;
+        /* Menu Selezione Personalizzato */
+        .select-wrapper { position: relative; width: 100%; }
+        .select-wrapper select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: #22242d;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
         }
-        .metric {
-            font-size: 11px; color: var(--text-sub); font-weight: 600;
-            display: flex; align-items: center; gap: 4px;
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 10px;
+            color: var(--accent);
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
         }
-        .metric svg { width: 12px; height: 12px; fill: var(--pink); }
 
         /* FAQ */
         .faq-item { margin-top: 10px; }
         .faq-q { font-size: 13px; font-weight: 700; color: var(--accent); }
         .faq-a { font-size: 12px; color: var(--text-sub); margin-top: 2px; line-height: 1.4; }
 
-        /* Form Messaggio con Selezione Motivo */
-        form { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
-        input, select, textarea {
+        /* Form Messaggio */
+        form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+        input, textarea {
             width: 100%; background: #22242d;
-            border: 1px solid var(--border); color: #fff; padding: 11px 12px;
+            border: 1px solid var(--border); color: #fff; padding: 10px 12px;
             border-radius: 8px; font-size: 13px; outline: none;
         }
-        select option { background: #18191e; color: #fff; }
         input:focus, select:focus, textarea:focus { border-color: var(--accent); }
         button {
-            background: var(--accent); border: none; color: #000; font-weight: 800;
+            background: var(--accent); border: none; color: #000; font-weight: 700;
             padding: 12px; border-radius: 8px; cursor: pointer; margin-top: 4px;
+            transition: opacity 0.2s;
         }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
 
         footer { text-align: center; color: #666; font-size: 11px; margin-top: 20px; line-height: 1.4; }
     </style>
@@ -142,28 +160,19 @@
         <div class="stat-box"><span>100%</span><label>Divulgazione</label></div>
     </div>
 
+    <!-- Video Principali -->
     <div class="card">
         <div class="card-title">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             Video Principali
         </div>
-
-        <a href="https://vm.tiktok.com/ZN8Fq784Y/" target="_blank" class="video-card">
-            <div class="video-details">
-                <div class="video-title">▶ Video Principale #1</div>
-                <div class="video-metrics">
-                    <div class="metric"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Like / Views / Repost</div>
-                </div>
-            </div>
+        <a href="https://vm.tiktok.com/ZN8Fq784Y/" target="_blank" class="v-card">
+            <span>Guarda Video #1 su TikTok</span>
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </a>
-
-        <a href="https://vm.tiktok.com/ZN8FbRSrK/" target="_blank" class="video-card">
-            <div class="video-details">
-                <div class="video-title">▶ Video Principale #2</div>
-                <div class="video-metrics">
-                    <div class="metric"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> Like / Views / Repost</div>
-                </div>
-            </div>
+        <a href="https://vm.tiktok.com/ZN8FbRSrK/" target="_blank" class="v-card">
+            <span>Guarda Video #2 su TikTok</span>
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </a>
     </div>
 
@@ -192,25 +201,29 @@
         </div>
     </div>
 
+    <!-- Form Messaggi integrato con Discord -->
     <div class="card">
         <div class="card-title">
             <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
             Invia un messaggio
         </div>
-        <form action="https://formspree.io/f/LA_TUA_EMAIL" method="POST">
-            <input type="text" name="name" placeholder="Nome o Username TikTok" required>
-            <input type="email" name="email" placeholder="La tua Email" required>
+        
+        <form id="discordForm">
+            <input type="text" id="name" placeholder="Nome o Username TikTok" required>
+            <input type="text" id="contact" placeholder="Email o tuo Contatto (Instagram/Discord)" required>
             
-            <select name="reason" required>
-                <option value="" disabled selected>Seleziona motivo del messaggio...</option>
-                <option value="collaborazione">🤝 Proposta di Collaborazione</option>
-                <option value="richiesta_video">🎬 Richiesta per un Video</option>
-                <option value="domanda">❓ Domanda / Informazioni</option>
-                <option value="altro">💬 Altro</option>
-            </select>
+            <div class="select-wrapper">
+                <select id="reason" required>
+                    <option value="" disabled selected>Seleziona il motivo...</option>
+                    <option value="🤝 Collaborazione / Sponsorship">🤝 Collaborazione / Sponsorship</option>
+                    <option value="🎬 Richiesta Nuovo Video">🎬 Richiesta Nuovo Video</option>
+                    <option value="❓ Domanda o Info">❓ Domanda o Info</option>
+                    <option value="💬 Altro">💬 Altro</option>
+                </select>
+            </div>
 
-            <textarea name="message" placeholder="Scrivi qui i dettagli..." rows="3" required></textarea>
-            <button type="submit">INVIA MESSAGGIO</button>
+            <textarea id="message" placeholder="Scrivi qui il tuo messaggio..." rows="3" required></textarea>
+            <button type="submit" id="btnSubmit">Invia Messaggio</button>
         </form>
     </div>
 
@@ -220,6 +233,59 @@
 
 </div>
 
+<script>
+document.getElementById('discordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Link Webhook inserito e configurato
+    const webhookURL = "https://discord.com/api/webhooks/1544255865345941555/tY3hKImgDPImLx_lhAEvGzMJYMzo5FtEgbZoaXB1j5L9taHBvwGZ_yqQIbEmJZiUmO-b";
+
+    const btn = document.getElementById('btnSubmit');
+    btn.innerText = "Invio in corso...";
+    btn.disabled = true;
+
+    const name = document.getElementById('name').value;
+    const contact = document.getElementById('contact').value;
+    const reason = document.getElementById('reason').value;
+    const message = document.getElementById('message').value;
+
+    const payload = {
+        embeds: [{
+            title: "📩 Nuovo Messaggio dal Sito Web!",
+            color: 62207,
+            fields: [
+                { name: "👤 Mittente", value: name, inline: true },
+                { name: "📱 Contatto", value: contact, inline: true },
+                { name: "📌 Motivo", value: reason, inline: false },
+                { name: "💬 Messaggio", value: message, inline: false }
+            ],
+            footer: { text: "Modulo Web @zackdlollolacustre" },
+            timestamp: new Date()
+        }]
+    };
+
+    fetch(webhookURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("✅ Messaggio inviato con successo!");
+            document.getElementById('discordForm').reset();
+        } else {
+            alert("❌ Errore durante l'invio. Riprova.");
+        }
+    })
+    .catch(err => {
+        alert("❌ Errore di connessione.");
+    })
+    .finally(() => {
+        btn.innerText = "Invia Messaggio";
+        btn.disabled = false;
+    });
+});
+</script>
+
 </body>
-                    </html>
-    
+</html>
