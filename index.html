@@ -160,7 +160,6 @@
         <div class="stat-box"><span>100%</span><label>Divulgazione</label></div>
     </div>
 
-    <!-- Video Principali -->
     <div class="card">
         <div class="card-title">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -201,7 +200,6 @@
         </div>
     </div>
 
-    <!-- Form Messaggi integrato con Discord -->
     <div class="card">
         <div class="card-title">
             <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
@@ -212,18 +210,16 @@
             <input type="text" id="name" placeholder="Il tuo Nome" required>
             <input type="email" id="email" placeholder="La tua Email (Obbligatoria)" required>
             
-            <!-- Selezione Piattaforma Social -->
             <div class="select-wrapper">
-                <select id="platformSelect" required>
-                    <option value="" disabled selected>Seleziona il tuo Social...</option>
+                <select id="platformSelect">
+                    <option value="" selected>Social preferito (Opzionale)...</option>
                     <option value="TikTok">TikTok</option>
                     <option value="Instagram">Instagram</option>
                     <option value="Discord">Discord</option>
                 </select>
             </div>
 
-            <!-- Username Social dinamico -->
-            <input type="text" id="username" placeholder="Seleziona prima un Social" required disabled>
+            <input type="text" id="username" placeholder="Username Social (Opzionale)">
 
             <div class="select-wrapper">
                 <select id="reason" required>
@@ -247,16 +243,6 @@
 </div>
 
 <script>
-// Gestione dinamica campo Username Social
-const platformSelect = document.getElementById('platformSelect');
-const usernameInput = document.getElementById('username');
-
-platformSelect.addEventListener('change', function() {
-    const selectedPlatform = this.value;
-    usernameInput.disabled = false;
-    usernameInput.placeholder = `Inserisci il tuo Username ${selectedPlatform}`;
-});
-
 document.getElementById('discordForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -273,14 +259,19 @@ document.getElementById('discordForm').addEventListener('submit', function(e) {
     const reason = document.getElementById('reason').value;
     const message = document.getElementById('message').value;
 
+    // Gestione visualizzazione Social Facoltativo
+    const socialField = (platform && username) 
+        ? { name: `📱 ${platform}`, value: `@${username.replace('@', '')}`, inline: true }
+        : { name: "📱 Social", value: "Non fornito", inline: true };
+
     const payload = {
         embeds: [{
             title: "📩 Nuovo Messaggio dal Sito Web!",
             color: 62207,
             fields: [
                 { name: "👤 Mittente", value: name, inline: true },
-                { name: "✉️ Email", value: email, inline: true },
-                { name: `📱 ${platform}`, value: `@${username.replace('@', '')}`, inline: true },
+                { name: "✉️ Email (Obbligatoria)", value: email, inline: true },
+                socialField,
                 { name: "📌 Motivo", value: reason, inline: false },
                 { name: "💬 Messaggio", value: message, inline: false }
             ],
@@ -298,8 +289,6 @@ document.getElementById('discordForm').addEventListener('submit', function(e) {
         if (response.ok) {
             alert("✅ Messaggio inviato con successo!");
             document.getElementById('discordForm').reset();
-            usernameInput.disabled = true;
-            usernameInput.placeholder = "Seleziona prima un Social";
         } else {
             alert("❌ Errore durante l'invio. Riprova.");
         }
