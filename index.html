@@ -2,109 +2,103 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Brawl Stars 2D Ultimate</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brawl Stars Web Ultimate HD</title>
     <style>
         :root {
             --bs-yellow: #facc15;
             --bs-orange: #f97316;
-            --bs-blue: #3b82f6;
-            --bs-purple: #a855f7;
+            --bs-blue: #2563eb;
+            --bs-purple: #9333ea;
             --bs-red: #ef4444;
             --bs-green: #22c55e;
-            --bs-dark: #0f172a;
+            --bs-dark: #090d16;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Arial Black', Impact, sans-serif; -webkit-touch-callout: none; }
-        body, html { width: 100%; height: 100%; overflow: hidden; background: #030712; color: #fff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Arial Black', Impact, sans-serif; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bs-dark); color: #fff; }
 
-        /* SCHERMATA ORIZZONTALE */
+        /* SCHERMATA PRINCIPALE */
         .screen {
             position: absolute; width: 100vw; height: 100vh; display: none; 
-            flex-direction: column; justify-content: space-between; padding: 15px 30px;
-            background: radial-gradient(circle, #1e1b4b 0%, #020617 100%);
+            flex-direction: column; justify-content: space-between; padding: 12px 25px;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #030712 100%);
         }
         .screen.active { display: flex; }
 
-        /* HEADER LOBBY ORIZZONTALE */
+        /* HEADER & CURRENCIES */
         .top-bar { display: flex; justify-content: space-between; align-items: center; width: 100%; z-index: 10; }
-        .profile-card { display: flex; align-items: center; gap: 12px; background: rgba(15, 23, 42, 0.85); padding: 8px 20px; border-radius: 40px; border: 3px solid #6366f1; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .trophy-badge { color: var(--bs-yellow); font-size: 1.3rem; display: flex; align-items: center; gap: 6px; text-shadow: 2px 2px #000; }
-        
-        .currency-container { display: flex; gap: 15px; }
-        .currency-box { background: rgba(15, 23, 42, 0.85); border: 3px solid #38bdf8; border-radius: 25px; padding: 6px 16px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; text-shadow: 2px 2px #000; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
-        .currency-box.gems { border-color: var(--bs-green); }
+        .bar-group { display: flex; gap: 10px; align-items: center; }
+        .hud-card { 
+            background: rgba(15, 23, 42, 0.85); padding: 6px 16px; border-radius: 30px; 
+            border: 3px solid #6366f1; display: flex; align-items: center; gap: 8px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6); text-shadow: 2px 2px #000;
+        }
+        .btn-fullscreen {
+            background: #475569; border: 3px solid #fff; border-radius: 12px; padding: 6px 12px;
+            color: #fff; cursor: pointer; font-size: 0.9rem; box-shadow: 0 4px 0 #000;
+        }
+        .btn-fullscreen:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
 
-        /* CONTENUTO CENTRALE LOBBY */
-        .lobby-main { flex: 1; display: flex; justify-content: space-around; align-items: center; width: 100%; padding: 10px 0; }
+        /* LOBBY MAIN */
+        .lobby-center { flex: 1; display: flex; justify-content: space-around; align-items: center; width: 100%; }
         
-        .brawler-showcase { display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        .brawler-avatar { 
-            width: 170px; height: 170px; border-radius: 50%; border: 6px solid var(--bs-yellow); 
-            box-shadow: 0 0 35px rgba(250, 204, 21, 0.6); display: flex; justify-content: center; 
-            align-items: center; font-size: 5rem; background: radial-gradient(circle, #4338ca, #1e1b4b);
-            animation: float 3s ease-in-out infinite;
+        .brawler-display { display: flex; flex-direction: column; align-items: center; }
+        .brawler-avatar-frame { 
+            width: 160px; height: 160px; border-radius: 50%; border: 6px solid var(--bs-yellow); 
+            box-shadow: 0 0 35px rgba(250, 204, 21, 0.5); display: flex; justify-content: center; 
+            align-items: center; background: radial-gradient(circle, #4338ca, #1e1b4b);
+            animation: float 3s ease-in-out infinite; position: relative;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-        .brawler-info { text-align: center; margin-top: 10px; }
-        .brawler-info h1 { font-size: 2.2rem; color: var(--bs-yellow); text-shadow: 3px 3px #000; text-transform: uppercase; letter-spacing: 2px; }
-        .brawler-info p { color: #94a3b8; font-size: 1rem; font-weight: bold; }
+        /* SELECTOR MODALITÀ */
+        .mode-selector-card {
+            background: linear-gradient(135deg, #1e293b, #0f172a); border: 4px solid var(--bs-yellow);
+            border-radius: 20px; padding: 15px 25px; text-align: center; cursor: pointer;
+            box-shadow: 0 8px 0 #000; transition: transform 0.1s; width: 260px;
+        }
+        .mode-selector-card:active { transform: translateY(4px); box-shadow: 0 4px 0 #000; }
 
-        /* PULSANTI NAVIGAZIONE */
+        /* BOTTOM NAV BAR */
         .bottom-bar { display: flex; justify-content: center; gap: 20px; width: 100%; margin-bottom: 5px; }
         .btn-bs { 
-            padding: 14px 28px; border: 4px solid #fff; border-radius: 20px; font-size: 1.2rem; 
+            padding: 12px 26px; border: 4px solid #fff; border-radius: 18px; font-size: 1.1rem; 
             font-weight: 900; color: #fff; cursor: pointer; text-shadow: 2px 2px #000; 
-            box-shadow: 0 8px 0 #000; transition: transform 0.1s, filter 0.1s; text-transform: uppercase;
-            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 8px 0 #000; transition: transform 0.1s; text-transform: uppercase;
         }
         .btn-bs:active { transform: translateY(4px); box-shadow: 0 4px 0 #000; }
-        .btn-play { background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%); color: #000; text-shadow: none; font-size: 1.8rem; padding: 14px 60px; border-color: #fef08a; box-shadow: 0 10px 0 #854d0e; }
+        .btn-play { background: linear-gradient(180deg, #facc15 0%, #ca8a04 100%); color: #000; text-shadow: none; font-size: 1.6rem; padding: 12px 55px; border-color: #fef08a; box-shadow: 0 10px 0 #854d0e; }
         .btn-brawlers { background: linear-gradient(180deg, #c084fc 0%, #7e22ce 100%); border-color: #e9d5ff; box-shadow: 0 8px 0 #581c87; }
         .btn-shop { background: linear-gradient(180deg, #60a5fa 0%, #1d4ed8 100%); border-color: #bfdbfe; box-shadow: 0 8px 0 #1e3a8a; }
 
-        /* GRID SELEZIONE BRAWLERS */
-        .brawlers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%; max-width: 900px; margin: auto; }
-        .brawler-card { background: rgba(30, 41, 59, 0.9); border: 4px solid #475569; border-radius: 20px; padding: 15px; text-align: center; cursor: pointer; position: relative; }
-        .brawler-card.selected { border-color: var(--bs-yellow); box-shadow: 0 0 20px var(--bs-yellow); background: rgba(67, 56, 202, 0.8); }
-        .brawler-card.locked { opacity: 0.4; filter: grayscale(1); }
-        .super-desc { font-size: 0.75rem; color: #f2f2f2; margin-top: 5px; font-weight: normal; }
-
-        /* NEGOZIO CASSE */
-        .shop-container { display: flex; justify-content: center; gap: 30px; margin: auto; }
-        .shop-card { background: rgba(30, 27, 75, 0.9); border: 4px solid var(--bs-yellow); border-radius: 24px; padding: 30px; text-align: center; width: 260px; box-shadow: 0 10px 0 #000; }
+        /* SELEZIONE MODALITÀ & BRAWLERS GRID */
+        .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 900px; margin: auto; }
+        .card-item { background: rgba(30, 41, 59, 0.9); border: 4px solid #475569; border-radius: 20px; padding: 15px; text-align: center; cursor: pointer; }
+        .card-item.selected { border-color: var(--bs-yellow); box-shadow: 0 0 20px var(--bs-yellow); background: rgba(67, 56, 202, 0.8); }
 
         /* MODALE CASSA */
         #box-modal { position: absolute; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
-        #box-modal h2 { font-size: 3.5rem; color: var(--bs-yellow); text-shadow: 4px 4px #000; margin-bottom: 20px; }
-        .reward-card { font-size: 2.2rem; background: #312e81; border: 4px solid #fff; padding: 25px 50px; border-radius: 24px; animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        .reward-card { font-size: 2.2rem; background: #312e81; border: 4px solid #fff; padding: 25px 50px; border-radius: 24px; }
 
-        /* CANVAS GIOCO */
+        /* CANVAS BATTAGLIA */
         #game-container { position: relative; width: 100vw; height: 100vh; display: none; background: #15803d; }
         canvas { display: block; width: 100%; height: 100%; }
 
-        /* CONTROLLI HUD BATTAGLIA */
-        .game-hud { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; pointer-events: none; z-index: 10; }
-        .hud-group { display: flex; gap: 12px; }
-        .hud-box { background: rgba(15, 23, 42, 0.8); padding: 8px 18px; border-radius: 16px; border: 3px solid #fff; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        /* HUD BATTAGLIA */
+        .game-hud { position: absolute; top: 12px; left: 15px; right: 15px; display: flex; justify-content: space-between; pointer-events: none; z-index: 10; }
+        .hud-pill { background: rgba(15, 23, 42, 0.85); padding: 8px 16px; border-radius: 16px; border: 3px solid #fff; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
-        /* TOUCH CONTROLS PER MOBILE */
+        /* CONTROLLI TOUCH MOBILE */
         .touch-controls { position: absolute; bottom: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: flex-end; pointer-events: none; z-index: 10; }
-        .joystick-zone { width: 130px; height: 130px; background: rgba(255,255,255,0.15); border: 3px solid rgba(255,255,255,0.4); border-radius: 50%; pointer-events: auto; position: relative; touch-action: none; }
-        .joystick-knob { width: 50px; height: 50px; background: #fff; border-radius: 50%; position: absolute; top: 37px; left: 37px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-
-        .action-btns { display: flex; gap: 20px; pointer-events: auto; }
-        .btn-action { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #fff; font-size: 1.5rem; font-weight: bold; color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 6px 0 #000; cursor: pointer; }
+        .joystick-zone { width: 120px; height: 120px; background: rgba(255,255,255,0.15); border: 3px solid rgba(255,255,255,0.4); border-radius: 50%; pointer-events: auto; position: relative; touch-action: none; }
+        .joystick-knob { width: 45px; height: 45px; background: #fff; border-radius: 50%; position: absolute; top: 37px; left: 37px; }
+        .action-btns { display: flex; gap: 15px; pointer-events: auto; }
+        .btn-act { width: 75px; height: 75px; border-radius: 50%; border: 4px solid #fff; font-size: 1.3rem; color: #fff; display: flex; justify-content: center; align-items: center; box-shadow: 0 6px 0 #000; cursor: pointer; }
         .btn-attack { background: #3b82f6; box-shadow: 0 6px 0 #1d4ed8; }
         .btn-super { background: #eab308; box-shadow: 0 6px 0 #ca8a04; opacity: 0.5; pointer-events: none; }
         .btn-super.ready { opacity: 1; pointer-events: auto; animation: pulse 1s infinite; }
-
-        @media (max-height: 500px) {
-            .brawler-avatar { width: 120px; height: 120px; font-size: 3.5rem; }
-            .btn-play { font-size: 1.4rem; padding: 10px 40px; }
-        }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
     </style>
 </head>
 <body>
@@ -112,38 +106,69 @@
     <!-- LOBBY PRINCIPALE -->
     <div id="lobby-screen" class="screen active">
         <div class="top-bar">
-            <div class="profile-card">
-                <span style="font-size: 1.5rem;">👤</span>
-                <span id="player-name" style="font-size: 1.1rem;">BrawlerPro</span>
-                <div class="trophy-badge">🏆 <span id="trophies-count">0</span></div>
+            <div class="bar-group">
+                <div class="hud-card">👤 <span id="player-name">BrawlerPro</span></div>
+                <div class="hud-card" style="color: var(--bs-yellow);">🏆 <span id="trophies-count">0</span></div>
             </div>
-            <div class="currency-container">
-                <div class="currency-box">🪙 <span id="coins-count">200</span></div>
-                <div class="currency-box gems">💎 <span id="gems-count">30</span></div>
+            <div class="bar-group">
+                <div class="hud-card" style="color: #60a5fa;">🪙 <span id="coins-count">200</span></div>
+                <div class="hud-card" style="color: var(--bs-green);">💎 <span id="gems-count">30</span></div>
+                <button class="btn-fullscreen" onclick="toggleFullscreen()">⛶ SCHERMO INTERO</button>
             </div>
         </div>
 
-        <div class="lobby-main">
-            <div class="brawler-showcase">
-                <div id="current-avatar" class="brawler-avatar">🤠</div>
-                <div class="brawler-info">
-                    <h1 id="current-name">SHELLY</h1>
-                    <p id="current-super-info">SUPER: Superpallini (Distrugge i muri)</p>
-                </div>
+        <div class="lobby-center">
+            <!-- Brawler Avatar Frame -->
+            <div class="brawler-display">
+                <div class="brawler-avatar-frame" id="avatar-frame"></div>
+                <h1 id="current-name" style="color: var(--bs-yellow); text-shadow: 3px 3px #000; margin-top: 10px;">SHELLY</h1>
+            </div>
+
+            <!-- Modalità Selezionata -->
+            <div class="mode-selector-card" onclick="showScreen('modes-screen')">
+                <p style="color: #94a3b8; font-size: 0.8rem;">MODALITÀ DI GIOCO</p>
+                <h2 id="selected-mode-title" style="color: var(--bs-yellow); margin: 5px 0;">SOPRAVVIVENZA</h2>
+                <p id="selected-mode-desc" style="font-size: 0.85rem; color: #cbd5e1;">Nebbia tossica & Power Cubes!</p>
+                <p style="color: var(--bs-orange); font-size: 0.75rem; margin-top: 8px;">CAMBIA MODALITÀ ➔</p>
             </div>
         </div>
 
         <div class="bottom-bar">
             <button class="btn-bs btn-shop" onclick="showScreen('shop-screen')">🛒 NEGOZIO</button>
             <button class="btn-bs btn-brawlers" onclick="showScreen('brawlers-screen')">🥊 BRAWLERS</button>
-            <button class="btn-bs btn-play" onclick="startBattle()">BRAWL!</button>
+            <button class="btn-bs btn-play" onclick="startBattle()">GIOCA!</button>
+        </div>
+    </div>
+
+    <!-- SELEZIONE MODALITÀ -->
+    <div id="modes-screen" class="screen">
+        <h1 style="text-align: center; color: var(--bs-yellow); text-shadow: 3px 3px #000;">SELEZIONA MODALITÀ</h1>
+        <div class="grid-container">
+            <div class="card-item selected" id="mode-showdown" onclick="selectMode('showdown')">
+                <div style="font-size: 2.5rem;">💀</div>
+                <h2 style="color: var(--bs-yellow);">SOPRAVVIVENZA</h2>
+                <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">Sconfiggi i nemici prima che la nebbia tossica restringa il campo!</p>
+            </div>
+            <div class="card-item" id="mode-footbrawl" onclick="selectMode('footbrawl')">
+                <div style="font-size: 2.5rem;">⚽</div>
+                <h2 style="color: var(--bs-yellow);">FOOTBRAWL</h2>
+                <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">Prendi la palla al centro e segna nella porta nemica!</p>
+            </div>
+            <div class="card-item" id="mode-gemgrab" onclick="selectMode('gemgrab')">
+                <div style="font-size: 2.5rem;">💎</div>
+                <h2 style="color: var(--bs-yellow);">ARRAFFAGEMME</h2>
+                <p style="font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">Raccogli le gemme al centro della miniera prima dei nemici!</p>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <button class="btn-bs btn-shop" onclick="showScreen('lobby-screen')">⬅️ LOBBY</button>
         </div>
     </div>
 
     <!-- SELEZIONE BRAWLERS -->
     <div id="brawlers-screen" class="screen">
         <h1 style="text-align: center; color: var(--bs-yellow); text-shadow: 3px 3px #000;">SELEZIONA BRAWLER</h1>
-        <div class="brawlers-grid" id="brawlers-list"></div>
+        <div class="grid-container" id="brawlers-list"></div>
         <div class="bottom-bar">
             <button class="btn-bs btn-shop" onclick="showScreen('lobby-screen')">⬅️ LOBBY</button>
         </div>
@@ -152,11 +177,11 @@
     <!-- NEGOZIO CASSE -->
     <div id="shop-screen" class="screen">
         <h1 style="text-align: center; color: var(--bs-yellow); text-shadow: 3px 3px #000;">NEGOZIO BRAWL</h1>
-        <div class="shop-container">
-            <div class="shop-card">
+        <div style="display: flex; justify-content: center; gap: 30px; margin: auto;">
+            <div style="background: rgba(30, 27, 75, 0.9); border: 4px solid var(--bs-yellow); border-radius: 24px; padding: 25px; text-align: center; width: 260px;">
                 <h2 style="color: var(--bs-yellow);">CASSA BRAWL</h2>
-                <div style="font-size: 5rem; margin: 15px 0;">📦</div>
-                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">Sblocca Monete, Gemme e Nuovi Brawler!</p>
+                <div style="font-size: 4rem; margin: 15px 0;">📦</div>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 20px;">Sblocca Monete, Gemme e Brawler!</p>
                 <button class="btn-bs btn-play" style="font-size: 1.1rem; padding: 12px 30px;" onclick="openBox(100)">100 🪙</button>
             </div>
         </div>
@@ -165,25 +190,24 @@
         </div>
     </div>
 
-    <!-- MODALE APERTURA CASSA -->
+    <!-- MODALE CASSA -->
     <div id="box-modal">
-        <h2>CASSA APERTA!</h2>
+        <h2 style="color: var(--bs-yellow); text-shadow: 3px 3px #000; margin-bottom: 20px;">CASSA APERTA!</h2>
         <div id="reward-display" class="reward-card">+50 Monete!</div>
         <button class="btn-bs btn-play" style="margin-top: 30px;" onclick="closeBox()">RITIRA</button>
     </div>
 
-    <!-- SCHERMATA BATTAGLIA -->
+    <!-- CAMPO DI BATTAGLIA CANVAS -->
     <div id="game-container">
         <canvas id="canvas"></canvas>
 
         <div class="game-hud">
-            <div class="hud-group">
-                <div class="hud-box" style="color: var(--bs-yellow);">🏆 <span id="game-trophies">0</span></div>
-                <div class="hud-box" style="color: #60a5fa;">🥊 <span id="game-kills">0</span></div>
+            <div style="display: flex; gap: 10px;">
+                <div class="hud-pill" style="color: var(--bs-yellow);">🏆 <span id="game-trophies">0</span></div>
+                <div class="hud-pill" style="color: #60a5fa;">🥊 <span id="game-kills">0</span></div>
             </div>
-            <div class="hud-group">
-                <div class="hud-box" style="color: #22c55e;">💎 POWER CUBES: <span id="game-cubes">0</span></div>
-            </div>
+            <div class="hud-pill" id="mode-stat-display" style="color: var(--bs-green);">💎 GEMME: 0</div>
+            <button class="btn-fullscreen" onclick="toggleFullscreen()">⛶</button>
         </div>
 
         <div class="touch-controls">
@@ -191,40 +215,89 @@
                 <div class="joystick-knob" id="joyKnob"></div>
             </div>
             <div class="action-btns">
-                <div class="btn-action btn-attack" onclick="triggerAttack()">💥</div>
-                <div class="btn-action btn-super" id="btnSuper" onclick="triggerSuper()">🔥</div>
+                <div class="btn-act btn-attack" onclick="triggerAttack()">COLPO</div>
+                <div class="btn-act btn-super" id="btnSuper" onclick="triggerSuper()">SUPER</div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- BRAWLERS E SUPER UNICHE ---
-        const BRAWLERS = {
-            shelly: { 
-                id: 'shelly', name: 'SHELLY', icon: '🤠', hp: 130, speed: 4.2, damage: 18, 
-                superDesc: 'Superpallini: Ventaglio devastante che distrugge i muri', unlocked: true 
-            },
-            colt: { 
-                id: 'colt', name: 'COLT', icon: '🔫', hp: 95, speed: 4.8, damage: 15, 
-                superDesc: 'Tempesta di Proiettili: Raffica perforante a lungo raggio', unlocked: true 
-            },
-            el_primo: { 
-                id: 'el_primo', name: 'EL PRIMO', icon: '🤼', hp: 200, speed: 4.0, damage: 32, 
-                superDesc: 'Gomitata Volante: Salto aereo con impatto ad area', unlocked: false 
-            },
-            spike: { 
-                id: 'spike', name: 'SPIKE', icon: '🌵', hp: 85, speed: 4.5, damage: 38, 
-                superDesc: 'Campo Spinoso: Zona rallentante che infligge danno nel tempo', unlocked: false 
+        // --- FUNZIONE SCHERMO INTERO ---
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.log(err));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
             }
+        }
+
+        // --- SISTEMA GRAFICA VETTORIALE HD (NO EMOJI) ---
+        function drawBrawlerVector(ctx, type, x, y, radius) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            if (type === 'shelly') {
+                // Corpo / Pelle
+                ctx.fillStyle = '#e0a96d'; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI*2); ctx.fill();
+                // Capelli Viola Shelly
+                ctx.fillStyle = '#8b5cf6'; ctx.beginPath(); ctx.arc(0, -radius*0.2, radius*1.05, Math.PI, 0); ctx.fill();
+                // Occhi
+                ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-radius*0.3, -radius*0.1, 3, 0, Math.PI*2); ctx.arc(radius*0.3, -radius*0.1, 3, 0, Math.PI*2); ctx.fill();
+                // Benda / Bandana
+                ctx.fillStyle = '#ef4444'; ctx.fillRect(-radius, -radius*0.5, radius*2, 6);
+            } else if (type === 'colt') {
+                // Corpo / Pelle
+                ctx.fillStyle = '#f5d0a9'; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI*2); ctx.fill();
+                // Capelli Rossi Colt
+                ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(0, -radius*0.3, radius*1.1, Math.PI*0.8, Math.PI*2.2); ctx.fill();
+                // Occhi
+                ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-radius*0.3, 0, 3, 0, Math.PI*2); ctx.arc(radius*0.3, 0, 3, 0, Math.PI*2); ctx.fill();
+            } else if (type === 'el_primo') {
+                // Maschera Blu El Primo
+                ctx.fillStyle = '#2563eb'; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI*2); ctx.fill();
+                // Dettagli Gialli Maschera
+                ctx.fillStyle = '#facc15'; ctx.beginPath(); ctx.arc(0, 0, radius*0.6, 0, Math.PI*2); ctx.fill();
+                // Occhi
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-radius*0.3, -radius*0.1, 5, 0, Math.PI*2); ctx.arc(radius*0.3, -radius*0.1, 5, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-radius*0.3, -radius*0.1, 2, 0, Math.PI*2); ctx.arc(radius*0.3, -radius*0.1, 2, 0, Math.PI*2); ctx.fill();
+            } else if (type === 'spike') {
+                // Corpo Cactus Spike
+                ctx.fillStyle = '#22c55e'; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI*2); ctx.fill();
+                // Occhi Neri Ovali e Bocca
+                ctx.fillStyle = '#000'; ctx.beginPath(); ctx.arc(-radius*0.3, -radius*0.2, 4, 0, Math.PI*2); ctx.arc(radius*0.3, -radius*0.2, 4, 0, Math.PI*2); ctx.fill();
+                ctx.beginPath(); ctx.arc(0, radius*0.2, 5, 0, Math.PI*2); ctx.fill();
+                // Fiore Rosa sopra la testa
+                ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.arc(0, -radius, 7, 0, Math.PI*2); ctx.fill();
+            }
+
+            // Bordo esterno
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI*2); ctx.stroke();
+            ctx.restore();
+        }
+
+        // --- DATI BRAWLERS ---
+        const BRAWLERS = {
+            shelly: { id: 'shelly', name: 'SHELLY', hp: 130, speed: 4.2, damage: 18, superDesc: 'Superpallini a ventaglio distruggi-muri', unlocked: true },
+            colt: { id: 'colt', name: 'COLT', hp: 95, speed: 4.8, damage: 15, superDesc: 'Raffica perforante a lungo raggio', unlocked: true },
+            el_primo: { id: 'el_primo', name: 'EL PRIMO', hp: 200, speed: 4.0, damage: 32, superDesc: 'Gomitata volante ad area', unlocked: false },
+            spike: { id: 'spike', name: 'SPIKE', hp: 85, speed: 4.5, damage: 38, superDesc: 'Campo di spine rallentante', unlocked: false }
         };
 
+        const MODES = {
+            showdown: { title: 'SOPRAVVIVENZA', desc: 'Nebbia tossica & Power Cubes!' },
+            footbrawl: { title: 'FOOTBRAWL', desc: 'Segna 2 goal con la palla per vincere!' },
+            gemgrab: { title: 'ARRAFFAGEMME', desc: 'Raccogli 10 gemme dalla miniera!' }
+        };
+
+        let selectedMode = 'showdown';
+
         // --- SALVATAGGIO PROGRESSE ---
-        let playerData = JSON.parse(localStorage.getItem('bs_ultimate_data')) || {
-            trophies: 0, coins: 250, gems: 30, selectedBrawler: 'shelly', unlockedBrawlers: ['shelly', 'colt']
+        let playerData = JSON.parse(localStorage.getItem('bs_hd_data')) || {
+            trophies: 0, coins: 300, gems: 40, selectedBrawler: 'shelly', unlockedBrawlers: ['shelly', 'colt']
         };
 
         function saveData() {
-            localStorage.setItem('bs_ultimate_data', JSON.stringify(playerData));
+            localStorage.setItem('bs_hd_data', JSON.stringify(playerData));
             updateUI();
         }
 
@@ -234,9 +307,16 @@
             document.getElementById('gems-count').textContent = playerData.gems;
 
             const brawler = BRAWLERS[playerData.selectedBrawler];
-            document.getElementById('current-avatar').textContent = brawler.icon;
             document.getElementById('current-name').textContent = brawler.name;
-            document.getElementById('current-super-info').textContent = `SUPER: ${brawler.superDesc}`;
+
+            // Render Avatar Frame in Lobby
+            const frame = document.getElementById('avatar-frame');
+            frame.innerHTML = '';
+            const c = document.createElement('canvas'); c.width = 140; c.height = 140;
+            const ctxFrame = c.getContext('2d');
+            drawBrawlerVector(ctxFrame, brawler.id, 70, 70, 50);
+            frame.appendChild(c);
+
             renderBrawlersList();
         }
 
@@ -246,6 +326,15 @@
             document.getElementById(id).classList.add('active');
         }
 
+        function selectMode(m) {
+            selectedMode = m;
+            document.querySelectorAll('#modes-screen .card-item').forEach(c => c.classList.remove('selected'));
+            document.getElementById(`mode-${m}`).classList.add('selected');
+            document.getElementById('selected-mode-title').textContent = MODES[m].title;
+            document.getElementById('selected-mode-desc').textContent = MODES[m].desc;
+            showScreen('lobby-screen');
+        }
+
         function renderBrawlersList() {
             const list = document.getElementById('brawlers-list');
             list.innerHTML = '';
@@ -253,13 +342,17 @@
                 const isUnlocked = playerData.unlockedBrawlers.includes(b.id);
                 const isSelected = playerData.selectedBrawler === b.id;
                 const card = document.createElement('div');
-                card.className = `brawler-card ${isSelected ? 'selected' : ''} ${!isUnlocked ? 'locked' : ''}`;
-                card.innerHTML = `
-                    <div style="font-size: 3rem;">${b.icon}</div>
-                    <h3 style="color: var(--bs-yellow); margin-top: 5px;">${b.name}</h3>
-                    <p class="super-desc">${b.superDesc}</p>
-                    <p style="font-size: 0.8rem; margin-top: 8px; color: #64748b;">${isUnlocked ? (isSelected ? 'EQUIPAGGIATO' : 'SELEZIONA') : 'BLOCCATO'}</p>
-                `;
+                card.className = `card-item ${isSelected ? 'selected' : ''}`;
+                if (!isUnlocked) card.style.opacity = '0.4';
+
+                // Miniature Canvas
+                const miniC = document.createElement('canvas'); miniC.width = 70; miniC.height = 70;
+                drawBrawlerVector(miniC.getContext('2d'), b.id, 35, 35, 25);
+
+                card.innerHTML = `<h3 style="color: var(--bs-yellow);">${b.name}</h3>`;
+                card.prepend(miniC);
+                card.innerHTML += `<p style="font-size:0.75rem; color:#cbd5e1; margin-top:5px;">${b.superDesc}</p>`;
+
                 if (isUnlocked) {
                     card.onclick = () => { playerData.selectedBrawler = b.id; saveData(); showScreen('lobby-screen'); };
                 }
@@ -271,16 +364,16 @@
             if (playerData.coins < cost) return alert('Monete insufficienti!');
             playerData.coins -= cost;
             let rand = Math.random(), rewardText = '';
-            if (rand < 0.45) {
-                let c = Math.floor(Math.random() * 70) + 50; playerData.coins += c; rewardText = `🪙 +${c} Monete!`;
-            } else if (rand < 0.75) {
-                let g = Math.floor(Math.random() * 10) + 4; playerData.gems += g; rewardText = `💎 +${g} Gemme!`;
+            if (rand < 0.5) {
+                let c = Math.floor(Math.random() * 80) + 50; playerData.coins += c; rewardText = `🪙 +${c} Monete!`;
+            } else if (rand < 0.8) {
+                let g = Math.floor(Math.random() * 12) + 5; playerData.gems += g; rewardText = `💎 +${g} Gemme!`;
             } else {
                 let locked = Object.keys(BRAWLERS).filter(id => !playerData.unlockedBrawlers.includes(id));
                 if (locked.length) {
                     let b = locked[Math.floor(Math.random() * locked.length)];
                     playerData.unlockedBrawlers.push(b); rewardText = `🎉 NUOVO BRAWLER: ${BRAWLERS[b].name}!`;
-                } else { playerData.coins += 120; rewardText = `🪙 +120 Monete!`; }
+                } else { playerData.coins += 150; rewardText = `🪙 +150 Monete!`; }
             }
             saveData();
             document.getElementById('reward-display').textContent = rewardText;
@@ -289,14 +382,17 @@
 
         function closeBox() { document.getElementById('box-modal').style.display = 'none'; }
 
-        // --- MOTORE DI BATTAGLIA AVANZATO ---
+        // --- MOTORE DI GIOCO HD AVANZATO ---
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         
-        let gameActive = false, kills = 0, score = 0, keys = {}, mouse = { x: 0, y: 0 };
-        let player = {}, bullets = [], enemies = [], bushes = [], walls = [], crates = [], powerCubes = [], areaZones = [], floatingTexts = [];
+        let gameActive = false, kills = 0, keys = {}, mouse = { x: 0, y: 0 };
+        let player = {}, bullets = [], enemies = [], walls = [], bushes = [], powerCubes = [];
+        
+        // MODALITÀ SPECIFICHE
+        let fogRadius = 1200, ball = null, gems = [], gemMine = null, teamGems = 0, enemyGems = 0, playerScore = 0, enemyScore = 0;
 
-        // JOYSTICK MOBILE
+        // JOYSTICK TOUCH
         let joyDir = { x: 0, y: 0 }, joyActive = false;
         const joyZone = document.getElementById('joyZone'), joyKnob = document.getElementById('joyKnob');
 
@@ -310,8 +406,7 @@
             let rect = joyZone.getBoundingClientRect();
             let dx = touch.clientX - (rect.left + rect.width / 2);
             let dy = touch.clientY - (rect.top + rect.height / 2);
-            let dist = Math.hypot(dx, dy);
-            let maxDist = 45;
+            let dist = Math.hypot(dx, dy), maxDist = 40;
             if (dist > maxDist) { dx = (dx / dist) * maxDist; dy = (dy / dist) * maxDist; }
             joyKnob.style.transform = `translate(${dx}px, ${dy}px)`;
             joyDir = { x: dx / maxDist, y: dy / maxDist };
@@ -327,118 +422,104 @@
 
             const bStats = BRAWLERS[playerData.selectedBrawler];
             player = {
-                x: 300, y: canvas.height / 2, radius: 22,
+                x: 200, y: canvas.height / 2, radius: 22,
                 hp: bStats.hp, maxHp: bStats.hp, speed: bStats.speed, damage: bStats.damage,
-                id: bStats.id, icon: bStats.icon, ammo: 3, maxAmmo: 3, ammoTimer: 0,
-                superCharge: 0, cubes: 0, isJumping: false, jumpTimer: 0, hidden: false
+                id: bStats.id, ammo: 3, maxAmmo: 3, ammoTimer: 0, superCharge: 0, cubes: 0
             };
 
-            bullets = []; enemies = []; powerCubes = []; areaZones = []; floatingTexts = [];
-            kills = 0; gameActive = true;
+            bullets = []; enemies = []; powerCubes = []; gems = [];
+            kills = 0; teamGems = 0; enemyGems = 0; playerScore = 0; enemyScore = 0;
+            fogRadius = canvas.width * 0.9;
+            gameActive = true;
+
             document.getElementById('game-kills').textContent = kills;
             document.getElementById('game-trophies').textContent = playerData.trophies;
-            document.getElementById('game-cubes').textContent = player.cubes;
 
+            // Inizializza Mappa & Modalità
             generateMap();
+            if (selectedMode === 'footbrawl') {
+                ball = { x: canvas.width / 2, y: canvas.height / 2, vx: 0, vy: 0, radius: 14, holder: null };
+            } else if (selectedMode === 'gemgrab') {
+                gemMine = { x: canvas.width / 2, y: canvas.height / 2, timer: 0 };
+            }
+
             requestAnimationFrame(gameLoop);
         }
 
-        // GENERAZIONE STRUTTURE MAPPA (Muri, Cespugli, Casse)
         function generateMap() {
-            walls = []; bushes = []; crates = [];
+            walls = []; bushes = [];
             let w = canvas.width, h = canvas.height;
 
-            // Muri di blocco
-            walls.push({ x: w * 0.3, y: h * 0.2, w: 40, h: 160 });
-            walls.push({ x: w * 0.3, y: h * 0.6, w: 40, h: 160 });
-            walls.push({ x: w * 0.65, y: h * 0.3, w: 160, h: 40 });
+            // Muri e Cespugli
+            walls.push({ x: w * 0.25, y: h * 0.2, w: 40, h: 180 });
+            walls.push({ x: w * 0.25, y: h * 0.6, w: 40, h: 180 });
+            walls.push({ x: w * 0.7, y: h * 0.2, w: 40, h: 180 });
+            walls.push({ x: w * 0.7, y: h * 0.6, w: 40, h: 180 });
 
-            // Cespugli (invisibility zone)
-            bushes.push({ x: w * 0.15, y: h * 0.15, w: 120, h: 120 });
-            bushes.push({ x: w * 0.5, y: h * 0.4, w: 150, h: 150 });
-            bushes.push({ x: w * 0.75, y: h * 0.65, w: 120, h: 120 });
-
-            // Casse Power Cubes
-            crates.push({ x: w * 0.45, y: h * 0.25, hp: 60, maxHp: 60 });
-            crates.push({ x: w * 0.45, y: h * 0.75, hp: 60, maxHp: 60 });
-        }
-
-        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if (e.code === 'Space') triggerSuper(); });
-        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-        canvas.addEventListener('mousemove', e => {
-            let rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top;
-        });
-        canvas.addEventListener('mousedown', triggerAttack);
-
-        function triggerAttack() {
-            if (!gameActive || player.ammo < 1 || player.isJumping) return;
-            player.ammo--;
-
-            let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-
-            if (player.id === 'shelly') {
-                for (let i = -2; i <= 2; i++) {
-                    bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle + i*0.12)*12, dy: Math.sin(angle + i*0.12)*12, radius: 5, damage: player.damage, canBreak: false });
-                }
-            } else if (player.id === 'colt') {
-                for (let i = 0; i < 4; i++) {
-                    setTimeout(() => {
-                        if (gameActive) bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*15, dy: Math.sin(angle)*15, radius: 6, damage: player.damage, canBreak: false });
-                    }, i * 60);
-                }
-            } else if (player.id === 'el_primo') {
-                bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*9, dy: Math.sin(angle)*9, radius: 24, damage: player.damage, life: 8, canBreak: false });
-            } else if (player.id === 'spike') {
-                bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*11, dy: Math.sin(angle)*11, radius: 9, damage: player.damage, canBreak: false });
-            }
-        }
-
-        // --- ATTIVAZIONE SUPER UNICHE PER BRAWLER ---
-        function triggerSuper() {
-            if (player.superCharge < 100 || !gameActive) return;
-            player.superCharge = 0;
-            document.getElementById('btnSuper').classList.remove('ready');
-
-            let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
-
-            if (player.id === 'shelly') { // Superpallini
-                for (let i = -4; i <= 4; i++) {
-                    bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle + i*0.1)*16, dy: Math.sin(angle + i*0.1)*16, radius: 8, damage: player.damage * 1.8, canBreak: true });
-                }
-            } else if (player.id === 'colt') { // Tempesta Perforante
-                for (let i = 0; i < 10; i++) {
-                    setTimeout(() => {
-                        if (gameActive) bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*18, dy: Math.sin(angle)*18, radius: 8, damage: player.damage * 1.2, canBreak: true });
-                    }, i * 40);
-                }
-            } else if (player.id === 'el_primo') { // Gomitata Volante
-                player.isJumping = true;
-                player.jumpTimer = 30;
-                let targetX = player.x + Math.cos(angle) * 200;
-                let targetY = player.y + Math.sin(angle) * 200;
-                setTimeout(() => {
-                    player.x = targetX; player.y = targetY; player.isJumping = false;
-                    addFloatingText("BOOM!", player.x, player.y, '#facc15');
-                    // Danno ad Area
-                    enemies.forEach(e => {
-                        if (Math.hypot(e.x - player.x, e.y - player.y) < 120) e.hp -= player.damage * 3;
-                    });
-                }, 500);
-            } else if (player.id === 'spike') { // Campo Spinoso
-                areaZones.push({ x: mouse.x, y: mouse.y, radius: 100, timer: 180, damage: 2 });
-            }
+            bushes.push({ x: w * 0.45, y: h * 0.15, w: 140, h: 120 });
+            bushes.push({ x: w * 0.45, y: h * 0.7, w: 140, h: 120 });
         }
 
         function spawnEnemy() {
             if (!gameActive) return;
-            let x = canvas.width + 30, y = Math.random() * canvas.height;
-            enemies.push({ x, y, radius: 20, hp: 80, maxHp: 80, speed: 2.2 });
+            let x = canvas.width - 100, y = Math.random() * (canvas.height - 100) + 50;
+            enemies.push({ x, y, radius: 20, hp: 80, maxHp: 80, speed: 2.1 });
         }
-        setInterval(spawnEnemy, 2000);
+        setInterval(spawnEnemy, 2500);
 
-        function addFloatingText(txt, x, y, color) {
-            floatingTexts.push({ txt, x, y, color, timer: 40 });
+        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if (e.code === 'Space') triggerSuper(); });
+        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+        canvas.addEventListener('mousemove', e => {
+            let rect = canvas.getBoundingClientRect(); mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top;
+        });
+        canvas.addEventListener('mousedown', triggerAttack);
+
+        function triggerAttack() {
+            if (!gameActive || player.ammo < 1) return;
+
+            // Se hai la palla in Footbrawl, calciala!
+            if (selectedMode === 'footbrawl' && ball && ball.holder === player) {
+                let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+                ball.holder = null;
+                ball.vx = Math.cos(angle) * 16;
+                ball.vy = Math.sin(angle) * 16;
+                player.ammo--;
+                return;
+            }
+
+            player.ammo--;
+            let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+
+            if (player.id === 'shelly') {
+                for (let i = -2; i <= 2; i++) bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle + i*0.12)*13, dy: Math.sin(angle + i*0.12)*13, radius: 5, damage: player.damage, canBreak: false });
+            } else if (player.id === 'colt') {
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => { if (gameActive) bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*16, dy: Math.sin(angle)*16, radius: 6, damage: player.damage, canBreak: false }); }, i*60);
+                }
+            } else if (player.id === 'el_primo') {
+                bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*9, dy: Math.sin(angle)*9, radius: 24, damage: player.damage, life: 8, canBreak: false });
+            } else if (player.id === 'spike') {
+                bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle)*12, dy: Math.sin(angle)*12, radius: 9, damage: player.damage, canBreak: false });
+            }
+        }
+
+        function triggerSuper() {
+            if (player.superCharge < 100 || !gameActive) return;
+            player.superCharge = 0;
+            document.getElementById('btnSuper').classList.remove('ready');
+            let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+
+            if (player.id === 'shelly' || player.id === 'colt') {
+                for (let i = -3; i <= 3; i++) bullets.push({ x: player.x, y: player.y, dx: Math.cos(angle + i*0.1)*18, dy: Math.sin(angle + i*0.1)*18, radius: 8, damage: player.damage*1.8, canBreak: true });
+            } else if (player.id === 'el_primo') {
+                player.x += Math.cos(angle)*180; player.y += Math.sin(angle)*180;
+                enemies.forEach(e => { if(Math.hypot(e.x - player.x, e.y - player.y) < 120) e.hp -= player.damage*2.5; });
+            } else if (player.id === 'spike') {
+                for (let i = 0; i < 8; i++) {
+                    let a = (Math.PI*2/8)*i;
+                    bullets.push({ x: player.x, y: player.y, dx: Math.cos(a)*10, dy: Math.sin(a)*10, radius: 10, damage: player.damage*1.5, canBreak: false });
+                }
+            }
         }
 
         function update() {
@@ -454,99 +535,90 @@
                 if (keys['d'] || keys['arrowright']) vx += player.speed;
             }
 
-            // Collisione Muri per Player
-            let nextX = player.x + vx, nextY = player.y + vy;
+            // Collisioni Muri
+            let nx = player.x + vx, ny = player.y + vy;
             walls.forEach(w => {
-                if (nextX + player.radius > w.x && nextX - player.radius < w.x + w.w &&
-                    nextY + player.radius > w.y && nextY - player.radius < w.y + w.h) {
-                    vx = 0; vy = 0;
-                }
+                if (nx + player.radius > w.x && nx - player.radius < w.x + w.w && ny + player.radius > w.y && ny - player.radius < w.y + w.h) { vx = 0; vy = 0; }
             });
-
-            if (!player.isJumping) { player.x += vx; player.y += vy; }
-
-            // Controlla Invisibilità nei Cespugli
-            player.hidden = bushes.some(b => player.x > b.x && player.x < b.x + b.w && player.y > b.y && player.y < b.y + b.h);
+            player.x += vx; player.y += vy;
 
             // Ricarica Munizioni
             if (player.ammo < player.maxAmmo) {
-                player.ammoTimer += 0.025;
-                if (player.ammoTimer >= 1) { player.ammo++; player.ammoTimer = 0; }
+                player.ammoTimer += 0.025; if (player.ammoTimer >= 1) { player.ammo++; player.ammoTimer = 0; }
             }
 
-            // Proiettili e Collisioni
+            // --- NEBBIA TOSSICA (Showdown) ---
+            if (selectedMode === 'showdown') {
+                fogRadius -= 0.2;
+                let distCenter = Math.hypot(player.x - canvas.width/2, player.y - canvas.height/2);
+                if (distCenter > fogRadius) {
+                    player.hp -= 0.4; // Danno Nebbia
+                    if (player.hp <= 0) endGame(false);
+                }
+                document.getElementById('mode-stat-display').textContent = `💀 NEBBIA: ${Math.max(0, Math.floor(fogRadius))}m`;
+            }
+
+            // --- FOOTBRAWL LOGIC ---
+            if (selectedMode === 'footbrawl' && ball) {
+                if (ball.holder) {
+                    ball.x = ball.holder.x; ball.y = ball.holder.y;
+                } else {
+                    ball.x += ball.vx; ball.y += ball.vy;
+                    ball.vx *= 0.95; ball.vy *= 0.95; // Attrito
+                    if (Math.hypot(player.x - ball.x, player.y - ball.y) < player.radius + ball.radius) ball.holder = player;
+                }
+                // Controlla Gol
+                if (ball.x > canvas.width - 30 && ball.y > canvas.height/2 - 80 && ball.y < canvas.height/2 + 80) {
+                    playerScore++; alert("GOOOOOAL! Hai segnato!"); ball.x = canvas.width/2; ball.y = canvas.height/2; ball.holder = null; ball.vx = 0; ball.vy = 0;
+                    if (playerScore >= 2) endGame(true);
+                }
+                document.getElementById('mode-stat-display').textContent = `⚽ GOAL: ${playerScore} - ${enemyScore}`;
+            }
+
+            // --- ARRAFFAGEMME LOGIC ---
+            if (selectedMode === 'gemgrab') {
+                gemMine.timer++;
+                if (gemMine.timer > 150) {
+                    gems.push({ x: gemMine.x + (Math.random()*60 - 30), y: gemMine.y + (Math.random()*60 - 30) });
+                    gemMine.timer = 0;
+                }
+                gems.forEach((g, gi) => {
+                    if (Math.hypot(player.x - g.x, player.y - g.y) < player.radius + 15) {
+                        gems.splice(gi, 1); teamGems++;
+                        if (teamGems >= 10) endGame(true);
+                    }
+                });
+                document.getElementById('mode-stat-display').textContent = `💎 GEMME: ${teamGems} / 10`;
+            }
+
+            // Aggiorna Proiettili
             bullets.forEach((b, bi) => {
                 b.x += b.dx; b.y += b.dy;
-
-                // Hit Muri
                 walls.forEach((w, wi) => {
                     if (b.x > w.x && b.x < w.x + w.w && b.y > w.y && b.y < w.y + w.h) {
-                        if (b.canBreak) walls.splice(wi, 1); // Super rompe i muri
+                        if (b.canBreak) walls.splice(wi, 1);
                         bullets.splice(bi, 1);
                     }
                 });
-
-                // Hit Casse
-                crates.forEach((c, ci) => {
-                    if (Math.hypot(b.x - c.x, b.y - c.y) < c.hp / 2 + b.radius) {
-                        c.hp -= b.damage;
-                        bullets.splice(bi, 1);
-                        if (c.hp <= 0) {
-                            powerCubes.push({ x: c.x, y: c.y });
-                            crates.splice(ci, 1);
-                        }
-                    }
-                });
-
-                // Hit Nemici
                 enemies.forEach((e, ei) => {
                     if (Math.hypot(b.x - e.x, b.y - e.y) < e.radius + b.radius) {
                         e.hp -= b.damage;
-                        addFloatingText(`-${b.damage}`, e.x, e.y, '#ef4444');
                         if (player.superCharge < 100) {
                             player.superCharge = Math.min(100, player.superCharge + 15);
                             if (player.superCharge >= 100) document.getElementById('btnSuper').classList.add('ready');
                         }
                         if (!b.life) bullets.splice(bi, 1);
-                        if (e.hp <= 0) {
-                            powerCubes.push({ x: e.x, y: e.y });
-                            enemies.splice(ei, 1); kills++;
-                            document.getElementById('game-kills').textContent = kills;
-                        }
+                        if (e.hp <= 0) { enemies.splice(ei, 1); kills++; document.getElementById('game-kills').textContent = kills; }
                     }
                 });
             });
 
-            // Zone ad Area (Super Spike)
-            areaZones.forEach((az, azi) => {
-                az.timer--;
-                enemies.forEach(e => {
-                    if (Math.hypot(e.x - az.x, e.y - az.y) < az.radius) {
-                        e.hp -= az.damage; e.speed = 1.0;
-                    }
-                });
-                if (az.timer <= 0) areaZones.splice(azi, 1);
-            });
-
-            // Raccolta Power Cubes
-            powerCubes.forEach((pc, pci) => {
-                if (Math.hypot(player.x - pc.x, player.y - pc.y) < player.radius + 15) {
-                    powerCubes.splice(pci, 1); player.cubes++;
-                    player.maxHp += 20; player.hp = Math.min(player.hp + 30, player.maxHp);
-                    player.damage += 4;
-                    document.getElementById('game-cubes').textContent = player.cubes;
-                    addFloatingText("+POWER!", player.x, player.y, '#22c55e');
-                }
-            });
-
-            // Nemici inseguimento
+            // Aggiorna Nemici
             enemies.forEach(e => {
-                if (!player.hidden) {
-                    let angle = Math.atan2(player.y - e.y, player.x - e.x);
-                    e.x += Math.cos(angle) * e.speed; e.y += Math.sin(angle) * e.speed;
-                }
-                if (Math.hypot(player.x - e.x, player.y - e.y) < player.radius + e.radius && !player.isJumping) {
-                    player.hp -= 0.6; if (player.hp <= 0) endGame();
+                let angle = Math.atan2(player.y - e.y, player.x - e.x);
+                e.x += Math.cos(angle) * e.speed; e.y += Math.sin(angle) * e.speed;
+                if (Math.hypot(player.x - e.x, player.y - e.y) < player.radius + e.radius) {
+                    player.hp -= 0.6; if (player.hp <= 0) endGame(false);
                 }
             });
         }
@@ -554,76 +626,73 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Cespugli
-            bushes.forEach(b => {
-                ctx.fillStyle = 'rgba(22, 101, 52, 0.85)';
-                ctx.fillRect(b.x, b.y, b.w, b.h);
+            // Disegna Nebbia Tossica (Showdown)
+            if (selectedMode === 'showdown') {
+                ctx.save();
+                ctx.fillStyle = 'rgba(168, 85, 247, 0.35)';
+                ctx.beginPath();
+                ctx.rect(0, 0, canvas.width, canvas.height);
+                ctx.arc(canvas.width/2, canvas.height/2, Math.max(0, fogRadius), 0, Math.PI*2, true);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Disegna Porte Footbrawl
+            if (selectedMode === 'footbrawl') {
+                ctx.fillStyle = '#ef4444'; ctx.fillRect(canvas.width - 20, canvas.height/2 - 80, 20, 160);
+                ctx.fillStyle = '#3b82f6'; ctx.fillRect(0, canvas.height/2 - 80, 20, 160);
+            }
+
+            // Disegna Miniera Gemme
+            if (selectedMode === 'gemgrab') {
+                ctx.fillStyle = '#4c1d95'; ctx.beginPath(); ctx.arc(gemMine.x, gemMine.y, 35, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#a855f7'; ctx.lineWidth = 4; ctx.stroke();
+            }
+
+            // Disegna Gemme
+            gems.forEach(g => {
+                ctx.fillStyle = '#a855f7'; ctx.beginPath(); ctx.arc(g.x, g.y, 10, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
             });
 
-            // Muri
+            // Disegna Muri
             walls.forEach(w => {
                 ctx.fillStyle = '#78350f'; ctx.fillRect(w.x, w.y, w.w, w.h);
                 ctx.strokeStyle = '#451a03'; ctx.lineWidth = 4; ctx.strokeRect(w.x, w.y, w.w, w.h);
             });
 
-            // Casse Power Cubes
-            crates.forEach(c => {
-                ctx.fillStyle = '#ca8a04'; ctx.fillRect(c.x - 18, c.y - 18, 36, 36);
-                ctx.strokeStyle = '#fef08a'; ctx.strokeRect(c.x - 18, c.y - 18, 36, 36);
-            });
+            // Disegna Palla
+            if (selectedMode === 'footbrawl' && ball) {
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#000'; ctx.lineWidth = 3; ctx.stroke();
+            }
 
-            // Zone ad Area
-            areaZones.forEach(az => {
-                ctx.beginPath(); ctx.arc(az.x, az.y, az.radius, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(34, 197, 94, 0.3)'; ctx.fill();
-            });
-
-            // Power Cubes a terra
-            powerCubes.forEach(pc => {
-                ctx.fillStyle = '#22c55e'; ctx.fillRect(pc.x - 10, pc.y - 10, 20, 20);
-            });
-
-            // Proiettili
+            // Disegna Proiettili
             bullets.forEach(b => {
                 ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI*2);
                 ctx.fillStyle = b.canBreak ? '#eab308' : '#3b82f6'; ctx.fill();
             });
 
-            // Nemici
+            // Disegna Nemici
             enemies.forEach(e => {
-                ctx.beginPath(); ctx.arc(e.x, e.y, e.radius, 0, Math.PI*2);
-                ctx.fillStyle = '#ef4444'; ctx.fill(); ctx.stroke();
+                drawBrawlerVector(ctx, 'colt', e.x, e.y, e.radius);
                 ctx.fillStyle = '#000'; ctx.fillRect(e.x - 20, e.y - 30, 40, 5);
-                ctx.fillStyle = '#22c55e'; ctx.fillRect(e.x - 20, e.y - 30, (e.hp / e.maxHp) * 40, 5);
+                ctx.fillStyle = '#ef4444'; ctx.fillRect(e.x - 20, e.y - 30, (e.hp / e.maxHp) * 40, 5);
             });
 
-            // Giocatore
+            // Disegna Player
             if (gameActive) {
-                ctx.save();
-                if (player.hidden) ctx.globalAlpha = 0.4;
-                ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2);
-                ctx.fillStyle = '#2563eb'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.stroke();
-
-                ctx.font = '22px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(player.icon, player.x, player.y);
-                ctx.restore();
+                drawBrawlerVector(ctx, player.id, player.x, player.y, player.radius);
 
                 // Barra Vita & Munizioni
-                ctx.fillStyle = '#000'; ctx.fillRect(player.x - 25, player.y - 42, 50, 6);
-                ctx.fillStyle = '#22c55e'; ctx.fillRect(player.x - 25, player.y - 42, Math.max(0, (player.hp / player.maxHp) * 50), 6);
+                ctx.fillStyle = '#000'; ctx.fillRect(player.x - 25, player.y - 38, 50, 6);
+                ctx.fillStyle = '#22c55e'; ctx.fillRect(player.x - 25, player.y - 38, Math.max(0, (player.hp / player.maxHp) * 50), 6);
 
                 for (let i = 0; i < player.maxAmmo; i++) {
                     ctx.fillStyle = i < player.ammo ? '#f97316' : '#334155';
-                    ctx.fillRect(player.x - 25 + (i * 18), player.y - 33, 14, 4);
+                    ctx.fillRect(player.x - 25 + (i * 18), player.y - 30, 14, 4);
                 }
             }
-
-            // Testo Fluttuante Danno
-            floatingTexts.forEach((ft, fti) => {
-                ctx.font = '16px Impact'; ctx.fillStyle = ft.color;
-                ctx.fillText(ft.txt, ft.x, ft.y); ft.y -= 1; ft.timer--;
-                if (ft.timer <= 0) floatingTexts.splice(fti, 1);
-            });
         }
 
         function gameLoop() {
@@ -631,11 +700,12 @@
             if (gameActive) requestAnimationFrame(gameLoop);
         }
 
-        function endGame() {
+        function endGame(won) {
             gameActive = false;
-            let gainTrophies = kills * 3, gainCoins = kills * 8;
+            let gainTrophies = won ? 10 + kills * 2 : Math.max(0, kills * 2 - 4);
+            let gainCoins = kills * 8 + (won ? 50 : 10);
             playerData.trophies += gainTrophies; playerData.coins += gainCoins; saveData();
-            alert(`PARTITA FINITA!\n🥊 Nemici Sconfitti: ${kills}\n🏆 Coppe: +${gainTrophies}\n🪙 Monete: +${gainCoins}`);
+            alert(`PARTITA CONCLUSA!\n${won ? '🎉 VITTORIA!' : '❌ SCONFITTA!'}\n🏆 Coppe: +${gainTrophies}\n🪙 Monete: +${gainCoins}`);
             showScreen('lobby-screen');
         }
 
