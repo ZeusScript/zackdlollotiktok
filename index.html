@@ -1,27 +1,227 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <!-- Ottimizzazione per Mobile: disabilita lo zoom e fissa la viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Brawl Clone HTML5</title>
+    <!-- ================= PARTE 3: BRAWLER, SHOP & MAP SELECTOR SCREENS ================= -->
     <style>
-        /* CSS RESET & MOBILE OPTIMIZATION */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none; /* Previene la selezione del testo su mobile */
-            -webkit-user-select: none;
-            touch-action: none; /* Blocca lo scroll della pagina su mobile */
-        }
-        
-        body, html {
+        .sub-screen {
+            display: flex;
+            flex-direction: column;
             width: 100%;
             height: 100%;
-            background-color: #1a1a1a;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #12121c;
+        }
+
+        .screen-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 2px solid var(--bg-panel-border);
+        }
+
+        .screen-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .card-item {
+            background: var(--bg-panel);
+            border: 3px solid var(--bg-panel-border);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.1s, border-color 0.1s;
+        }
+        .card-item:active { transform: scale(0.96); }
+        .card-item.selected { border-color: var(--brawl-yellow); box-shadow: 0 0 15px var(--brawl-yellow-glow); }
+        .card-item.locked { opacity: 0.6; filter: grayscale(0.8); }
+
+        .card-emoji-box {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.3);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .card-name {
+            font-weight: 900;
+            font-size: 1rem;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .card-status {
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+    </style>
+
+    <!-- 1. BRAWLER SELECTION SCREEN -->
+    <div id="brawlerScreen" class="game-screen">
+        <div class="screen-header">
+            <button class="brawl-btn brawl-btn-secondary" onclick="switchScreen('lobbyScreen')" style="padding: 8px 16px; font-size: 1rem;">⬅ INDIETRO</button>
+            <div class="screen-title">I TUOI BRAWLER</div>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="grid-container" id="brawlerGridContainer">
+            <!-- Popolato via JS -->
+        </div>
+    </div>
+
+    <!-- 2. SHOP SCREEN -->
+    <div id="shopScreen" class="game-screen">
+        <div class="screen-header">
+            <button class="brawl-btn brawl-btn-secondary" onclick="switchScreen('lobbyScreen')" style="padding: 8px 16px; font-size: 1rem;">⬅ INDIETRO</button>
+            <div class="screen-title">NEGOZIO BRAWL</div>
+            <div class="currencies-container" style="font-size: 0.9rem;">
+                <div class="currency-item" style="padding: 4px 10px;"><span class="currency-gem">💎</span> <span id="shopGemsSync">350</span></div>
+            </div>
+        </div>
+        <div class="grid-container" id="shopGridContainer">
+            <!-- Popolato via JS -->
+        </div>
+    </div>
+
+    <!-- 3. MAP SELECTION SCREEN -->
+    <div id="mapScreen" class="game-screen">
+        <div class="screen-header">
+            <button class="brawl-btn brawl-btn-secondary" onclick="switchScreen('lobbyScreen')" style="padding: 8px 16px; font-size: 1rem;">⬅ INDIETRO</button>
+            <div class="screen-title">SELEZIONA MAPPA</div>
+            <div style="width: 80px;"></div>
+        </div>
+        <div class="grid-container" id="mapGridContainer">
+            <!-- Popolato via JS -->
+        </div>
+    </div>
+
+    <!-- SCRIPT POPOLAMENTO GRIGLIE -->
+    <script>
+        function populateBrawlerScreen() {
+            const container = document.getElementById('brawlerGridContainer');
+            container.innerHTML = '';
+            GAME_DATABASE.brawlers.forEach(b => {
+                const isSelected = playerProfile.selectedBrawlerId === b.id;
+                container.innerHTML += `
+                    <div class="card-item ${isSelected ? 'selected' : ''} ${!b.unlocked ? 'locked' : ''}" onclick="selectBrawler('${b.id}')">
+                        <div class="card-emoji-box">${b.emoji}</div>
+                        <div class="card-name">${b.name}</div>
+                        <div class="card-status" style="color: ${b.unlocked ? 'var(--success-green)' : 'var(--brawl-yellow)'}">
+                            ${b.unlocked ? 'LIV ' + b.level : '💎 ' + b.price}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function populateShopScreen() {
+            const container = document.getElementById('shopGridContainer');
+            container.innerHTML = '';
+            GAME_DATABASE.shopItems.forEach(item => {
+                container.innerHTML += `
+                    <div class="card-item" onclick="buyShopItem('${item.id}')">
+                        <div class="card-emoji-box">${item.emoji}</div>
+                        <div class="card-name">${item.name}</div>
+                        <button class="brawl-btn" style="padding: 6px 12px; font-size: 0.9rem; margin-top: 5px;">💎 ${item.priceGems}</button>
+                    </div>
+                `;
+            });
+            document.getElementById('shopGemsSync').innerText = playerProfile.gems;
+        }
+
+        function populateMapScreen() {
+            const container = document.getElementById('mapGridContainer');
+            container.innerHTML = '';
+            GAME_DATABASE.maps.forEach(m => {
+                const isSelected = playerProfile.selectedMapId === m.id;
+                container.innerHTML += `
+                    <div class="card-item ${isSelected ? 'selected' : ''}" onclick="selectMap('${m.id}')" style="background: linear-gradient(135deg, ${m.bgTheme}, #161622);">
+                        <div class="card-emoji-box" style="background: rgba(0,0,0,0.5);">🗺️</div>
+                        <div class="card-name">${m.name}</div>
+                        <div class="card-status" style="color: var(--brawl-blue);">${m.mode}</div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectBrawler(id) {
+            const b = GAME_DATABASE.brawlers.find(x => x.id === id);
+            if(!b) return;
+            if(b.unlocked) {
+                playerProfile.selectedBrawlerId = id;
+                updateLobbyDisplay();
+                populateBrawlerScreen();
+            } else {
+                if(playerProfile.gems >= b.price) {
+                    playerProfile.gems -= b.price;
+                    b.unlocked = true;
+                    playerProfile.selectedBrawlerId = id;
+                    updateLobbyDisplay();
+                    populateBrawlerScreen();
+                    alert("Brawler sbloccato con successo!");
+                } else {
+                    alert("Non hai abbastanza gemme!");
+                }
+            }
+        }
+
+        function selectMap(id) {
+            playerProfile.selectedMapId = id;
+            updateLobbyDisplay();
+            populateMapScreen();
+            switchScreen('lobbyScreen');
+        }
+
+        function buyShopItem(id) {
+            const item = GAME_DATABASE.shopItems.find(x => x.id === id);
+            if(!item) return;
+            if(playerProfile.gems >= item.priceGems) {
+                playerProfile.gems -= item.priceGems;
+                updateLobbyDisplay();
+                populateShopScreen();
+                alert(`Hai acquistato: ${item.name}!`);
+            } else {
+                alert("Gemme insufficienti!");
+            }
+        }
+
+        // Inizializza griglie al caricamento
+        populateBrawlerScreen();
+        populateShopScreen();
+        populateMapScreen();
+    </script>
+    <!-- ================= PARTE 4: GAME ARENA & MOBILE JOYSTICK ENGINE ================= -->
+    <style>
+        #gameScreen {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            z-index: 50;
+        }
+        #gameScreen.active {
+            display: block;
         }
 
         #gameCanvas {
@@ -30,180 +230,152 @@
             height: 100%;
         }
 
-        /* UI STRATO SUPERIORE */
-        #uiLayer {
+        /* In-Game HUD overlay */
+        .ingame-hud {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Fa passare i tocchi al canvas */
-        }
-
-        .btn {
-            position: absolute;
-            pointer-events: auto;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid #fff;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            backdrop-filter: blur(4px);
-        }
-
-        #fullscreenBtn {
-            top: 20px;
+            top: 15px;
+            left: 20px;
             right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            z-index: 60;
         }
 
-        #scoreBoard {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #ffcc00;
-            font-size: 24px;
+        .ingame-stats {
+            background: rgba(0,0,0,0.6);
+            border: 2px solid var(--bg-panel-border);
+            padding: 8px 16px;
+            border-radius: 20px;
             font-weight: 900;
-            text-shadow: 2px 2px 0 #000;
+            font-size: 1rem;
+            color: var(--brawl-yellow);
         }
 
-        #gameOverScreen {
+        .exit-match-btn {
+            pointer-events: auto;
+            background: var(--danger-red);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        /* Schermata Game Over / Vittoria */
+        #gameOverOverlay {
             display: none;
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            color: white;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            pointer-events: auto;
-        }
-
-        #gameOverScreen h1 {
-            font-size: 48px;
-            color: #ff4444;
-            margin-bottom: 20px;
-        }
-
-        #restartBtn {
-            position: relative;
-            font-size: 20px;
-            padding: 15px 30px;
-            background: #ffcc00;
-            color: black;
-            border: none;
+            text-align: center;
         }
     </style>
-</head>
-<body>
 
-    <!-- Area di Gioco -->
-    <canvas id="gameCanvas"></canvas>
-
-    <!-- UI Overlay -->
-    <div id="uiLayer">
-        <div id="scoreBoard">Gemme: <span id="scoreValue">0</span></div>
-        <button id="fullscreenBtn" class="btn">Schermo Intero</button>
+    <!-- SCHERMATA DI GIOCO -->
+    <div id="gameScreen" class="game-screen">
+        <div class="ingame-hud">
+            <div class="ingame-stats">GEMME: <span id="matchScore">0</span></div>
+            <button class="exit-match-btn" onclick="quitMatch()">ABBANDONA</button>
+        </div>
+        <canvas id="gameCanvas"></canvas>
     </div>
 
-    <!-- Game Over Screen -->
-    <div id="gameOverScreen">
-        <h1>SEI STATO SCONFITTO!</h1>
-        <p>Gemme raccolte: <span id="finalScore">0</span></p><br>
-        <button id="restartBtn" class="btn">GIOCA ANCORA</button>
+    <!-- GAME OVER OVERLAY -->
+    <div id="gameOverOverlay">
+        <h1 id="gameOverTitle" style="font-size: 3rem; color: var(--danger-red); text-shadow: 0 0 20px rgba(255,51,68,0.6); margin-bottom: 15px;">PARTITA TERMINATA</h1>
+        <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 25px;">Gemme raccolte: <span id="finalMatchScore" style="color: var(--brawl-yellow);">0</span></p>
+        <button class="brawl-btn" onclick="returnToLobby()" style="padding: 15px 40px; font-size: 1.2rem;">TORNA ALLA LOBBY</button>
     </div>
 
+    <!-- MOTORE JAVASCRIPT DI GIOCO (CANVAS + TOUCH JOYSTICKS) -->
     <script>
-        /**
-         * BRAWL CLONE ENGINE - Scritto in JS Puro
-         * Architettura: Loop di gioco (Update -> Draw), Entità OOP, Input Touch Multiplo
-         */
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        const scoreEl = document.getElementById('scoreValue');
         
-        let width, height;
-        let gameActive = true;
-        let score = 0;
+        let canvasWidth, canvasHeight;
+        let matchActive = false;
+        let matchScoreVal = 0;
+        let matchAnimationId;
 
-        // Adatta il canvas alla finestra
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+        function resizeCanvas() {
+            canvasWidth = window.innerWidth;
+            canvasHeight = window.innerHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
         }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        // --- SISTEMA DI INPUT (DOPPIO JOYSTICK) ---
-        const input = {
-            left: { active: false, id: null, startX: 0, startY: 0, currX: 0, currY: 0, vectorX: 0, vectorY: 0 },
-            right: { active: false, id: null, startX: 0, startY: 0, currX: 0, currY: 0, vectorX: 0, vectorY: 0, angle: 0 }
+        // Controllo Touch Dual Joystick
+        const joystickData = {
+            left: { active: false, id: null, startX: 0, startY: 0, currX: 0, currY: 0, vecX: 0, vecY: 0 },
+            right: { active: false, id: null, startX: 0, startY: 0, currX: 0, currY: 0, vecX: 0, vecY: 0, angle: 0 }
         };
+        const maxJoyDist = 55;
 
-        const maxJoyRadius = 50; // Dimensione massima joystick virtuale
+        canvas.addEventListener('touchstart', handleMatchTouchStart, {passive: false});
+        canvas.addEventListener('touchmove', handleMatchTouchMove, {passive: false});
+        canvas.addEventListener('touchend', handleMatchTouchEnd, {passive: false});
+        canvas.addEventListener('touchcancel', handleMatchTouchEnd, {passive: false});
 
-        // Gestione Touch
-        canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
-        canvas.addEventListener('touchmove', handleTouchMove, {passive: false});
-        canvas.addEventListener('touchend', handleTouchEnd, {passive: false});
-        canvas.addEventListener('touchcancel', handleTouchEnd, {passive: false});
-
-        function handleTouchStart(e) {
+        function handleMatchTouchStart(e) {
+            if (!matchActive) return;
             e.preventDefault();
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const t = e.changedTouches[i];
-                if (t.clientX < width / 2 && !input.left.active) {
-                    // Tocco a sinistra = Movimento
-                    input.left.active = true;
-                    input.left.id = t.identifier;
-                    input.left.startX = input.left.currX = t.clientX;
-                    input.left.startY = input.left.currY = t.clientY;
-                } else if (t.clientX >= width / 2 && !input.right.active) {
-                    // Tocco a destra = Mira
-                    input.right.active = true;
-                    input.right.id = t.identifier;
-                    input.right.startX = input.right.currX = t.clientX;
-                    input.right.startY = input.right.currY = t.clientY;
+                if (t.clientX < canvasWidth / 2 && !joystickData.left.active) {
+                    joystickData.left.active = true;
+                    joystickData.left.id = t.identifier;
+                    joystickData.left.startX = joystickData.left.currX = t.clientX;
+                    joystickData.left.startY = joystickData.left.currY = t.clientY;
+                } else if (t.clientX >= canvasWidth / 2 && !joystickData.right.active) {
+                    joystickData.right.active = true;
+                    joystickData.right.id = t.identifier;
+                    joystickData.right.startX = joystickData.right.currX = t.clientX;
+                    joystickData.right.startY = joystickData.right.currY = t.clientY;
                 }
             }
         }
 
-        function handleTouchMove(e) {
+        function handleMatchTouchMove(e) {
+            if (!matchActive) return;
             e.preventDefault();
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const t = e.changedTouches[i];
-                if (input.left.active && t.identifier === input.left.id) {
-                    input.left.currX = t.clientX;
-                    input.left.currY = t.clientY;
-                    updateJoyVector(input.left);
-                } else if (input.right.active && t.identifier === input.right.id) {
-                    input.right.currX = t.clientX;
-                    input.right.currY = t.clientY;
-                    updateJoyVector(input.right);
-                    input.right.angle = Math.atan2(input.right.vectorY, input.right.vectorX);
+                if (joystickData.left.active && t.identifier === joystickData.left.id) {
+                    joystickData.left.currX = t.clientX;
+                    joystickData.left.currY = t.clientY;
+                    updateJoyVector(joystickData.left);
+                } else if (joystickData.right.active && t.identifier === joystickData.right.id) {
+                    joystickData.right.currX = t.clientX;
+                    joystickData.right.currY = t.clientY;
+                    updateJoyVector(joystickData.right);
+                    joystickData.right.angle = Math.atan2(joystickData.right.vecY, joystickData.right.vecX);
                 }
             }
         }
 
-        function handleTouchEnd(e) {
+        function handleMatchTouchEnd(e) {
+            if (!matchActive) return;
             e.preventDefault();
             for (let i = 0; i < e.changedTouches.length; i++) {
                 const t = e.changedTouches[i];
-                if (input.left.active && t.identifier === input.left.id) {
-                    input.left.active = false;
-                    input.left.vectorX = input.left.vectorY = 0;
-                } else if (input.right.active && t.identifier === input.right.id) {
-                    // SPARA QUANDO RILASCI IL JOYSTICK DESTRO
-                    if (Math.hypot(input.right.vectorX, input.right.vectorY) > 0.2) {
-                        player.shoot(input.right.angle);
+                if (joystickData.left.active && t.identifier === joystickData.left.id) {
+                    joystickData.left.active = false;
+                    joystickData.left.vecX = joystickData.left.vecY = 0;
+                } else if (joystickData.right.active && t.identifier === joystickData.right.id) {
+                    if (Math.hypot(joystickData.right.vecX, joystickData.right.vecY) > 0.2) {
+                        playerEntity.shoot(joystickData.right.angle);
                     }
-                    input.right.active = false;
-                    input.right.vectorX = input.right.vectorY = 0;
+                    joystickData.right.active = false;
+                    joystickData.right.vecX = joystickData.right.vecY = 0;
                 }
             }
         }
@@ -212,66 +384,62 @@
             let dx = joy.currX - joy.startX;
             let dy = joy.currY - joy.startY;
             let dist = Math.hypot(dx, dy);
-            if (dist > maxJoyRadius) {
-                dx = (dx / dist) * maxJoyRadius;
-                dy = (dy / dist) * maxJoyRadius;
+            if (dist > maxJoyDist) {
+                dx = (dx / dist) * maxJoyDist;
+                dy = (dy / dist) * maxJoyDist;
             }
-            joy.vectorX = dx / maxJoyRadius;
-            joy.vectorY = dy / maxJoyRadius;
+            joy.vecX = dx / maxJoyDist;
+            joy.vecY = dy / maxJoyDist;
         }
 
-        // --- ENTITÀ DI GIOCO ---
-
-        class Player {
-            constructor(x, y) {
+        // Entità di Gioco
+        class GamePlayer {
+            constructor(x, y, stats) {
                 this.x = x;
                 this.y = y;
-                this.radius = 20;
-                this.speed = 4;
-                this.color = '#00aaff';
-                this.hp = 100;
-                this.maxHp = 100;
+                this.radius = 22;
+                this.speed = stats.speed;
+                this.hp = stats.hp;
+                this.maxHp = stats.hp;
+                this.color = stats.color;
+                this.emoji = stats.emoji;
                 this.cooldown = 0;
             }
 
             update() {
-                // Movimento tramite joystick sinistro
-                if (input.left.active) {
-                    this.x += input.left.vectorX * this.speed;
-                    this.y += input.left.vectorY * this.speed;
+                if (joystickData.left.active) {
+                    this.x += joystickData.left.vecX * this.speed;
+                    this.y += joystickData.left.vecY * this.speed;
                 }
-
-                // Confini dell'arena
-                this.x = Math.max(this.radius, Math.min(width - this.radius, this.x));
-                this.y = Math.max(this.radius, Math.min(height - this.radius, this.y));
-
+                this.x = Math.max(this.radius, Math.min(canvasWidth - this.radius, this.x));
+                this.y = Math.max(this.radius, Math.min(canvasHeight - this.radius, this.y));
                 if (this.cooldown > 0) this.cooldown--;
             }
 
             draw() {
-                // Corpo Brawler
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
                 ctx.fill();
-                ctx.strokeStyle = '#005588';
                 ctx.lineWidth = 3;
+                ctx.strokeStyle = '#ffffff';
                 ctx.stroke();
 
-                // Barra della vita
-                const hpPercent = this.hp / this.maxHp;
-                ctx.fillStyle = 'red';
-                ctx.fillRect(this.x - 20, this.y - 35, 40, 8);
-                ctx.fillStyle = '#00ff00';
-                ctx.fillRect(this.x - 20, this.y - 35, 40 * hpPercent, 8);
+                // Barra HP
+                let hpW = 40;
+                let hpPct = this.hp / this.maxHp;
+                ctx.fillStyle = '#ff3344';
+                ctx.fillRect(this.x - hpW/2, this.y - 34, hpW, 6);
+                ctx.fillStyle = '#00e676';
+                ctx.fillRect(this.x - hpW/2, this.y - 34, hpW * hpPct, 6);
 
-                // Disegna indicatore di mira (Joystick destro)
-                if (input.right.active) {
+                // Linea di mira joystick destro
+                if (joystickData.right.active) {
                     ctx.beginPath();
                     ctx.moveTo(this.x, this.y);
-                    ctx.lineTo(this.x + Math.cos(input.right.angle) * 100, this.y + Math.sin(input.right.angle) * 100);
-                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-                    ctx.setLineDash([5, 5]);
+                    ctx.lineTo(this.x + Math.cos(joystickData.right.angle) * 80, this.y + Math.sin(joystickData.right.angle) * 80);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                    ctx.setLineDash([4, 4]);
                     ctx.stroke();
                     ctx.setLineDash([]);
                 }
@@ -279,8 +447,8 @@
 
             shoot(angle) {
                 if (this.cooldown <= 0) {
-                    bullets.push(new Bullet(this.x, this.y, angle));
-                    this.cooldown = 15; // Rateo di fuoco
+                    matchBullets.push(new Bullet(this.x, this.y, angle));
+                    this.cooldown = 12;
                 }
             }
         }
@@ -289,194 +457,245 @@
             constructor(x, y, angle) {
                 this.x = x;
                 this.y = y;
-                this.vx = Math.cos(angle) * 12;
-                this.vy = Math.sin(angle) * 12;
+                this.vx = Math.cos(angle) * 14;
+                this.vy = Math.sin(angle) * 14;
                 this.radius = 6;
-                this.color = '#ffff00';
-                this.distance = 0;
-                this.maxDistance = 500;
+                this.distTravelled = 0;
+                this.maxDist = 450;
             }
-
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                this.distance += Math.hypot(this.vx, this.vy);
+                this.distTravelled += Math.hypot(this.vx, this.vy);
             }
-
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
+                ctx.fillStyle = '#ffd700';
                 ctx.fill();
             }
         }
 
-        class Enemy {
+        class BotEnemy {
             constructor() {
-                // Spawna fuori dallo schermo
-                const side = Math.random();
-                if (side < 0.25) { this.x = -30; this.y = Math.random() * height; }
-                else if (side < 0.5) { this.x = width + 30; this.y = Math.random() * height; }
-                else if (side < 0.75) { this.x = Math.random() * width; this.y = -30; }
-                else { this.x = Math.random() * width; this.y = height + 30; }
-                
+                let side = Math.random();
+                if (side < 0.25) { this.x = -30; this.y = Math.random() * canvasHeight; }
+                else if (side < 0.5) { this.x = canvasWidth + 30; this.y = Math.random() * canvasHeight; }
+                else if (side < 0.75) { this.x = Math.random() * canvasWidth; this.y = -30; }
+                else { this.x = Math.random() * canvasWidth; this.y = canvasHeight + 30; }
                 this.radius = 20;
-                this.speed = Math.random() * 1.5 + 1;
-                this.hp = 30;
-                this.color = '#ff3333';
+                this.speed = 2.2;
+                this.hp = 40;
             }
-
-            update() {
-                // Insegui il giocatore (IA Base)
-                const dx = player.x - this.x;
-                const dy = player.y - this.y;
-                const angle = Math.atan2(dy, dx);
+            update(targetX, targetY) {
+                let dx = targetX - this.x;
+                let dy = targetY - this.y;
+                let angle = Math.atan2(dy, dx);
                 this.x += Math.cos(angle) * this.speed;
                 this.y += Math.sin(angle) * this.speed;
             }
-
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
+                ctx.fillStyle = '#ff3344';
                 ctx.fill();
-                ctx.strokeStyle = '#880000';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#660000';
                 ctx.stroke();
             }
         }
 
-        // --- INIZIALIZZAZIONE E LOOP ---
-        let player = new Player(width / 2, height / 2);
-        let bullets = [];
-        let enemies = [];
-        let particles = [];
-        let frameCount = 0;
+        let playerEntity;
+        let matchBullets = [];
+        let matchEnemies = [];
+        let frameCounter = 0;
+        let currentMapConfig;
 
-        function init() {
-            player = new Player(width / 2, height / 2);
-            bullets = [];
-            enemies = [];
-            score = 0;
-            scoreEl.innerText = score;
-            gameActive = true;
-            document.getElementById('gameOverScreen').style.display = 'none';
-            loop();
-        }
-
-        function drawJoysticks() {
-            ctx.lineWidth = 2;
-            if (input.left.active) {
-                ctx.beginPath();
-                ctx.arc(input.left.startX, input.left.startY, maxJoyRadius, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(input.left.currX, input.left.currY, 20, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-                ctx.fill();
-            }
-            if (input.right.active) {
-                ctx.beginPath();
-                ctx.arc(input.right.startX, input.right.startY, maxJoyRadius, 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(255, 50, 50, 0.3)';
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.arc(input.right.currX, input.right.currY, 20, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 50, 50, 0.5)';
-                ctx.fill();
-            }
-        }
-
-        function loop() {
-            if (!gameActive) return;
-            requestAnimationFrame(loop);
+        // Sovrascriviamo la funzione startMatch della lobby precedente
+        window.startMatch = function() {
+            const bData = GAME_DATABASE.brawlers.find(x => x.id === playerProfile.selectedBrawlerId);
+            currentMapConfig = GAME_DATABASE.maps.find(x => x.id === playerProfile.selectedMapId);
             
-            // Background stile prato/arena
-            ctx.fillStyle = '#228B22';
-            ctx.fillRect(0, 0, width, height);
-            
-            // Griglia terreno (effetto visuale)
-            ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+            playerEntity = new GamePlayer(canvasWidth / 2, canvasHeight / 2, bData);
+            matchBullets = [];
+            matchEnemies = [];
+            matchScoreVal = 0;
+            frameCounter = 0;
+            document.getElementById('matchScore').innerText = matchScoreVal;
+            document.getElementById('gameOverOverlay').style.display = 'none';
+
+            switchScreen('gameScreen');
+            matchActive = true;
+            matchLoop();
+        }
+
+        function matchLoop() {
+            if (!matchActive) return;
+            matchAnimationId = requestAnimationFrame(matchLoop);
+
+            // Sfondo personalizzato in base alla mappa
+            ctx.fillStyle = currentMapConfig ? currentMapConfig.bgTheme : '#1a0b2e';
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            // Griglia di sfondo opzionale
+            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
             ctx.lineWidth = 1;
-            for(let i=0; i<width; i+=50) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,height); ctx.stroke(); }
-            for(let i=0; i<height; i+=50) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(width,i); ctx.stroke(); }
+            for(let i=0; i<canvasWidth; i+=60) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,canvasHeight); ctx.stroke(); }
+            for(let i=0; i<canvasHeight; i+=60) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(canvasWidth,i); ctx.stroke(); }
 
-            player.update();
-            player.draw();
+            playerEntity.update();
+            playerEntity.draw();
 
             // Aggiorna proiettili
-            for (let i = bullets.length - 1; i >= 0; i--) {
-                let b = bullets[i];
+            for (let i = matchBullets.length - 1; i >= 0; i--) {
+                let b = matchBullets[i];
                 b.update();
                 b.draw();
-                
-                // Rimuovi se fuori range
-                if (b.distance > b.maxDistance || b.x < 0 || b.x > width || b.y < 0 || b.y > height) {
-                    bullets.splice(i, 1);
+                if (b.distTravelled > b.maxDist || b.x < 0 || b.x > canvasWidth || b.y < 0 || b.y > canvasHeight) {
+                    matchBullets.splice(i, 1);
                 }
             }
 
             // Spawn nemici
-            if (frameCount % 60 === 0) { // 1 nemico al secondo (circa)
-                enemies.push(new Enemy());
+            if (frameCounter % 50 === 0) {
+                matchEnemies.push(new BotEnemy());
             }
 
-            // Aggiorna nemici e Collisioni
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                let e = enemies[i];
-                e.update();
-                e.draw();
+            // Aggiorna nemici e collisioni
+            for (let i = matchEnemies.length - 1; i >= 0; i--) {
+                let en = matchEnemies[i];
+                en.update(playerEntity.x, playerEntity.y);
+                en.draw();
 
                 // Danno al player
-                const distToPlayer = Math.hypot(player.x - e.x, player.y - e.y);
-                if (distToPlayer < player.radius + e.radius) {
-                    player.hp -= 1;
-                    if (player.hp <= 0) {
-                        gameActive = false;
-                        document.getElementById('finalScore').innerText = score;
-                        document.getElementById('gameOverScreen').style.display = 'flex';
+                if (Math.hypot(playerEntity.x - en.x, playerEntity.y - en.y) < playerEntity.radius + en.radius) {
+                    playerEntity.hp -= 1.5;
+                    if (playerEntity.hp <= 0) {
+                        endMatch();
                     }
                 }
 
                 // Collisione proiettile-nemico
-                for (let j = bullets.length - 1; j >= 0; j--) {
-                    let b = bullets[j];
-                    const dist = Math.hypot(e.x - b.x, e.y - b.y);
-                    if (dist < e.radius + b.radius) {
-                        e.hp -= 15; // Danno proiettile
-                        bullets.splice(j, 1); // Rimuovi proiettile
-                        
-                        if (e.hp <= 0) {
-                            enemies.splice(i, 1);
-                            score += 1;
-                            scoreEl.innerText = score;
-                            break; // Nemico morto, passa al prossimo
+                for (let j = matchBullets.length - 1; j >= 0; j--) {
+                    let b = matchBullets[j];
+                    if (Math.hypot(en.x - b.x, en.y - b.y) < en.radius + b.radius) {
+                        en.hp -= 35;
+                        matchBullets.splice(j, 1);
+                        if (en.hp <= 0) {
+                            matchEnemies.splice(i, 1);
+                            matchScoreVal += 1;
+                            document.getElementById('matchScore').innerText = matchScoreVal;
+                            break;
                         }
                     }
                 }
             }
 
-            drawJoysticks();
-            frameCount++;
+            // Disegna Joystick Virtuali su schermo se attivi
+            drawVirtualJoysticks();
+            frameCounter++;
         }
 
-        // Fullscreen API Wrapper
-        document.getElementById('fullscreenBtn').addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log(`Errore Fullscreen: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
+        function drawVirtualJoysticks() {
+            ctx.lineWidth = 2;
+            if (joystickData.left.active) {
+                ctx.beginPath();
+                ctx.arc(joystickData.left.startX, joystickData.left.startY, maxJoyDist, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(joystickData.left.currX, joystickData.left.currY, 22, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.fill();
             }
-        });
+            if (joystickData.right.active) {
+                ctx.beginPath();
+                ctx.arc(joystickData.right.startX, joystickData.right.startY, maxJoyDist, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 50, 80, 0.3)';
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(joystickData.right.currX, joystickData.right.currY, 22, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 50, 80, 0.5)';
+                ctx.fill();
+            }
+        }
 
-        document.getElementById('restartBtn').addEventListener('click', init);
+        function endMatch() {
+            matchActive = false;
+            cancelAnimationFrame(matchAnimationId);
+            document.getElementById('finalMatchScore').innerText = matchScoreVal;
+            document.getElementById('gameOverOverlay').style.display = 'flex';
+        }
 
-        // Avvia!
-        init();
+        window.quitMatch = function() {
+            matchActive = false;
+            cancelAnimationFrame(matchAnimationId);
+            switchScreen('lobbyScreen');
+        }
 
+        window.returnToLobby = function() {
+            document.getElementById('gameOverOverlay').style.display = 'none';
+            switchScreen('lobbyScreen');
+        }
+    </script>
+    <!-- ================= PARTE 3 (FINALE): PERSISTENZA DATI & INIZIALIZZAZIONE ================= -->
+    <script>
+        // Salvataggio automatico dei progressi del giocatore nel browser (LocalStorage)
+        const SAVE_KEY = 'brawl_web_save_data';
+
+        function saveGameProgress() {
+            const saveData = {
+                profile: playerProfile,
+                brawlers: GAME_DATABASE.brawlers.map(b => ({ id: b.id, unlocked: b.unlocked, level: b.level }))
+            };
+            localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+        }
+
+        function loadGameProgress() {
+            const saved = localStorage.getItem(SAVE_KEY);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    playerProfile = data.profile;
+                    data.brawlers.forEach(sb => {
+                        const b = GAME_DATABASE.brawlers.find(x => x.id === sb.id);
+                        if (b) {
+                            b.unlocked = sb.unlocked;
+                            b.level = sb.level;
+                        }
+                    });
+                } catch(e) {
+                    console.error("Errore caricamento salvataggio:", e);
+                }
+            }
+        }
+
+        // Sovrascriviamo le funzioni di acquisto/sblocco per salvare automaticamente
+        const originalSelectBrawler = window.selectBrawler;
+        window.selectBrawler = function(id) {
+            originalSelectBrawler(id);
+            saveGameProgress();
+        };
+
+        const originalBuyShopItem = window.buyShopItem;
+        window.buyShopItem = function(id) {
+            originalBuyShopItem(id);
+            saveGameProgress();
+        };
+
+        const originalSelectMap = window.selectMap;
+        window.selectMap = function(id) {
+            originalSelectMap(id);
+            saveGameProgress();
+        };
+
+        // Carica i dati salvati all'avvio
+        loadGameProgress();
+        updateLobbyDisplay();
+        populateBrawlerScreen();
+        populateShopScreen();
+        populateMapScreen();
     </script>
 </body>
 </html>
+
