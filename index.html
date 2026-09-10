@@ -3,317 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClassRisk MAX - Predittore Interrogazioni</title>
+    <title>Meme Studio - Crea e Scarica Meme</title>
     <style>
         :root {
-            --bg: #0d1117;
-            --card: #161b22;
-            --border: #30363d;
-            --accent: #38bdf8;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --safe: #10b981;
-            --purple: #a855f7;
-            --text: #c9d1d9;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --border: #334155;
+            --accent: #8b5cf6;
+            --accent-hover: #7c3aed;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 15px; max-width: 1000px; margin: 0 auto; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Impact', 'Arial Black', sans-serif; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-        header { text-align: center; margin-bottom: 20px; }
-        header h1 { color: var(--accent); font-size: 2.2rem; margin-bottom: 5px; }
-        header p { color: #8b949e; font-size: 0.9rem; }
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-        .top-bar { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
-        .top-bar-group { display: flex; align-items: center; gap: 10px; }
+        header h1 {
+            font-size: 2.5rem;
+            color: #f43f5e;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
 
-        .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media(min-width: 768px) { .grid { grid-template-columns: 340px 1fr; } }
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
 
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; height: fit-content; }
-        .card h2 { font-size: 1.1rem; margin-bottom: 12px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
 
-        .form-group { margin-bottom: 10px; }
-        label { display: block; font-size: 0.8rem; margin-bottom: 3px; color: #8b949e; font-weight: 600; }
-        input, select { width: 100%; padding: 8px 10px; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; color: white; font-size: 0.9rem; }
+        @media(min-width: 800px) {
+            .grid { grid-template-columns: 350px 1fr; }
+        }
 
-        .btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 0.9rem; }
-        .btn-primary { background: var(--accent); color: #000; }
-        .btn-purple { background: var(--purple); color: #fff; margin-top: 10px; }
-        .btn-whatsapp { background: #25d366; color: #000; margin-top: 10px; }
-        .btn:hover { opacity: 0.9; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            height: fit-content;
+        }
 
-        .student-item { background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
-        .student-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .student-name { font-weight: bold; color: #fff; font-size: 1rem; }
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
 
-        .student-details { font-size: 0.75rem; color: #8b949e; margin-bottom: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
-        .student-details span { background: #161b22; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+        .form-group {
+            margin-bottom: 12px;
+        }
 
-        .risk-bar-container { background: #21262d; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
-        .risk-bar { height: 100%; width: 0%; transition: width 0.4s ease; }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
 
-        .badge { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-        .badge-high { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
-        .badge-medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
-        .badge-low { background: rgba(16, 185, 129, 0.2); color: var(--safe); border: 1px solid var(--safe); }
-        .badge-muted { background: rgba(139, 148, 158, 0.2); color: #8b949e; border: 1px solid #8b949e; }
+        input[type="text"], select, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.9rem;
+            font-family: sans-serif;
+        }
 
-        .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-        .btn-sm { padding: 4px 8px; font-size: 0.72rem; background: #21262d; color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; }
-        .btn-sm:hover { background: #30363d; }
+        .controls-row {
+            display: flex;
+            gap: 10px;
+        }
 
-        .victim-box { display: none; background: rgba(168, 85, 247, 0.15); border: 1px solid var(--purple); padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; }
-        .victim-box h3 { color: var(--purple); font-size: 1.1rem; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: sans-serif;
+        }
+
+        .btn-download {
+            background: #10b981;
+            color: #000;
+            margin-top: 15px;
+        }
+
+        .btn-download:hover {
+            background: #059669;
+            color: #fff;
+        }
+
+        /* Area Canvas e Anteprima */
+        .preview-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-container {
+            width: 100%;
+            max-width: 600px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>⚡ ClassRisk MAX</h1>
-        <p>Il calcolatore definitivo di rischio interrogazioni per la tua classe</p>
+        <h1>🔥 MEME GENERATOR & DOWNLOADER</h1>
+        <p>Scegli un template o carica una foto, aggiungi il testo e scarica il tuo meme gratis</p>
     </header>
 
-    <!-- BARRA CONDIZIONI CLASSE -->
-    <div class="top-bar">
-        <div class="top-bar-group">
-            <label style="margin:0;">📚 Materia:</label>
-            <select id="subject" onchange="saveAndRender()" style="width: auto;">
-                <option value="Matematica">Matematica</option>
-                <option value="Italiano">Italiano</option>
-                <option value="Storia">Storia</option>
-                <option value="Inglese">Inglese</option>
-                <option value="Scienze">Scienze</option>
-                <option value="Fisica">Fisica</option>
-            </select>
-        </div>
-        <div class="top-bar-group">
-            <label style="margin:0;">🤬 Umore Prof:</label>
-            <select id="profMood" onchange="saveAndRender()" style="width: auto;">
-                <option value="normal">😐 Normale</option>
-                <option value="calm">😇 Tranquillo (-20% accanimento)</option>
-                <option value="angry">🔥 Arrabbiato (+50% su chi ha voti bassi)</option>
-            </select>
-        </div>
-    </div>
-
     <div class="grid">
-        <!-- FORM NUOVO STUDENTE -->
+        <!-- PANNELLO CONTROLLI -->
         <div class="card">
-            <h2>➕ Dati Alunno</h2>
+            <h2>⚙️ Personalizza Meme</h2>
+
             <div class="form-group">
-                <label>Nome Studente</label>
-                <input type="text" id="name" placeholder="Es. Marco">
-            </div>
-            <div class="form-group">
-                <label>Media Voti in questa materia</label>
-                <input type="number" id="gradeAvg" value="6.0" step="0.5" min="2" max="10">
-            </div>
-            <div class="form-group">
-                <label>Volte già interrogato/a</label>
-                <input type="number" id="timesCalled" value="0" min="0">
-            </div>
-            <div class="form-group">
-                <label>Giorni dall'ultima volta</label>
-                <input type="number" id="daysAgo" value="20" min="0">
-            </div>
-            <div class="form-group">
-                <label>Posizione Banco</label>
-                <select id="seat">
-                    <option value="middle">🪑 In mezzo (Standard)</option>
-                    <option value="front">🪑 Primo Banco (+20% visibilità)</option>
-                    <option value="back">🪑 Ultimo Banco (+15% sospetto)</option>
+                <label>1. Scegli un Template Famoso</label>
+                <select id="templateSelect" onchange="loadSelectedTemplate()">
+                    <option value="">Caricamento template in corso...</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label>Stato Odierno</label>
-                <select id="status">
-                    <option value="present">Presente</option>
-                    <option value="absent">Assente</option>
-                    <option value="justified">Giustificato</option>
-                    <option value="volunteer">Volontario</option>
-                </select>
+                <label>...oppure Carica la tua foto</label>
+                <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
             </div>
-            <button class="btn btn-primary" onclick="addStudent()">Aggiungi alla Classe</button>
+
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+
+            <div class="form-group">
+                <label>Testo Superiore (In Alto)</label>
+                <input type="text" id="topText" placeholder="QUANDO IL PROFESSORE..." oninput="drawMeme()">
+            </div>
+
+            <div class="form-group">
+                <label>Testo Inferiore (In Basso)</label>
+                <input type="text" id="bottomText" placeholder="MA TU HAI GIÀ STUDIATO" oninput="drawMeme()">
+            </div>
+
+            <div class="controls-row">
+                <div class="form-group" style="flex:1;">
+                    <label>Dimensione Testo</label>
+                    <input type="number" id="fontSize" value="40" min="20" max="80" oninput="drawMeme()">
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label>Colore Testo</label>
+                    <input type="color" id="textColor" value="#ffffff" onchange="drawMeme()" style="height: 40px; padding: 2px; width: 100%;">
+                </div>
+            </div>
+
+            <button class="btn btn-download" onclick="downloadMeme()">📥 SCARICA MEME (PNG)</button>
         </div>
 
-        <!-- CLASSIFICA E STRUMENTI -->
-        <div class="card">
-            <h2>
-                <span>📊 Classifica del Rischio</span>
-                <span id="studentCount" style="font-size:0.8rem; color:#8b949e;">0 Alunni</span>
-            </h2>
-
-            <!-- Riquadro Estrazione Casuale -->
-            <div id="victimBox" class="victim-box">
-                <p style="font-size: 0.8rem; color: #8b949e;">L'algoritmo ha estratto la probabile vittima:</p>
-                <h3 id="victimName">---</h3>
+        <!-- ANTEPRIMA MEME -->
+        <div class="card preview-area">
+            <h2>🖼️ Anteprima in tempo reale</h2>
+            <div class="canvas-container">
+                <canvas id="memeCanvas"></canvas>
             </div>
-
-            <div id="studentList">
-                <p style="color: #8b949e; font-size: 0.9rem;">Inserisci i tuoi compagni di classe per iniziare.</p>
-            </div>
-
-            <button class="btn btn-purple" onclick="drawVictim()">🎰 Estrai Vittima Casuale Ponderata</button>
-            <button class="btn btn-whatsapp" onclick="copyWhatsAppReport()">📲 Copia Report per WhatsApp</button>
         </div>
     </div>
 
     <script>
-        let students = JSON.parse(localStorage.getItem('class_students_max')) || [];
+        const canvas = document.getElementById('memeCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentImage = new Image();
+        currentImage.crossOrigin = "anonymous";
 
-        function saveAndRender() {
-            localStorage.setItem('class_students_max', JSON.stringify(students));
-            calculateRisk();
-        }
+        // Carica i 100 template di meme più famosi via API
+        async function fetchTemplates() {
+            try {
+                const response = await fetch('https://api.imgflip.com/get_memes');
+                const data = await response.json();
+                const memes = data.data.memes;
 
-        function addStudent() {
-            const name = document.getElementById('name').value.trim();
-            const gradeAvg = parseFloat(document.getElementById('gradeAvg').value) || 6.0;
-            const timesCalled = parseInt(document.getElementById('timesCalled').value) || 0;
-            const daysAgo = parseInt(document.getElementById('daysAgo').value) || 0;
-            const seat = document.getElementById('seat').value;
-            const status = document.getElementById('status').value;
+                const select = document.getElementById('templateSelect');
+                select.innerHTML = '';
+                
+                memes.forEach((meme, index) => {
+                    const option = document.createElement('option');
+                    option.value = meme.url;
+                    option.textContent = meme.name;
+                    select.appendChild(option);
+                });
 
-            if(!name) return alert('Inserisci il nome!');
-
-            students.push({ id: Date.now(), name, gradeAvg, timesCalled, daysAgo, seat, status });
-            document.getElementById('name').value = '';
-            saveAndRender();
-        }
-
-        function deleteStudent(id) {
-            students = students.filter(s => s.id !== id);
-            saveAndRender();
-        }
-
-        function setStatus(id, newStatus) {
-            const s = students.find(s => s.id === id);
-            if(s) {
-                s.status = s.status === newStatus ? 'present' : newStatus;
-                saveAndRender();
-            }
-        }
-
-        function calculateRisk() {
-            const list = document.getElementById('studentList');
-            const profMood = document.getElementById('profMood').value;
-            document.getElementById('studentCount').textContent = `${students.length} Alunni`;
-
-            if(students.length === 0) {
-                list.innerHTML = '<p style="color: #8b949e; font-size: 0.9rem;">Nessun alunno inserito.</p>';
-                return;
-            }
-
-            let processed = students.map(s => {
-                if(s.status === 'absent' || s.status === 'justified') return { ...s, score: 0, percentage: 0 };
-                if(s.status === 'volunteer') return { ...s, score: 0.1, percentage: 0 };
-
-                // 1. Moltiplicatore Voto
-                let gradeMult = 1.0;
-                if(s.gradeAvg < 6.0) gradeMult = profMood === 'angry' ? 2.5 : 1.8;
-                else if(s.gradeAvg >= 8.0) gradeMult = 0.5;
-
-                // 2. Moltiplicatore Banco
-                let seatMult = 1.0;
-                if(s.seat === 'front') seatMult = 1.2;
-                if(s.seat === 'back') seatMult = 1.15;
-
-                // Formula Punteggio
-                let score = ((s.daysAgo * 2) / (s.timesCalled + 1)) * gradeMult * seatMult;
-                return { ...s, score: score };
-            });
-
-            let totalScore = processed.reduce((sum, s) => sum + s.score, 0);
-
-            processed.forEach(s => {
-                if(s.status === 'present') {
-                    s.percentage = totalScore > 0 ? Math.round((s.score / totalScore) * 100) : 0;
+                // Carica il primo meme di default
+                if(memes.length > 0) {
+                    loadImgFromUrl(memes[0].url);
                 }
-            });
-
-            processed.sort((a, b) => b.percentage - a.percentage);
-
-            list.innerHTML = '';
-            processed.forEach(s => {
-                let badgeClass = 'badge-low';
-                let color = 'var(--safe)';
-                let statusText = `${s.percentage}% Rischio`;
-
-                if(s.status === 'absent') { badgeClass = 'badge-muted'; statusText = 'Assente'; }
-                else if(s.status === 'justified') { badgeClass = 'badge-muted'; statusText = 'Giustificato'; }
-                else if(s.status === 'volunteer') { badgeClass = 'badge-low'; statusText = 'Volontario'; }
-                else if(s.percentage >= 25) { badgeClass = 'badge-high'; color = 'var(--danger)'; }
-                else if(s.percentage >= 12) { badgeClass = 'badge-medium'; color = 'var(--warning)'; }
-
-                let seatLabel = s.seat === 'front' ? 'Primo Banco' : (s.seat === 'back' ? 'Ultimo Banco' : 'Centro');
-
-                list.innerHTML += `
-                    <div class="student-item">
-                        <div class="student-header">
-                            <span class="student-name">${s.name}</span>
-                            <span class="badge ${badgeClass}">${statusText}</span>
-                        </div>
-                        <div class="student-details">
-                            <span>📊 Media: <strong>${s.gradeAvg}</strong></span>
-                            <span>⏱️ Interrogazioni: <strong>${s.timesCalled}</strong></span>
-                            <span>📅 Ultima: <strong>${s.daysAgo}gg fa</strong></span>
-                            <span>📍 <strong>${seatLabel}</strong></span>
-                        </div>
-                        <div class="risk-bar-container">
-                            <div class="risk-bar" style="width: ${s.percentage}%; background-color: ${color}"></div>
-                        </div>
-                        <div class="actions">
-                            <button class="btn-sm" onclick="setStatus(${s.id}, 'absent')">${s.status === 'absent' ? '❌ Presente' : '🚫 Assente'}</button>
-                            <button class="btn-sm" onclick="setStatus(${s.id}, 'justified')">${s.status === 'justified' ? '❌ Presente' : '📝 Giustificato'}</button>
-                            <button class="btn-sm" style="color: var(--danger)" onclick="deleteStudent(${s.id})">Elimina</button>
-                        </div>
-                    </div>
-                `;
-            });
-            window.currentProcessed = processed;
+            } catch (error) {
+                console.error("Errore nel caricamento dei template:", error);
+            }
         }
 
-        // Estrazione casuale ponderata in base alla percentuale
-        function drawVictim() {
-            if(!window.currentProcessed) return;
-            let active = window.currentProcessed.filter(s => s.percentage > 0);
-            if(active.length === 0) return alert('Nessuno studente a rischio disponibile!');
+        function loadSelectedTemplate() {
+            const url = document.getElementById('templateSelect').value;
+            if (url) loadImgFromUrl(url);
+        }
 
-            let rand = Math.random() * 100;
-            let cumulative = 0;
-            let chosen = active[0];
+        function loadImgFromUrl(url) {
+            currentImage = new Image();
+            currentImage.crossOrigin = "anonymous";
+            currentImage.src = url;
+            currentImage.onload = () => {
+                drawMeme();
+            };
+        }
 
-            for(let s of active) {
-                cumulative += s.percentage;
-                if(rand <= cumulative) { chosen = s; break; }
+        function handleImageUpload(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentImage = new Image();
+                currentImage.src = event.target.result;
+                currentImage.onload = () => {
+                    drawMeme();
+                }
+            }
+            if(e.target.files[0]) {
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        }
+
+        function drawMeme() {
+            if (!currentImage.complete || currentImage.width === 0) return;
+
+            // Imposta dimensioni del canvas pari all'immagine
+            canvas.width = currentImage.width;
+            canvas.height = currentImage.height;
+
+            // Disegna Immagine
+            ctx.drawImage(currentImage, 0, 0);
+
+            // Lettura input testo
+            const topText = document.getElementById('topText').value.toUpperCase();
+            const bottomText = document.getElementById('bottomText').value.toUpperCase();
+            const fontSize = parseInt(document.getElementById('fontSize').value) || 40;
+            const textColor = document.getElementById('textColor').value;
+
+            // Configurazione Stile Testo Meme (stile Impact classico)
+            ctx.fillStyle = textColor;
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = Math.max(3, fontSize / 8);
+            ctx.textAlign = 'center';
+            ctx.font = `900 ${fontSize}px Impact, 'Arial Black', sans-serif`;
+
+            // Disegna Testo In Alto
+            if (topText) {
+                ctx.textBaseline = 'top';
+                ctx.strokeText(topText, canvas.width / 2, 15);
+                ctx.fillText(topText, canvas.width / 2, 15);
             }
 
-            const box = document.getElementById('victimBox');
-            document.getElementById('victimName').textContent = `🎯 ${chosen.name} (${chosen.percentage}% di rischio)`;
-            box.style.display = 'block';
+            // Disegna Testo In Basso
+            if (bottomText) {
+                ctx.textBaseline = 'bottom';
+                ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 15);
+                ctx.fillText(bottomText, canvas.width / 2, canvas.height - 15);
+            }
         }
 
-        // Genera e copia il report formattato per WhatsApp
-        function copyWhatsAppReport() {
-            if(!window.currentProcessed) return;
-            const subject = document.getElementById('subject').value;
-            let text = `🚨 *CLASS RISK REPORT - ${subject.toUpperCase()}* 🚨\n\n`;
-            
-            let count = 1;
-            window.currentProcessed.forEach(s => {
-                if(s.status === 'present' && s.percentage > 0) {
-                    let emoji = s.percentage >= 25 ? '🔥' : (s.percentage >= 12 ? '⚠️' : '✅');
-                    text += `${count}. ${emoji} *${s.name}*: ${s.percentage}% (Media: ${s.gradeAvg})\n`;
-                    count++;
-                }
-            });
-
-            navigator.clipboard.writeText(text);
-            alert('Report copiato negli appunti! Ora incollalo su WhatsApp.');
+        function downloadMeme() {
+            const link = document.createElement('a');
+            link.download = 'mio-meme.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
-        calculateRisk();
+        // Inizializza
+        fetchTemplates();
     </script>
 </body>
 </html>
