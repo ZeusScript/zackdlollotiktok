@@ -1,268 +1,319 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zackdis - Official Links & Support</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background-color: #0f172a;
-      color: #f8fafc;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
-    .container {
-      width: 100%;
-      max-width: 480px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .profile-header {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .profile-header h1 {
-      font-size: 2em;
-      color: #38bdf8;
-      margin-bottom: 5px;
-    }
-    .profile-header p {
-      color: #94a3b8;
-      font-size: 0.95em;
-    }
-    
-    /* Social Cards */
-    .social-links {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .social-btn {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 15px;
-      padding: 14px 20px;
-      background-color: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-    .social-btn:hover {
-      transform: translateY(-2px);
-      border-color: #38bdf8;
-      background-color: #334155;
-    }
-    .social-btn i {
-      font-size: 1.4em;
-      width: 25px;
-      text-align: center;
-    }
-    .discord-btn i { color: #5865F2; }
-    .tiktok-btn i { color: #ff0050; }
-    .youtube-btn i { color: #ff0000; }
-    .instagram-btn i { color: #E1306C; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassRisk MAX - Predittore Interrogazioni</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --card: #161b22;
+            --border: #30363d;
+            --accent: #38bdf8;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --safe: #10b981;
+            --purple: #a855f7;
+            --text: #c9d1d9;
+        }
 
-    /* Modulo Contatti Card */
-    .contact-card {
-      background-color: #1e293b;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 25px;
-      margin-top: 10px;
-    }
-    .contact-card h2 {
-      font-size: 1.3em;
-      margin-bottom: 6px;
-      color: #38bdf8;
-    }
-    .contact-card p {
-      font-size: 0.85em;
-      color: #94a3b8;
-      margin-bottom: 18px;
-    }
-    .form-group {
-      margin-bottom: 14px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.8em;
-      font-weight: 600;
-      margin-bottom: 5px;
-      color: #cbd5e1;
-    }
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #475569;
-      background-color: #0f172a;
-      color: #fff;
-      font-size: 0.9em;
-      outline: none;
-    }
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: #38bdf8;
-    }
-    .submit-btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      background-color: #5865f2;
-      color: white;
-      font-weight: bold;
-      font-size: 0.95em;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .submit-btn:hover {
-      background-color: #4752c4;
-    }
-    .submit-btn:disabled {
-      background-color: #475569;
-      cursor: not-allowed;
-    }
-    #form-status {
-      margin-top: 12px;
-      font-size: 0.85em;
-      text-align: center;
-      display: none;
-      padding: 8px;
-      border-radius: 6px;
-    }
-    .status-success {
-      background-color: rgba(34, 197, 94, 0.1);
-      color: #4ade80;
-      border: 1px solid #22c55e;
-    }
-    .status-error {
-      background-color: rgba(239, 68, 68, 0.1);
-      color: #f87171;
-      border: 1px solid #ef4444;
-    }
-  </style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 15px; max-width: 1000px; margin: 0 auto; }
+
+        header { text-align: center; margin-bottom: 20px; }
+        header h1 { color: var(--accent); font-size: 2.2rem; margin-bottom: 5px; }
+        header p { color: #8b949e; font-size: 0.9rem; }
+
+        .top-bar { background: var(--card); border: 1px solid var(--border); padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+        .top-bar-group { display: flex; align-items: center; gap: 10px; }
+
+        .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media(min-width: 768px) { .grid { grid-template-columns: 340px 1fr; } }
+
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; height: fit-content; }
+        .card h2 { font-size: 1.1rem; margin-bottom: 12px; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+
+        .form-group { margin-bottom: 10px; }
+        label { display: block; font-size: 0.8rem; margin-bottom: 3px; color: #8b949e; font-weight: 600; }
+        input, select { width: 100%; padding: 8px 10px; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; color: white; font-size: 0.9rem; }
+
+        .btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 5px; font-size: 0.9rem; }
+        .btn-primary { background: var(--accent); color: #000; }
+        .btn-purple { background: var(--purple); color: #fff; margin-top: 10px; }
+        .btn-whatsapp { background: #25d366; color: #000; margin-top: 10px; }
+        .btn:hover { opacity: 0.9; }
+
+        .student-item { background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+        .student-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .student-name { font-weight: bold; color: #fff; font-size: 1rem; }
+
+        .student-details { font-size: 0.75rem; color: #8b949e; margin-bottom: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+        .student-details span { background: #161b22; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+
+        .risk-bar-container { background: #21262d; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+        .risk-bar { height: 100%; width: 0%; transition: width 0.4s ease; }
+
+        .badge { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .badge-high { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .badge-medium { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+        .badge-low { background: rgba(16, 185, 129, 0.2); color: var(--safe); border: 1px solid var(--safe); }
+        .badge-muted { background: rgba(139, 148, 158, 0.2); color: #8b949e; border: 1px solid #8b949e; }
+
+        .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .btn-sm { padding: 4px 8px; font-size: 0.72rem; background: #21262d; color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; }
+        .btn-sm:hover { background: #30363d; }
+
+        .victim-box { display: none; background: rgba(168, 85, 247, 0.15); border: 1px solid var(--purple); padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; }
+        .victim-box h3 { color: var(--purple); font-size: 1.1rem; }
+    </style>
 </head>
 <body>
 
-  <div class="container">
-    
-    <!-- Header -->
-    <div class="profile-header">
-      <h1>Zackdis</h1>
-      <p>Community & Official Links</p>
+    <header>
+        <h1>⚡ ClassRisk MAX</h1>
+        <p>Il calcolatore definitivo di rischio interrogazioni per la tua classe</p>
+    </header>
+
+    <!-- BARRA CONDIZIONI CLASSE -->
+    <div class="top-bar">
+        <div class="top-bar-group">
+            <label style="margin:0;">📚 Materia:</label>
+            <select id="subject" onchange="saveAndRender()" style="width: auto;">
+                <option value="Matematica">Matematica</option>
+                <option value="Italiano">Italiano</option>
+                <option value="Storia">Storia</option>
+                <option value="Inglese">Inglese</option>
+                <option value="Scienze">Scienze</option>
+                <option value="Fisica">Fisica</option>
+            </select>
+        </div>
+        <div class="top-bar-group">
+            <label style="margin:0;">🤬 Umore Prof:</label>
+            <select id="profMood" onchange="saveAndRender()" style="width: auto;">
+                <option value="normal">😐 Normale</option>
+                <option value="calm">😇 Tranquillo (-20% accanimento)</option>
+                <option value="angry">🔥 Arrabbiato (+50% su chi ha voti bassi)</option>
+            </select>
+        </div>
     </div>
 
-    <!-- Pulsanti Social -->
-    <div class="social-links">
-      <a href="https://discord.gg/TuoLinkDiscord" target="_blank" class="social-btn discord-btn">
-        <i class="fa-brands fa-discord"></i> Entra nel Server Discord
-      </a>
-      <a href="https://www.tiktok.com/@TuoProfilo" target="_blank" class="social-btn tiktok-btn">
-        <i class="fa-brands fa-tiktok"></i> Segui su TikTok
-      </a>
-      <a href="https://www.youtube.com/@TuoCanale" target="_blank" class="social-btn youtube-btn">
-        <i class="fa-brands fa-youtube"></i> Canale YouTube
-      </a>
-      <a href="https://www.instagram.com/TuoProfilo" target="_blank" class="social-btn instagram-btn">
-        <i class="fa-brands fa-instagram"></i> Profilo Instagram
-      </a>
+    <div class="grid">
+        <!-- FORM NUOVO STUDENTE -->
+        <div class="card">
+            <h2>➕ Dati Alunno</h2>
+            <div class="form-group">
+                <label>Nome Studente</label>
+                <input type="text" id="name" placeholder="Es. Marco">
+            </div>
+            <div class="form-group">
+                <label>Media Voti in questa materia</label>
+                <input type="number" id="gradeAvg" value="6.0" step="0.5" min="2" max="10">
+            </div>
+            <div class="form-group">
+                <label>Volte già interrogato/a</label>
+                <input type="number" id="timesCalled" value="0" min="0">
+            </div>
+            <div class="form-group">
+                <label>Giorni dall'ultima volta</label>
+                <input type="number" id="daysAgo" value="20" min="0">
+            </div>
+            <div class="form-group">
+                <label>Posizione Banco</label>
+                <select id="seat">
+                    <option value="middle">🪑 In mezzo (Standard)</option>
+                    <option value="front">🪑 Primo Banco (+20% visibilità)</option>
+                    <option value="back">🪑 Ultimo Banco (+15% sospetto)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Stato Odierno</label>
+                <select id="status">
+                    <option value="present">Presente</option>
+                    <option value="absent">Assente</option>
+                    <option value="justified">Giustificato</option>
+                    <option value="volunteer">Volontario</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="addStudent()">Aggiungi alla Classe</button>
+        </div>
+
+        <!-- CLASSIFICA E STRUMENTI -->
+        <div class="card">
+            <h2>
+                <span>📊 Classifica del Rischio</span>
+                <span id="studentCount" style="font-size:0.8rem; color:#8b949e;">0 Alunni</span>
+            </h2>
+
+            <!-- Riquadro Estrazione Casuale -->
+            <div id="victimBox" class="victim-box">
+                <p style="font-size: 0.8rem; color: #8b949e;">L'algoritmo ha estratto la probabile vittima:</p>
+                <h3 id="victimName">---</h3>
+            </div>
+
+            <div id="studentList">
+                <p style="color: #8b949e; font-size: 0.9rem;">Inserisci i tuoi compagni di classe per iniziare.</p>
+            </div>
+
+            <button class="btn btn-purple" onclick="drawVictim()">🎰 Estrai Vittima Casuale Ponderata</button>
+            <button class="btn btn-whatsapp" onclick="copyWhatsAppReport()">📲 Copia Report per WhatsApp</button>
+        </div>
     </div>
 
-    <!-- Modulo Contatti Collegato a Make -->
-    <div class="contact-card">
-      <h2>📩 Invia un messaggio</h2>
-      <p>Compila il modulo per contattarci direttamente su Discord.</p>
+    <script>
+        let students = JSON.parse(localStorage.getItem('class_students_max')) || [];
 
-      <form id="zackdis-form">
-        <div class="form-group">
-          <label for="name">Nome / Nickname</label>
-          <input type="text" id="name" required placeholder="Inserisci il tuo nome">
-        </div>
-
-        <div class="form-group">
-          <label for="email">Indirizzo Email</label>
-          <input type="email" id="email" required placeholder="tuamail@esempio.com">
-        </div>
-
-        <div class="form-group">
-          <label for="subject">Oggetto</label>
-          <input type="text" id="subject" required placeholder="Motivo del contatto">
-        </div>
-
-        <div class="form-group">
-          <label for="message">Messaggio</label>
-          <textarea id="message" rows="3" required placeholder="Scrivi il tuo messaggio..."></textarea>
-        </div>
-
-        <button type="submit" id="submit-btn" class="submit-btn">Invia Messaggio</button>
-        <div id="form-status"></div>
-      </form>
-    </div>
-
-  </div>
-
-  <script>
-    document.getElementById('zackdis-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-
-      const btn = document.getElementById('submit-btn');
-      const status = document.getElementById('form-status');
-
-      btn.disabled = true;
-      btn.innerText = 'Invio in corso...';
-      status.style.display = 'none';
-
-      const payload = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        subject: document.getElementById('subject').value,
-        message: document.getElementById('message').value
-      };
-
-      try {
-        const response = await fetch('https://hook.eu1.make.com/ok6vt2okfl5u7rxe399tx06yzpc83qv6', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (response.ok) {
-          status.className = 'status-success';
-          status.innerText = '✅ Messaggio inviato con successo!';
-          status.style.display = 'block';
-          document.getElementById('zackdis-form').reset();
-        } else {
-          throw new Error('Errore nella risposta del server');
+        function saveAndRender() {
+            localStorage.setItem('class_students_max', JSON.stringify(students));
+            calculateRisk();
         }
-      } catch (err) {
-        status.className = 'status-error';
-        status.innerText = '❌ Si è verificato un errore. Riprova più tardi.';
-        status.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerText = 'Invia Messaggio';
-      }
-    });
-  </script>
 
+        function addStudent() {
+            const name = document.getElementById('name').value.trim();
+            const gradeAvg = parseFloat(document.getElementById('gradeAvg').value) || 6.0;
+            const timesCalled = parseInt(document.getElementById('timesCalled').value) || 0;
+            const daysAgo = parseInt(document.getElementById('daysAgo').value) || 0;
+            const seat = document.getElementById('seat').value;
+            const status = document.getElementById('status').value;
+
+            if(!name) return alert('Inserisci il nome!');
+
+            students.push({ id: Date.now(), name, gradeAvg, timesCalled, daysAgo, seat, status });
+            document.getElementById('name').value = '';
+            saveAndRender();
+        }
+
+        function deleteStudent(id) {
+            students = students.filter(s => s.id !== id);
+            saveAndRender();
+        }
+
+        function setStatus(id, newStatus) {
+            const s = students.find(s => s.id === id);
+            if(s) {
+                s.status = s.status === newStatus ? 'present' : newStatus;
+                saveAndRender();
+            }
+        }
+
+        function calculateRisk() {
+            const list = document.getElementById('studentList');
+            const profMood = document.getElementById('profMood').value;
+            document.getElementById('studentCount').textContent = `${students.length} Alunni`;
+
+            if(students.length === 0) {
+                list.innerHTML = '<p style="color: #8b949e; font-size: 0.9rem;">Nessun alunno inserito.</p>';
+                return;
+            }
+
+            let processed = students.map(s => {
+                if(s.status === 'absent' || s.status === 'justified') return { ...s, score: 0, percentage: 0 };
+                if(s.status === 'volunteer') return { ...s, score: 0.1, percentage: 0 };
+
+                // 1. Moltiplicatore Voto
+                let gradeMult = 1.0;
+                if(s.gradeAvg < 6.0) gradeMult = profMood === 'angry' ? 2.5 : 1.8;
+                else if(s.gradeAvg >= 8.0) gradeMult = 0.5;
+
+                // 2. Moltiplicatore Banco
+                let seatMult = 1.0;
+                if(s.seat === 'front') seatMult = 1.2;
+                if(s.seat === 'back') seatMult = 1.15;
+
+                // Formula Punteggio
+                let score = ((s.daysAgo * 2) / (s.timesCalled + 1)) * gradeMult * seatMult;
+                return { ...s, score: score };
+            });
+
+            let totalScore = processed.reduce((sum, s) => sum + s.score, 0);
+
+            processed.forEach(s => {
+                if(s.status === 'present') {
+                    s.percentage = totalScore > 0 ? Math.round((s.score / totalScore) * 100) : 0;
+                }
+            });
+
+            processed.sort((a, b) => b.percentage - a.percentage);
+
+            list.innerHTML = '';
+            processed.forEach(s => {
+                let badgeClass = 'badge-low';
+                let color = 'var(--safe)';
+                let statusText = `${s.percentage}% Rischio`;
+
+                if(s.status === 'absent') { badgeClass = 'badge-muted'; statusText = 'Assente'; }
+                else if(s.status === 'justified') { badgeClass = 'badge-muted'; statusText = 'Giustificato'; }
+                else if(s.status === 'volunteer') { badgeClass = 'badge-low'; statusText = 'Volontario'; }
+                else if(s.percentage >= 25) { badgeClass = 'badge-high'; color = 'var(--danger)'; }
+                else if(s.percentage >= 12) { badgeClass = 'badge-medium'; color = 'var(--warning)'; }
+
+                let seatLabel = s.seat === 'front' ? 'Primo Banco' : (s.seat === 'back' ? 'Ultimo Banco' : 'Centro');
+
+                list.innerHTML += `
+                    <div class="student-item">
+                        <div class="student-header">
+                            <span class="student-name">${s.name}</span>
+                            <span class="badge ${badgeClass}">${statusText}</span>
+                        </div>
+                        <div class="student-details">
+                            <span>📊 Media: <strong>${s.gradeAvg}</strong></span>
+                            <span>⏱️ Interrogazioni: <strong>${s.timesCalled}</strong></span>
+                            <span>📅 Ultima: <strong>${s.daysAgo}gg fa</strong></span>
+                            <span>📍 <strong>${seatLabel}</strong></span>
+                        </div>
+                        <div class="risk-bar-container">
+                            <div class="risk-bar" style="width: ${s.percentage}%; background-color: ${color}"></div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-sm" onclick="setStatus(${s.id}, 'absent')">${s.status === 'absent' ? '❌ Presente' : '🚫 Assente'}</button>
+                            <button class="btn-sm" onclick="setStatus(${s.id}, 'justified')">${s.status === 'justified' ? '❌ Presente' : '📝 Giustificato'}</button>
+                            <button class="btn-sm" style="color: var(--danger)" onclick="deleteStudent(${s.id})">Elimina</button>
+                        </div>
+                    </div>
+                `;
+            });
+            window.currentProcessed = processed;
+        }
+
+        // Estrazione casuale ponderata in base alla percentuale
+        function drawVictim() {
+            if(!window.currentProcessed) return;
+            let active = window.currentProcessed.filter(s => s.percentage > 0);
+            if(active.length === 0) return alert('Nessuno studente a rischio disponibile!');
+
+            let rand = Math.random() * 100;
+            let cumulative = 0;
+            let chosen = active[0];
+
+            for(let s of active) {
+                cumulative += s.percentage;
+                if(rand <= cumulative) { chosen = s; break; }
+            }
+
+            const box = document.getElementById('victimBox');
+            document.getElementById('victimName').textContent = `🎯 ${chosen.name} (${chosen.percentage}% di rischio)`;
+            box.style.display = 'block';
+        }
+
+        // Genera e copia il report formattato per WhatsApp
+        function copyWhatsAppReport() {
+            if(!window.currentProcessed) return;
+            const subject = document.getElementById('subject').value;
+            let text = `🚨 *CLASS RISK REPORT - ${subject.toUpperCase()}* 🚨\n\n`;
+            
+            let count = 1;
+            window.currentProcessed.forEach(s => {
+                if(s.status === 'present' && s.percentage > 0) {
+                    let emoji = s.percentage >= 25 ? '🔥' : (s.percentage >= 12 ? '⚠️' : '✅');
+                    text += `${count}. ${emoji} *${s.name}*: ${s.percentage}% (Media: ${s.gradeAvg})\n`;
+                    count++;
+                }
+            });
+
+            navigator.clipboard.writeText(text);
+            alert('Report copiato negli appunti! Ora incollalo su WhatsApp.');
+        }
+
+        calculateRisk();
+    </script>
 </body>
 </html>
