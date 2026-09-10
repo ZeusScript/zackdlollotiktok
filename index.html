@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brawl Stars 3D - Cowboy Edition</title>
+    <title>Brawl Stars 3D - Complete Lobby & Battle</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
     
-    <!-- Librerie 3D (Three.js) e Multiplayer (PeerJS) da CDN -->
+    <!-- Three.js 3D Engine & PeerJS Multiplayer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 
@@ -20,395 +20,400 @@
             --bs-blue: #0088ff;
             --bs-green: #22e652;
             --bs-red: #ff2a2a;
+            --bs-purple: #a855f7;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: var(--font-bs); }
-        body, html { width: 100%; height: 100%; overflow: hidden; background: #0b0f19; color: #fff; }
+        body, html { width: 100%; height: 100%; overflow: hidden; background: #090d16; color: #fff; }
 
-        /* UI OVERLAY */
-        .ui-screen {
-            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex; flex-direction: column; justify-content: space-between; padding: 20px;
-            z-index: 10; pointer-events: none;
-        }
+        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
 
-        .interactive { pointer-events: auto; }
-
+        /* PULSANTI STILE BRAWL STARS */
         .btn-bs {
-            padding: 12px 28px; border: 4px solid #fff; border-radius: 18px; font-size: 1.3rem;
+            padding: 12px 24px; border: 4px solid #fff; border-radius: 18px; font-size: 1.2rem;
             color: #fff; cursor: pointer; text-shadow: 2px 2px #000; letter-spacing: 1px;
-            box-shadow: 0 8px 0 #000; transition: transform 0.1s, filter 0.1s; text-transform: uppercase;
+            box-shadow: 0 7px 0 #000; transition: transform 0.08s, filter 0.1s; text-transform: uppercase;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-bs:hover { filter: brightness(1.1); }
-        .btn-bs:active { transform: translateY(4px); box-shadow: 0 4px 0 #000; }
+        .btn-bs:active { transform: translateY(4px); box-shadow: 0 3px 0 #000; }
         
-        .btn-play { background: linear-gradient(180deg, #ffe600, #d97706); color: #000; text-shadow: none; font-size: 1.8rem; padding: 15px 50px; }
+        .btn-play { background: linear-gradient(180deg, #22c55e, #15803d); font-size: 1.8rem; padding: 16px 45px; }
+        .btn-yellow { background: linear-gradient(180deg, #ffe600, #d97706); color: #000; text-shadow: none; }
         .btn-blue { background: linear-gradient(180deg, #38bdf8, #0284c7); }
         .btn-purple { background: linear-gradient(180deg, #c084fc, #7e22ce); }
+        .btn-red { background: linear-gradient(180deg, #ff4d4d, #b91c1c); }
 
-        /* MENU MULTIPLAYER */
-        #menu-modal {
-            position: absolute; top:0; left:0; width: 100vw; height: 100vh;
-            background: rgba(11, 15, 25, 0.9); display: flex; justify-content: center;
-            align-items: center; z-index: 100; backdrop-filter: blur(8px);
+        /* SCHERMATA LOBBY */
+        #lobby-screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 50; display: flex; flex-direction: column; justify-content: space-between;
+            padding: 20px; background: radial-gradient(circle, rgba(15,23,42,0.4) 0%, rgba(9,13,22,0.95) 100%);
+            pointer-events: auto;
         }
-        .modal-card {
-            background: linear-gradient(180deg, #1e293b, #0f172a); border: 5px solid var(--bs-yellow);
-            border-radius: 28px; padding: 30px; width: 90%; max-width: 500px; text-align: center;
-            box-shadow: 0 12px 0 #000, 0 0 30px rgba(255, 230, 0, 0.4);
+
+        .lobby-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .player-profile {
+            background: rgba(15, 23, 42, 0.9); border: 3px solid #fff; padding: 8px 18px;
+            border-radius: 20px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 0 #000;
         }
+
+        .lobby-center {
+            display: flex; justify-content: space-between; align-items: center; width: 100%; flex: 1; margin: 20px 0;
+        }
+
+        .lobby-panel {
+            background: rgba(15, 23, 42, 0.85); border: 4px solid var(--bs-yellow); border-radius: 24px;
+            padding: 18px; width: 300px; max-height: 80vh; overflow-y: auto; box-shadow: 0 8px 0 #000;
+        }
+
+        .lobby-footer { display: flex; justify-content: center; align-items: center; gap: 20px; width: 100%; }
+
         input[type="text"] {
-            width: 100%; padding: 12px; border-radius: 12px; border: 3px solid #38bdf8;
-            font-size: 1.2rem; text-align: center; margin: 15px 0; background: #0f172a; color: #fff;
+            width: 100%; padding: 10px; border-radius: 12px; border: 3px solid #38bdf8;
+            font-size: 1.1rem; text-align: center; margin: 10px 0; background: #0f172a; color: #fff;
         }
 
         /* IN-GAME HUD */
-        .hud-card {
-            background: rgba(15, 23, 42, 0.85); padding: 8px 20px; border-radius: 20px;
-            border: 3px solid #fff; font-size: 1.2rem; text-shadow: 2px 2px #000;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.5);
+        #game-hud {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; display: none; flex-direction: column; justify-content: space-between;
+            padding: 15px; pointer-events: none;
         }
 
-        /* CONTROLLI TOUCH MOBILE */
-        .touch-zone { position: absolute; bottom: 30px; left: 30px; width: 120px; height: 120px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: auto; }
-        .touch-knob { width: 50px; height: 50px; background: #fff; border-radius: 50%; position: absolute; top: 32px; left: 32px; }
-        #canvas-container { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 1; }
+        .hud-card {
+            background: rgba(15, 23, 42, 0.9); padding: 8px 16px; border-radius: 16px;
+            border: 3px solid #fff; font-size: 1.1rem; text-shadow: 2px 2px #000;
+            box-shadow: 0 5px 0 rgba(0,0,0,0.5); pointer-events: auto;
+        }
+
+        /* CONTROLLI MOBILE / TOUCH */
+        .touch-zone { position: relative; width: 110px; height: 110px; border: 3px solid rgba(255,255,255,0.4); border-radius: 50%; pointer-events: auto; background: rgba(0,0,0,0.2); }
+        .touch-knob { width: 45px; height: 45px; background: #fff; border-radius: 50%; position: absolute; top: 30px; left: 30px; }
+
+        .aim-indicator {
+            position: absolute; color: var(--bs-yellow); font-size: 0.9rem;
+            bottom: 85px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7);
+            padding: 6px 14px; border-radius: 20px; border: 2px solid var(--bs-yellow);
+        }
     </style>
 </head>
 <body>
 
-    <!-- CONTAINER THREE.JS CANVA 3D -->
+    <!-- SCENA 3D CANVA -->
     <div id="canvas-container"></div>
 
-    <!-- UI OVERLAY -->
-    <div class="ui-screen">
-        <div style="display: flex; justify-content: space-between; width: 100%;">
-            <div class="hud-card" style="color: var(--bs-yellow);">🤠 COWBOY BRAWLER 3D</div>
-            <div class="hud-card" style="color: var(--bs-green);">STANZA MP: <span id="room-status">OFFLINE</span></div>
+    <!-- LOBBY SCREEN -->
+    <div id="lobby-screen">
+        <div class="lobby-header">
+            <div class="player-profile">
+                <span style="font-size: 1.8rem;">🤠</span>
+                <div>
+                    <div style="color: var(--bs-yellow); font-size: 1.2rem;">COWBOY BRAWLER</div>
+                    <div style="color: var(--bs-green); font-size: 0.9rem;">GRADO 10 • TROFEI: 1250</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-bs btn-purple" onclick="toggleFullscreen()">🖥️ SCHERMO INTERO</button>
+            </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-            <div class="touch-zone interactive" id="joyZone"><div class="touch-knob" id="joyKnob"></div></div>
-            <button class="btn-bs btn-play interactive" onclick="playerShoot()">SPARA 🤠</button>
+        <div class="lobby-center">
+            <!-- SELEZIONE PERSONAGGIO -->
+            <div class="lobby-panel">
+                <h2 style="color: var(--bs-yellow); text-align: center; margin-bottom: 12px;">BRAWLER SELECT</h2>
+                <p style="font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 15px;">Scegli lo stile della tua skin:</p>
+                
+                <button class="btn-bs btn-yellow" style="width: 100%; margin-bottom: 10px;" onclick="changeSkin(0xd97706, 0x1d4ed8)">🤠 CLASSIC COWBOY</button>
+                <button class="btn-bs btn-red" style="width: 100%; margin-bottom: 10px;" onclick="changeSkin(0xd97706, 0xb91c1c)">🔥 CRIMSON BANDIT</button>
+                <button class="btn-bs btn-blue" style="width: 100%;" onclick="changeSkin(0x0284c7, 0x0f172a)">⚡ TECH SHERIFF</button>
+            </div>
+
+            <!-- MULTIPLAYER BOX -->
+            <div class="lobby-panel">
+                <h2 style="color: var(--bs-yellow); text-align: center; margin-bottom: 10px;">ONLINE MULTIPLAYER</h2>
+                <button class="btn-bs btn-blue" style="width: 100%; margin-bottom: 8px;" onclick="createRoom()">CREA STANZA</button>
+                <input type="text" id="room-code-input" placeholder="CODICE STANZA">
+                <button class="btn-bs btn-purple" style="width: 100%; margin-bottom: 10px;" onclick="joinRoom()">UNISCITI</button>
+                <p id="peer-id-display" style="color: var(--bs-yellow); font-size: 0.8rem; text-align: center; word-break: break-all;"></p>
+            </div>
+        </div>
+
+        <div class="lobby-footer">
+            <button class="btn-bs btn-play" onclick="startBattle('solo')">⚔️ GIOCA SOLO (BOTS)</button>
         </div>
     </div>
 
-    <!-- MODALE MENU E MULTIPLAYER -->
-    <div id="menu-modal">
-        <div class="modal-card">
-            <h1 style="color: var(--bs-yellow); font-size: 2.5rem; text-shadow: 3px 3px #000; margin-bottom: 15px;">BRAWL 3D COWBOY</h1>
-            <p style="color: #94a3b8; font-size: 0.95rem;">Gioca in Singleplayer o in Multiplayer Online inviando il codice stanza a un amico!</p>
+    <!-- IN-GAME HUD -->
+    <div id="game-hud">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="hud-card" style="color: var(--bs-yellow);">HP: <span id="hp-val">100</span> / 100</div>
+            <div class="hud-card" style="color: var(--bs-green);">NEMICI RIMASTI: <span id="enemies-count">3</span></div>
+            <button class="btn-bs btn-red" style="padding: 6px 14px; font-size: 0.9rem;" onclick="exitToLobby()">🚪 LOBBY</button>
+        </div>
 
-            <div style="margin: 20px 0;">
-                <button class="btn-bs btn-play" style="width: 100%; margin-bottom: 10px;" onclick="startSingleplayer()">GIOCA SOLO</button>
-                <hr style="border: 1px solid #334155; margin: 15px 0;">
-                
-                <button class="btn-bs btn-blue" style="width: 100%; margin-bottom: 10px;" onclick="createRoom()">CREA STANZA MP</button>
-                <input type="text" id="room-code-input" placeholder="INSERISCI CODICE STANZA">
-                <button class="btn-bs btn-purple" style="width: 100%;" onclick="joinRoom()">ENTRA IN STANZA</button>
-            </div>
-            <p id="peer-id-display" style="color: var(--bs-yellow); font-size: 0.9rem; font-family: monospace;"></p>
+        <div class="aim-indicator">🎯 MOUSE = MIRA | TASTO SINISTRO / SPAZIO = SPARA | WASD = MUOVITI</div>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+            <div class="touch-zone" id="joyZone"><div class="touch-knob" id="joyKnob"></div></div>
+            <button class="btn-bs btn-yellow" style="padding: 16px 36px; font-size: 1.4rem; pointer-events: auto;" onclick="playerShoot()">SPARA 🔫</button>
         </div>
     </div>
 
     <script>
-        // --- INIZIALIZZAZIONE SCENA THREE.JS (3D) ---
+        // --- GESTIONE SCHERMO INTERO ---
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => alert("Modalità schermo intero non supportata dal browser."));
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // --- INIZIALIZZAZIONE SCENA THREE.JS ---
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x1a202c);
-        scene.fog = new THREE.FogExp2(0x1a202c, 0.015);
+        scene.background = new THREE.Color(0x0f172a);
+        scene.fog = new THREE.FogExp2(0x0f172a, 0.012);
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         container.appendChild(renderer.domElement);
 
         // LUCI
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
-
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
         const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        dirLight.position.set(40, 60, 20);
+        dirLight.position.set(30, 50, 20);
         dirLight.castShadow = true;
-        dirLight.shadow.mapSize.width = 2048;
-        dirLight.shadow.mapSize.height = 2048;
         scene.add(dirLight);
 
-        // --- COSTRUZIONE PERSONAGGIO 3D (COWBOY CON ANIMAZIONI) ---
-        function createCowboyMesh() {
+        // --- CREAZIONE PERSONAGGIO 3D ---
+        function createCowboyMesh(hatColor = 0xd97706, jeansColor = 0x1d4ed8) {
             const cowboyGroup = new THREE.Group();
-
-            // Materiali
             const skinMat = new THREE.MeshLambertMaterial({ color: 0xe0a96d });
-            const hatMat = new THREE.MeshLambertMaterial({ color: 0x5c3a21 });
+            const hatMat = new THREE.MeshLambertMaterial({ color: hatColor });
             const vestMat = new THREE.MeshLambertMaterial({ color: 0x854d0e });
-            const jeansMat = new THREE.MeshLambertMaterial({ color: 0x1d4ed8 });
+            const jeansMat = new THREE.MeshLambertMaterial({ color: jeansColor });
             const gunMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
 
-            // Busto / Corpo
             const torso = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.4, 0.8), vestMat);
-            torso.position.y = 1.7;
-            torso.castShadow = true;
-            cowboyGroup.add(torso);
+            torso.position.y = 1.7; torso.castShadow = true; cowboyGroup.add(torso);
 
-            // Testa
             const head = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), skinMat);
-            head.position.y = 2.7;
-            head.castShadow = true;
-            cowboyGroup.add(head);
+Head.position.y = 2.7; head.castShadow = true; cowboyGroup.add(head);
 
-            // Cappello da Cowboy
-            const hatBrim = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.08, 16), hatMat);
-            hatBrim.position.y = 3.1;
-            cowboyGroup.add(hatBrim);
+            const hatBrim = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.3, 0.08, 16), hatMat);
+            hatBrim.position.y = 3.1; cowboyGroup.add(hatBrim);
+            const hatTop = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.8, 0.6, 16), hatMat);
+            hatTop.position.y = 3.4; cowboyGroup.add(hatTop);
 
-            const hatTop = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 0.6, 16), hatMat);
-            hatTop.position.y = 3.4;
-            cowboyGroup.add(hatTop);
-
-            // Gambe (Perni per animazione camminata)
             const legGeo = new THREE.BoxGeometry(0.4, 1.2, 0.4);
-            
-            const leftLegGroup = new THREE.Group();
-            leftLegGroup.position.set(-0.35, 1.0, 0);
-            const leftLeg = new THREE.Mesh(legGeo, jeansMat);
-            leftLeg.position.y = -0.6;
-            leftLeg.castShadow = true;
-            leftLegGroup.add(leftLeg);
-            cowboyGroup.add(leftLegGroup);
+            const leftLegGroup = new THREE.Group(); leftLegGroup.position.set(-0.35, 1.0, 0);
+            const leftLeg = new THREE.Mesh(legGeo, jeansMat); leftLeg.position.y = -0.6; leftLegGroup.add(leftLeg); cowboyGroup.add(leftLegGroup);
 
-            const rightLegGroup = new THREE.Group();
-            rightLegGroup.position.set(0.35, 1.0, 0);
-            const rightLeg = new THREE.Mesh(legGeo, jeansMat);
-            rightLeg.position.y = -0.6;
-            rightLeg.castShadow = true;
-            rightLegGroup.add(rightLeg);
-            cowboyGroup.add(rightLegGroup);
+            const rightLegGroup = new THREE.Group(); rightLegGroup.position.set(0.35, 1.0, 0);
+            const rightLeg = new THREE.Mesh(legGeo, jeansMat); rightLeg.position.y = -0.6; rightLegGroup.add(rightLeg); cowboyGroup.add(rightLegGroup);
 
-            // Braccia e Pistola
             const armGeo = new THREE.BoxGeometry(0.35, 1.1, 0.35);
-            
-            const leftArmGroup = new THREE.Group();
-            leftArmGroup.position.set(-0.8, 2.2, 0);
-            const leftArm = new THREE.Mesh(armGeo, vestMat);
-            leftArm.position.y = -0.55;
-            leftArmGroup.add(leftArm);
-            cowboyGroup.add(leftArmGroup);
+            const leftArmGroup = new THREE.Group(); leftArmGroup.position.set(-0.8, 2.2, 0);
+            const leftArm = new THREE.Mesh(armGeo, vestMat); leftArm.position.y = -0.55; leftArmGroup.add(leftArm); cowboyGroup.add(leftArmGroup);
 
-            const rightArmGroup = new THREE.Group();
-            rightArmGroup.position.set(0.8, 2.2, 0);
-            const rightArm = new THREE.Mesh(armGeo, vestMat);
-            rightArm.position.y = -0.55;
+            const rightArmGroup = new THREE.Group(); rightArmGroup.position.set(0.8, 2.2, 0);
+            const rightArm = new THREE.Mesh(armGeo, vestMat); rightArm.position.y = -0.55;
             
-            // Revolver 3D nella mano destra
             const gun = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.3, 0.8), gunMat);
-            gun.position.set(0, -0.9, 0.4);
-            rightArm.add(gun);
+            gun.position.set(0, -0.9, 0.4); rightArm.add(gun);
+            rightArmGroup.add(rightArm); cowboyGroup.add(rightArmGroup);
 
-            rightArmGroup.add(rightArm);
-            cowboyGroup.add(rightArmGroup);
-
-            return {
-                mesh: cowboyGroup,
-                leftLeg: leftLegGroup,
-                rightLeg: rightLegGroup,
-                leftArm: leftArmGroup,
-                rightArm: rightArmGroup
-            };
+            return { mesh: cowboyGroup, leftLeg: leftLegGroup, rightLeg: rightLegGroup, hatMat, jeansMat, hp: 100 };
         }
 
-        // Creazione Giocatore Locale e Altri Giocatori
         const localPlayer = createCowboyMesh();
         scene.add(localPlayer.mesh);
 
-        let remotePlayers = {}; // Per il Multiplayer
+        function changeSkin(hatC, jeansC) {
+            localPlayer.hatMat.color.setHex(hatC);
+            localPlayer.jeansMat.color.setHex(jeansC);
+        }
 
-        // --- MAPPA 3D (TERRENO, ACQUA, ALBERI) ---
+        // MAPPA 3D
         function create3DMap() {
-            // Terreno Erba
-            const ground = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshLambertMaterial({ color: 0x15803d }));
-            ground.rotation.x = -Math.PI / 2;
-            ground.receiveShadow = true;
-            scene.add(ground);
+            const ground = new THREE.Mesh(new THREE.PlaneGeometry(120, 120), new THREE.MeshLambertMaterial({ color: 0x15803d }));
+            ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 
-            // Fiume d'Acqua 3D
-            const water = new THREE.Mesh(new THREE.BoxGeometry(15, 0.2, 100), new THREE.MeshPhongMaterial({ color: 0x0284c7, transparent: true, opacity: 0.8 }));
-            water.position.set(-15, 0.05, 0);
-            scene.add(water);
-
-            // Alberi 3D
-            for (let i = 0; i < 35; i++) {
+            for (let i = 0; i < 40; i++) {
                 const tree = new THREE.Group();
                 const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.6, 3), new THREE.MeshLambertMaterial({ color: 0x78350f }));
-                trunk.position.y = 1.5;
-                trunk.castShadow = true;
-                tree.add(trunk);
-
+                trunk.position.y = 1.5; tree.add(trunk);
                 const foliage = new THREE.Mesh(new THREE.ConeGeometry(2.5, 5, 8), new THREE.MeshLambertMaterial({ color: 0x166534 }));
-                foliage.position.y = 4.5;
-                foliage.castShadow = true;
-                tree.add(foliage);
+                foliage.position.y = 4.5; tree.add(foliage);
 
-                let tx = (Math.random() - 0.5) * 80;
-                let tz = (Math.random() - 0.5) * 80;
-                if (Math.abs(tx + 15) > 10) { tree.position.set(tx, 0, tz); scene.add(tree); }
+                let tx = (Math.random() - 0.5) * 90;
+                let tz = (Math.random() - 0.5) * 90;
+                if (Math.abs(tx) > 8 || Math.abs(tz) > 8) { tree.position.set(tx, 0, tz); scene.add(tree); }
             }
         }
         create3DMap();
 
-        // --- CONTROLLI E MOVIMENTO ---
-        let keys = {};
-        let moveVector = new THREE.Vector3();
-        let walkTime = 0;
-        let bullets = [];
+        // --- SISTEMA DI MIRA 360° E CONTROLLI ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+        const aimTargetPoint = new THREE.Vector3();
 
-        window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+        let inBattle = false;
+        let keys = {};
+        let bullets = [];
+        let bots = [];
+        let walkTime = 0;
+
+        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if(e.code === 'Space' && inBattle) playerShoot(); });
         window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
-        // SPARO PROIETTILE 3D
-        function playerShoot() {
-            const bullet = new THREE.Mesh(new THREE.SphereGeometry(0.25, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffe600 }));
-            bullet.position.copy(localPlayer.mesh.position);
-            bullet.position.y = 1.8;
+        // MOUSE AIM IN REAL-TIME
+        window.addEventListener('mousemove', e => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-            // Direzione di sparo basata sulla rotazione del cowboy
-            const dir = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), localPlayer.mesh.rotation.y);
-            bullet.userData = { velocity: dir.multiplyScalar(0.8), life: 60 };
-            scene.add(bullet);
-            bullets.push(bullet);
+            raycaster.setFromCamera(mouse, camera);
+            raycaster.ray.intersectPlane(groundPlane, aimTargetPoint);
+        });
 
-            // Se in multiplayer, invia l'azione dello sparo
-            if (peerConn && peerConn.open) {
-                peerConn.send({ type: 'shoot', x: bullet.position.x, y: bullet.position.y, z: bullet.position.z, dir: localPlayer.mesh.rotation.y });
+        window.addEventListener('mousedown', e => {
+            if (inBattle && e.button === 0 && e.target.tagName !== 'BUTTON') {
+                playerShoot();
             }
+        });
+
+        // SPARO DIREZIONALE
+        function playerShoot() {
+            if (!inBattle) return;
+            const bullet = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffe600 }));
+            bullet.position.copy(localPlayer.mesh.position); bullet.position.y = 1.8;
+
+            // Calcola direzione verso il mirino del mouse
+            const dir = new THREE.Vector3().subVectors(aimTargetPoint, localPlayer.mesh.position);
+            dir.y = 0; dir.normalize();
+
+            bullet.userData = { velocity: dir.multiplyScalar(0.9), life: 50, owner: 'player' };
+            scene.add(bullet); bullets.push(bullet);
         }
 
-        // --- SISTEMA MULTIPLAYER ONLINE (PEERJS) ---
-        let peer = null;
-        let peerConn = null;
+        // BOT NEMICI
+        function spawnBots() {
+            bots.forEach(b => scene.remove(b.mesh));
+            bots = [];
+            for (let i = 0; i < 3; i++) {
+                const bot = createCowboyMesh(0xb91c1c, 0x450a0a);
+                bot.mesh.position.set((Math.random() - 0.5) * 50, 0, (Math.random() - 0.5) * 50);
+                scene.add(bot.mesh);
+                bots.push(bot);
+            }
+            document.getElementById('enemies-count').textContent = bots.length;
+        }
 
+        // --- GESTIONE STATO DI GIOCO & LOBBY ---
+        function startBattle(mode) {
+            inBattle = true;
+            document.getElementById('lobby-screen').style.display = 'none';
+            document.getElementById('game-hud').style.display = 'flex';
+            localPlayer.mesh.position.set(0, 0, 0);
+            localPlayer.hp = 100;
+            document.getElementById('hp-val').textContent = localPlayer.hp;
+            spawnBots();
+        }
+
+        function exitToLobby() {
+            inBattle = false;
+            document.getElementById('lobby-screen').style.display = 'flex';
+            document.getElementById('game-hud').style.display = 'none';
+            bots.forEach(b => scene.remove(b.mesh));
+            bots = [];
+        }
+
+        // MULTIPLAYER PEERJS
+        let peer = null, peerConn = null;
         function initPeer() {
             peer = new Peer();
-            peer.on('open', id => {
-                document.getElementById('peer-id-display').textContent = "IL TUO CODICE: " + id;
-            });
-
-            peer.on('connection', conn => {
-                peerConn = conn;
-                setupConnection();
-            });
+            peer.on('open', id => document.getElementById('peer-id-display').textContent = "CODICE STANZA: " + id);
+            peer.on('connection', conn => { peerConn = conn; setupConnection(); });
         }
-
-        function createRoom() {
-            initPeer();
-            document.getElementById('room-status').textContent = "IN ATTESA...";
-        }
-
+        function createRoom() { initPeer(); }
         function joinRoom() {
             const code = document.getElementById('room-code-input').value.trim();
-            if (!code) return alert("Inserisci un codice valido!");
+            if(!code) return alert("Inserisci codice!");
             peer = new Peer();
-            peer.on('open', () => {
-                peerConn = peer.connect(code);
-                setupConnection();
-            });
+            peer.on('open', () => { peerConn = peer.connect(code); setupConnection(); });
         }
-
         function setupConnection() {
-            document.getElementById('menu-modal').style.display = 'none';
-            document.getElementById('room-status').textContent = "ONLINE 🟢";
-
-            // Crea modello 3D per l'altro giocatore
-            const opponent = createCowboyMesh();
-            scene.add(opponent.mesh);
-            remotePlayers['opponent'] = opponent;
-
-            peerConn.on('data', data => {
-                if (data.type === 'move') {
-                    opponent.mesh.position.set(data.x, data.y, data.z);
-                    opponent.mesh.rotation.y = data.rot;
-                    // Animazione camminata nemico
-                    if (data.isWalking) {
-                        opponent.leftLeg.rotation.x = Math.sin(data.walkTime) * 0.6;
-                        opponent.rightLeg.rotation.x = -Math.sin(data.walkTime) * 0.6;
-                    } else {
-                        opponent.leftLeg.rotation.x = 0; opponent.rightLeg.rotation.x = 0;
-                    }
-                }
-            });
+            startBattle('mp');
+            alert("Connesso al secondo giocatore!");
         }
 
-        function startSingleplayer() {
-            document.getElementById('menu-modal').style.display = 'none';
-        }
-
-        // --- LOOP PRINCIPALE DI GIOCO & ANIMAZIONI 3D ---
+        // --- LOOP PRINCIPALE DI RENDERING ---
         function animate() {
             requestAnimationFrame(animate);
 
-            // Calcolo Movimento
-            moveVector.set(0, 0, 0);
-            if (keys['w'] || keys['arrowup']) moveVector.z -= 1;
-            if (keys['s'] || keys['arrowdown']) moveVector.z += 1;
-            if (keys['a'] || keys['arrowleft']) moveVector.x -= 1;
-            if (keys['d'] || keys['arrowright']) moveVector.x += 1;
+            if (inBattle) {
+                // Movimento Personaggio
+                const moveVec = new THREE.Vector3(0, 0, 0);
+                if (keys['w'] || keys['arrowup']) moveVec.z -= 1;
+                if (keys['s'] || keys['arrowdown']) moveVec.z += 1;
+                if (keys['a'] || keys['arrowleft']) moveVec.x -= 1;
+                if (keys['d'] || keys['arrowright']) moveVec.x += 1;
 
-            const isMoving = moveVector.lengthSq() > 0;
-
-            if (isMoving) {
-                moveVector.normalize().multiplyScalar(0.2);
-                localPlayer.mesh.position.add(moveVector);
-
-                // Rotazione del Cowboy verso la direzione del movimento
-                const targetAngle = Math.atan2(moveVector.x, moveVector.z);
-                localPlayer.mesh.rotation.y = targetAngle;
-
-                // Animazione Procedurale Camminata (Gambe e Braccia oscillano)
-                walkTime += 0.25;
-                localPlayer.leftLeg.rotation.x = Math.sin(walkTime) * 0.7;
-                localPlayer.rightLeg.rotation.x = -Math.sin(walkTime) * 0.7;
-                localPlayer.leftArm.rotation.x = -Math.sin(walkTime) * 0.5;
-                localPlayer.rightArm.rotation.x = Math.sin(walkTime) * 0.5;
-            } else {
-                // Ritorno alla posizione di riposo
-                localPlayer.leftLeg.rotation.x = 0;
-                localPlayer.rightLeg.rotation.x = 0;
-                localPlayer.leftArm.rotation.x = 0;
-                localPlayer.rightArm.rotation.x = 0;
-            }
-
-            // Invia Posizione via Multiplayer
-            if (peerConn && peerConn.open) {
-                peerConn.send({
-                    type: 'move',
-                    x: localPlayer.mesh.position.x, y: localPlayer.mesh.position.y, z: localPlayer.mesh.position.z,
-                    rot: localPlayer.mesh.rotation.y, isWalking: isMoving, walkTime: walkTime
-                });
-            }
-
-            // Aggiorna Proiettili 3D
-            bullets.forEach((b, index) => {
-                b.position.add(b.userData.velocity);
-                b.userData.life--;
-                if (b.userData.life <= 0) {
-                    scene.remove(b);
-                    bullets.splice(index, 1);
+                if (moveVec.lengthSq() > 0) {
+                    moveVec.normalize().multiplyScalar(0.22);
+                    localPlayer.mesh.position.add(moveVec);
+                    walkTime += 0.25;
+                    localPlayer.leftLeg.rotation.x = Math.sin(walkTime) * 0.7;
+                    localPlayer.rightLeg.rotation.x = -Math.sin(walkTime) * 0.7;
+                } else {
+                    localPlayer.leftLeg.rotation.x = 0; localPlayer.rightLeg.rotation.x = 0;
                 }
-            });
 
-            // TELECAMERA 3D IN TERZA PERSONA INSEGUIMENTO
-            camera.position.x = localPlayer.mesh.position.x;
-            camera.position.y = localPlayer.mesh.position.y + 18;
-            camera.position.z = localPlayer.mesh.position.z + 22;
-            camera.lookAt(localPlayer.mesh.position);
+                // ROTAZIONE VERSO IL PONTO DI MIRA DEL MOUSE (360 GRADI)
+                const lookAngle = Math.atan2(aimTargetPoint.x - localPlayer.mesh.position.x, aimTargetPoint.z - localPlayer.mesh.position.z);
+                localPlayer.mesh.rotation.y = lookAngle;
+
+                // AGGIORNAMENTO PROIETTILI & COLLISIONI
+                bullets.forEach((b, index) => {
+                    b.position.add(b.userData.velocity);
+                    b.userData.life--;
+
+                    // Collisione con i Bot
+                    bots.forEach((bot, bIndex) => {
+                        if (b.userData.owner === 'player' && b.position.distanceTo(bot.mesh.position) < 1.5) {
+                            scene.remove(bot.mesh);
+                            bots.splice(bIndex, 1);
+                            scene.remove(b);
+                            bullets.splice(index, 1);
+                            document.getElementById('enemies-count').textContent = bots.length;
+                        }
+                    });
+
+                    if (b.userData.life <= 0) { scene.remove(b); bullets.splice(index, 1); }
+                });
+
+                // TELECAMERA DINAMICA IN TERZA PERSONA
+                camera.position.x = localPlayer.mesh.position.x;
+                camera.position.y = localPlayer.mesh.position.y + 20;
+                camera.position.z = localPlayer.mesh.position.z + 22;
+                camera.lookAt(localPlayer.mesh.position);
+
+            } else {
+                // ROTAZIONE DI ANTEPRIMA NELLA LOBBY
+                localPlayer.mesh.rotation.y += 0.01;
+                camera.position.set(0, 4, 8);
+                camera.lookAt(0, 2, 0);
+            }
 
             renderer.render(scene, camera);
         }
 
-        // Ridimensionamento Finestra
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
