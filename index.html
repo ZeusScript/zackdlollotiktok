@@ -2,534 +2,481 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brawl Stars - Enciclopedia Completa & Simulatore</title>
+    <!-- Ottimizzazione per Mobile: disabilita lo zoom e fissa la viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Brawl Clone HTML5</title>
     <style>
-        :root {
-            --bs-yellow: #ffcc00;
-            --bs-blue: #0066ff;
-            --bs-purple: #a020f0;
-            --bs-red: #ff3366;
-            --bs-dark: #0f0f13;
-            --bs-card: #1c1c24;
-            --bs-card-hover: #262633;
-            --bs-text: #ffffff;
-            --bs-subtext: #aaaa3b;
-        }
-
+        /* CSS RESET & MOBILE OPTIMIZATION */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            user-select: none; /* Previene la selezione del testo su mobile */
+            -webkit-user-select: none;
+            touch-action: none; /* Blocca lo scroll della pagina su mobile */
+        }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bs-dark);
-            color: var(--bs-text);
-            line-height: 1.6;
-            padding: 20px;
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(180deg, #2a0845 0%, var(--bs-dark) 100%);
-            border-bottom: 3px solid var(--bs-yellow);
-            border-radius: 0 0 15px 15px;
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        header h1 {
-            color: var(--bs-yellow);
-            font-size: 2.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 4px 10px rgba(255, 204, 0, 0.3);
-            margin-bottom: 10px;
-        }
-
-        header p {
-            color: #ccc;
-            font-size: 1.1rem;
-        }
-
-        .top-controls {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-
-        .copy-btn {
-            background-color: var(--bs-yellow);
-            color: #000;
-            font-weight: bold;
-            font-size: 1.1rem;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.6);
-            background-color: #ffe066;
-        }
-
-        .copy-btn:active {
-            transform: translateY(1px);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        .section-card {
-            background-color: var(--bs-card);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            border: 1px solid #2d2d3d;
-        }
-
-        h2 {
-            color: var(--bs-yellow);
-            font-size: 1.8rem;
-            border-bottom: 2px solid #33334d;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        h3 {
-            color: var(--bs-blue);
-            margin: 20px 0 10px 0;
-            font-size: 1.3rem;
-        }
-
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        ul li {
-            position: relative;
-            padding-left: 25px;
-            margin-bottom: 12px;
-        }
-
-        ul li::before {
-            content: "•";
-            color: var(--bs-yellow);
-            font-size: 1.5rem;
+        /* UI STRATO SUPERIORE */
+        #uiLayer {
             position: absolute;
-            left: 5px;
-            top: -2px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin: 20px 0;
-        }
-
-        table {
+            top: 0;
+            left: 0;
             width: 100%;
-            border-collapse: collapse;
-            text-align: left;
+            height: 100%;
+            pointer-events: none; /* Fa passare i tocchi al canvas */
         }
 
-        table th, table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #33334d;
-        }
-
-        table th {
-            background-color: #252533;
-            color: var(--bs-yellow);
-        }
-
-        table tr:hover {
-            background-color: var(--bs-card-hover);
-        }
-
-        /* Simulatore Starr Drop */
-        .simulator {
-            text-align: center;
-            background: linear-gradient(135deg, #2a0845 0%, #4c1d95 100%);
-            border: 2px solid var(--bs-purple);
-        }
-
-        .starr-btn {
-            background-color: var(--bs-yellow);
-            color: #000;
-            font-weight: bold;
-            font-size: 1.2rem;
-            padding: 15px 35px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: transform 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .starr-btn:hover {
-            transform: scale(1.05);
-        }
-
-        #drop-result {
-            margin-top: 25px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Interfaccia Brawler */
-        .search-box {
-            width: 100%;
-            padding: 14px 20px;
+        .btn {
+            position: absolute;
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #fff;
+            color: white;
+            padding: 10px 15px;
             border-radius: 8px;
-            border: 1px solid #444;
-            background-color: #121218;
-            color: #fff;
-            margin-bottom: 25px;
-            font-size: 1rem;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--bs-yellow);
-        }
-
-        .brawler-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .brawler-card {
-            background: #232330;
-            padding: 20px;
-            border-radius: 10px;
-            border-left: 6px solid var(--bs-blue);
-            transition: transform 0.2s ease;
-        }
-
-        .brawler-card:hover {
-            transform: translateY(-4px);
-            background-color: var(--bs-card-hover);
-        }
-
-        .brawler-card.Iniziale { border-left-color: #a6a6a6; }
-        .brawler-card.Raro { border-left-color: #22c55e; }
-        .brawler-card.SuperRaro { border-left-color: #3b82f6; }
-        .brawler-card.Epico { border-left-color: #a855f7; }
-        .brawler-card.Mitico { border-left-color: #ec4899; }
-        .brawler-card.Leggendario { border-left-color: #eab308; }
-
-        .brawler-card h4 {
-            font-size: 1.3rem;
-            margin-bottom: 8px;
-        }
-
-        .brawler-card .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
             font-weight: bold;
-            background: rgba(255,255,255,0.1);
-            margin-bottom: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
         }
 
-        footer {
-            text-align: center;
-            padding: 40px 0 20px 0;
-            color: #666;
-            font-size: 0.9rem;
+        #fullscreenBtn {
+            top: 20px;
+            right: 20px;
         }
 
-        /* Toast di conferma */
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: var(--bs-yellow);
-            color: #000;
-            font-weight: bold;
-            text-align: center;
-            border-radius: 30px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1000;
+        #scoreBoard {
+            position: absolute;
+            top: 20px;
             left: 50%;
-            bottom: 30px;
             transform: translateX(-50%);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            color: #ffcc00;
+            font-size: 24px;
+            font-weight: 900;
+            text-shadow: 2px 2px 0 #000;
         }
 
-        #toast.show {
-            visibility: visible;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        #gameOverScreen {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            pointer-events: auto;
         }
 
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
+        #gameOverScreen h1 {
+            font-size: 48px;
+            color: #ff4444;
+            margin-bottom: 20px;
         }
 
-        @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
+        #restartBtn {
+            position: relative;
+            font-size: 20px;
+            padding: 15px 30px;
+            background: #ffcc00;
+            color: black;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Brawl Stars - Enciclopedia Completa</h1>
-        <p>Documentazione Architetturale, Meccaniche di Gioco e Simulatore GitHub Pages</p>
-    </header>
+    <!-- Area di Gioco -->
+    <canvas id="gameCanvas"></canvas>
 
-    <div class="top-controls">
-        <button class="copy-btn" onclick="copyFullPrompt()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            Copia Codice Completo (Prompt)
-        </button>
+    <!-- UI Overlay -->
+    <div id="uiLayer">
+        <div id="scoreBoard">Gemme: <span id="scoreValue">0</span></div>
+        <button id="fullscreenBtn" class="btn">Schermo Intero</button>
     </div>
 
-    <div class="container">
-
-        <!-- 1. SIMULATORE GIOCO -->
-        <div class="section-card simulator">
-            <h2>Simulatore Goccia Starr (Starr Drop)</h2>
-            <p>Metti alla prova l'algoritmo di estrazione casuale delle ricompense in-game!</p>
-            <button class="starr-btn" onclick="openStarrDrop()">Apri Goccia Starr</button>
-            <div id="drop-result">Clicca il pulsante per estrarre un premio!</div>
-        </div>
-
-        <!-- 2. DATABASE BRAWLER -->
-        <div class="section-card">
-            <h2>Database Brawler Completo</h2>
-            <input type="text" id="searchInput" class="search-box" placeholder="Cerca Brawler per nome, classe o rarità..." onkeyup="filterBrawlers()">
-            <div class="brawler-grid" id="brawlerGrid"></div>
-        </div>
-
-        <!-- 3. MECCANICHE FONDAMENTALI -->
-        <div class="section-card">
-            <h2>1. Meccaniche Fondamentali di Combattimento</h2>
-            <h3>Sistema di Puntamento e Movimento</h3>
-            <ul>
-                <li><strong>Joystick di Movimento:</strong> Controllo fluido dello spostamento del Brawler a 360° sull'asse della mappa.</li>
-                <li><strong>Mira Manuale (Drag & Aim):</strong> Trascina l'indicatore di tiro per definire con precisione traiettoria, gittata o parabole dei colpi.</li>
-                <li><strong>Auto-Mira (Quick Fire):</strong> Tocco rapido sul pulsante di attacco. Colpisce istantaneamente in direzione del nemico più vicino (calcolato sul posizionamento istantaneo).</li>
-                <li><strong>Annullamento Tiro (Cancel Shot):</strong> Riportare l'indicatore al centro del joystick d'attacco prima di rilasciarlo annulla l'azione senza sprecare munizioni.</li>
-            </ul>
-
-            <h3>Gestione Munizioni e Attacchi</h3>
-            <ul>
-                <li><strong>Slot Munizioni:</strong> Di norma 3 slot per Brawler. Alcuni Brawler possiedono variazioni uniche (es. Bea ha 1 solo slot, Amber possiede una barra continua a consumo, altri accumulano colpi speciali).</li>
-                <li><strong>Velocità di Ricarica:</strong> Classificata in Molto Lenta, Lenta, Normale, Veloce, Molto Veloce. Può essere alterata da Gadget, Star Power o modificatori.</li>
-                <li><strong>Rifiuto / Ripristino del tiro:</strong> Possibilità di resettare il comando evitando tiri accidentali contro gli ostacoli.</li>
-            </ul>
-
-            <h3>Abilità Speciali: Super e Ipercarica</h3>
-            <ul>
-                <li><strong>Super Abilità:</strong> Colpo o utilità ad alto impatto. Si carica infliggendo danni ai nemici, subendo danni (ruolo Tank) o passivamente col tempo (Darryl, Edgar).</li>
-                <li><strong>Ipercarica (Hypercharge):</strong> Meccanica sbloccabile al Livello di Potenza 11. Conferisce un potenziamento temporaneo a velocità, danno e scudo, potenziando contemporaneamente la Super. Si carica attaccando gli avversari.</li>
-            </ul>
-        </div>
-
-        <!-- 4. TABELLA STATI ALTERATI -->
-        <div class="section-card">
-            <h2>2. Stati Alterati ed Effetti di Campo</h2>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Effetto</th>
-                            <th>Descrizione e Impatto sul Gameplay</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Stun (Stordimento)</strong></td>
-                            <td>Impedisce qualsiasi azione (movimento, attacco base, Gadget, Super). Interrompe le abilità a canalizzazione prolungata.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Knockback (Spinta)</strong></td>
-                            <td>Sbalza il Brawler nemico all'indietro, interrompendo attacchi o posizionamenti tattici.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Slow (Rallentamento)</strong></td>
-                            <td>Riduce la velocità di movimento di una percentuale definita per la durata dell'effetto.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Poison / Burn (DoT)</strong></td>
-                            <td>Infligge danni continui a intervalli regolari (tick), bloccando la rigenerazione naturale della salute.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Silence (Silenziamento)</strong></td>
-                            <td>Consente il movimento ma disabilita l'uso di attacchi, Gadget e Super.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Invisibilità</strong></td>
-                            <td>Nasconde completamente il Brawler alla vista avversaria. Scompare se ci si avvicina troppo o se si attacca.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Scudo & Invulnerabilità</strong></td>
-                            <td>Assorbe una quantità fissa o percentuale di danni o rende immuni per un breve lasso di tempo (es. al respawn).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Bozzolo / Intrappolamento</strong></td>
-                            <td>Rende un bersaglio inattivo ed isolato fino alla distruzione della barriera o alla fine del timer.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 5. CLASSIFICATIVE E MODALITÀ -->
-        <div class="section-card">
-            <h2>3. Modalità di Gioco e Struttura Competitiva</h2>
-            <h3>Modalità Principali</h3>
-            <ul>
-                <li><strong>Arraffagemme (Gem Grab):</strong> Scontro 3v3. Raccogliere 10 gemme dal pozzo centrale e mantenerle per 15 secondi per vincere.</li>
-                <li><strong>Sopravvivenza (Showdown - Singolo/Duo):</strong> Battle Royale da 10 giocatori con nebbia velenosa progressiva e casse con Power Cube per aumentare attacco e salute.</li>
-                <li><strong>Footbrawl (Brawl Ball):</strong> Partita di calcio d'azione 3v3. Vince la squadra che segna 2 gol o quella in vantaggio allo scadere del tempo.</li>
-                <li><strong>Rapina (Heist):</strong> Distruggere la cassaforte del team avversario difendendo la propria.</li>
-                <li><strong>Ricercati (Bounty):</strong> Eliminare i nemici per collezionare stelle e accumulare il punteggio più alto.</li>
-                <li><strong>Zona Calda (Hot Zone):</strong> Conquistare e difendere i punti strategici della mappa fino al completamento della percentuale.</li>
-                <li><strong>Knockout:</strong> Eliminazione diretta su più round senza rientro in partita.</li>
-            </ul>
-
-            <h3>Competizione e Community</h3>
-            <ul>
-                <li><strong>Modalità Classificata (Ranked):</strong> Partite con sistema di Draft a turni, ban dei Brawler, modificatori di mappa casuali e ranghi da Bronzo a Master.</li>
-                <li><strong>Map Maker (Creatore di Mappe):</strong> Strumento per ideare e testare mappe custom create dalla community.</li>
-                <li><strong>Club e Mega Salvadanaio:</strong> Eventi cooperativi a gironi per accumulare premi di gruppo.</li>
-            </ul>
-        </div>
-
-        <!-- 6. ECONOMIA E PROGRESSIONE -->
-        <div class="section-card">
-            <h2>4. Economia, Valute e Progressione</h2>
-            <ul>
-                <li><strong>Monete:</strong> Risorsa fondamentale per potenziare i Brawler (livelli 1-11), acquistare Gadget, Star Power, Gears e Ipercariche.</li>
-                <li><strong>Punti Energia:</strong> Necessari insieme alle monete per aumentare il Livello di Potenza dei personaggi.</li>
-                <li><strong>Crediti:</strong> Valuta destinata allo sblocco dei Brawler attraverso il *Cammino Starr*.</li>
-                <li><strong>Gemme:</strong> Valuta premium utilizzabile per acquistare Skin, Brawl Pass, offerte speciali e velocizzazioni.</li>
-                <li><strong>Bling:</strong> Valuta ottenibile dalle partite competitive per acquistare elementi estetici senza spendere gemme.</li>
-                <li><strong>Gocce Starr (Starr Drops):</strong> Sistema di ricompense a sorpresa suddiviso in 5 livelli di rarità (Rara, Molto Rara, Epica, Mitica, Leggendaria).</li>
-            </ul>
-        </div>
-
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen">
+        <h1>SEI STATO SCONFITTO!</h1>
+        <p>Gemme raccolte: <span id="finalScore">0</span></p><br>
+        <button id="restartBtn" class="btn">GIOCA ANCORA</button>
     </div>
-
-    <footer>
-        <p>Brawl Stars Encyclopedia & Simulator Engine - Pronto per il deployment immediato su GitHub Pages.</p>
-    </footer>
-
-    <div id="toast">Codice copiato negli appunti!</div>
 
     <script>
-        // Database Brawler Esteso
-        const brawlers = [
-            { name: "Shelly", class: "Attacco", rarity: "Iniziale", desc: "Fucile a pompa a corto raggio. La Super distrugge i muri e respinge i nemici." },
-            { name: "Colt", class: "Tiratore", rarity: "SuperRaro", desc: "Spara una raffica diretta e velocissima di proiettili a lungo raggio." },
-            { name: "El Primo", class: "Serbatoio", rarity: "Raro", desc: "Lancia una serie di pugni devastanti e salta sui nemici con la sua Super." },
-            { name: "Brock", class: "Artiglieria", rarity: "Raro", desc: "Lancia razzi a lunga gittata che esplodono all'impatto creando zone di fuoco." },
-            { name: "Poco", class: "Supporto", rarity: "Raro", desc: "Emette onde sonore ad ampia area che danneggiano i nemici e curano gli alleati." },
-            { name: "Mortis", class: "Assassino", rarity: "Mitico", desc: "Scatta in avanti f fendendo con la pala. La Super evoca pipistrelli che curano." },
-            { name: "Crow", class: "Assassino", rarity: "Leggendario", desc: "Lancia tre pugnali avvelenati che infliggono danno nel tempo e riducono le cure." },
-            { name: "Piper", class: "Tiratore", rarity: "Epico", desc: "Infligge danni elevati a lunga distanza. Salta via lasciando bombe se avvicinata." },
-            { name: "Spike", class: "Controllo", rarity: "Leggendario", desc: "Lancia cactus che esplodono in spine. La Super rallenta e danneggia ad area." },
-            { name: "Leon", class: "Assassino", rarity: "Leggendario", desc: "Lancia shuriken veloci. La sua Super lo rende completamente invisibile per qualche secondo." },
-            { name: "Gene", class: "Controllo", rarity: "Mitico", desc: "Spara un proiettile di fumo che si divide. La sua Super trascina i nemici a sé." },
-            { name: "Edgar", class: "Assassino", rarity: "Epico", desc: "Attacca a cortissimo raggio curandosi ad ogni colpo. Carica la Super automaticamente." }
-        ];
+        /**
+         * BRAWL CLONE ENGINE - Scritto in JS Puro
+         * Architettura: Loop di gioco (Update -> Draw), Entità OOP, Input Touch Multiplo
+         */
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreValue');
+        
+        let width, height;
+        let gameActive = true;
+        let score = 0;
 
-        // Renderizza la griglia
-        function renderBrawlers(list) {
-            const grid = document.getElementById('brawlerGrid');
-            grid.innerHTML = '';
-            list.forEach(brawler => {
-                const card = document.createElement('div');
-                card.className = `brawler-card ${brawler.rarity}`;
-                card.innerHTML = `
-                    <h4>${brawler.name}</h4>
-                    <span class="badge">${brawler.rarity} - ${brawler.class}</span>
-                    <p>${brawler.desc}</p>
-                `;
-                grid.appendChild(card);
-            });
+        // Adatta il canvas alla finestra
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         }
+        window.addEventListener('resize', resize);
+        resize();
 
-        // Filtro di ricerca
-        function filterBrawlers() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = brawlers.filter(b => 
-                b.name.toLowerCase().includes(query) || 
-                b.class.toLowerCase().includes(query) ||
-                b.rarity.toLowerCase().includes(query)
-            );
-            renderBrawlers(filtered);
-        }
+        // --- SISTEMA DI INPUT (DOPPIO JOYSTICK) ---
+        const input = {
+            left: { active: false, id: null, startX: 0, startY: 0, currX: 0, currY: 0, vectorX: 0, vectorY: 0 },
+            right: { active: false, id: null, startX: 0, startY: 0, currX: 0, currY: 0, vectorX: 0, vectorY: 0, angle: 0 }
+        };
 
-        // Simulatore Gocce Starr
-        function openStarrDrop() {
-            const rand = Math.random() * 100;
-            const resultDiv = document.getElementById('drop-result');
-            
-            if (rand < 50) {
-                resultDiv.style.color = '#22c55e';
-                resultDiv.innerHTML = "Goccia Starr RARA: +100 Monete!";
-            } else if (rand < 78) {
-                resultDiv.style.color = '#3b82f6';
-                resultDiv.innerHTML = "Goccia Starr MOLTO RARA: +50 Punti Energia!";
-            } else if (rand < 92) {
-                resultDiv.style.color = '#a855f7';
-                resultDiv.innerHTML = "Goccia Starr EPICA: +200 Bling!";
-            } else if (rand < 98) {
-                resultDiv.style.color = '#ec4899';
-                resultDiv.innerHTML = "Goccia Starr MITICA: Nuovo Brawler Sbloccato!";
-            } else {
-                resultDiv.style.color = '#eab308';
-                resultDiv.innerHTML = "Goccia Starr LEGGENDARIA: IPERCARICA SBLOCCATA!";
+        const maxJoyRadius = 50; // Dimensione massima joystick virtuale
+
+        // Gestione Touch
+        canvas.addEventListener('touchstart', handleTouchStart, {passive: false});
+        canvas.addEventListener('touchmove', handleTouchMove, {passive: false});
+        canvas.addEventListener('touchend', handleTouchEnd, {passive: false});
+        canvas.addEventListener('touchcancel', handleTouchEnd, {passive: false});
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (t.clientX < width / 2 && !input.left.active) {
+                    // Tocco a sinistra = Movimento
+                    input.left.active = true;
+                    input.left.id = t.identifier;
+                    input.left.startX = input.left.currX = t.clientX;
+                    input.left.startY = input.left.currY = t.clientY;
+                } else if (t.clientX >= width / 2 && !input.right.active) {
+                    // Tocco a destra = Mira
+                    input.right.active = true;
+                    input.right.id = t.identifier;
+                    input.right.startX = input.right.currX = t.clientX;
+                    input.right.startY = input.right.currY = t.clientY;
+                }
             }
         }
 
-        // Funzione Copia Prompt / Codice Completo
-        function copyFullPrompt() {
-            const fullHTML = document.documentElement.outerHTML;
-            navigator.clipboard.writeText(fullHTML).then(() => {
-                showToast();
-            }).catch(err => {
-                console.error('Errore durante la copia: ', err);
-            });
+        function handleTouchMove(e) {
+            e.preventDefault();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (input.left.active && t.identifier === input.left.id) {
+                    input.left.currX = t.clientX;
+                    input.left.currY = t.clientY;
+                    updateJoyVector(input.left);
+                } else if (input.right.active && t.identifier === input.right.id) {
+                    input.right.currX = t.clientX;
+                    input.right.currY = t.clientY;
+                    updateJoyVector(input.right);
+                    input.right.angle = Math.atan2(input.right.vectorY, input.right.vectorX);
+                }
+            }
         }
 
-        function showToast() {
-            const toast = document.getElementById("toast");
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        function handleTouchEnd(e) {
+            e.preventDefault();
+            for (let i = 0; i < e.changedTouches.length; i++) {
+                const t = e.changedTouches[i];
+                if (input.left.active && t.identifier === input.left.id) {
+                    input.left.active = false;
+                    input.left.vectorX = input.left.vectorY = 0;
+                } else if (input.right.active && t.identifier === input.right.id) {
+                    // SPARA QUANDO RILASCI IL JOYSTICK DESTRO
+                    if (Math.hypot(input.right.vectorX, input.right.vectorY) > 0.2) {
+                        player.shoot(input.right.angle);
+                    }
+                    input.right.active = false;
+                    input.right.vectorX = input.right.vectorY = 0;
+                }
+            }
         }
 
-        // Inizializzazione
-        renderBrawlers(brawlers);
+        function updateJoyVector(joy) {
+            let dx = joy.currX - joy.startX;
+            let dy = joy.currY - joy.startY;
+            let dist = Math.hypot(dx, dy);
+            if (dist > maxJoyRadius) {
+                dx = (dx / dist) * maxJoyRadius;
+                dy = (dy / dist) * maxJoyRadius;
+            }
+            joy.vectorX = dx / maxJoyRadius;
+            joy.vectorY = dy / maxJoyRadius;
+        }
+
+        // --- ENTITÀ DI GIOCO ---
+
+        class Player {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 20;
+                this.speed = 4;
+                this.color = '#00aaff';
+                this.hp = 100;
+                this.maxHp = 100;
+                this.cooldown = 0;
+            }
+
+            update() {
+                // Movimento tramite joystick sinistro
+                if (input.left.active) {
+                    this.x += input.left.vectorX * this.speed;
+                    this.y += input.left.vectorY * this.speed;
+                }
+
+                // Confini dell'arena
+                this.x = Math.max(this.radius, Math.min(width - this.radius, this.x));
+                this.y = Math.max(this.radius, Math.min(height - this.radius, this.y));
+
+                if (this.cooldown > 0) this.cooldown--;
+            }
+
+            draw() {
+                // Corpo Brawler
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.strokeStyle = '#005588';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Barra della vita
+                const hpPercent = this.hp / this.maxHp;
+                ctx.fillStyle = 'red';
+                ctx.fillRect(this.x - 20, this.y - 35, 40, 8);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(this.x - 20, this.y - 35, 40 * hpPercent, 8);
+
+                // Disegna indicatore di mira (Joystick destro)
+                if (input.right.active) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(this.x + Math.cos(input.right.angle) * 100, this.y + Math.sin(input.right.angle) * 100);
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.setLineDash([5, 5]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+            }
+
+            shoot(angle) {
+                if (this.cooldown <= 0) {
+                    bullets.push(new Bullet(this.x, this.y, angle));
+                    this.cooldown = 15; // Rateo di fuoco
+                }
+            }
+        }
+
+        class Bullet {
+            constructor(x, y, angle) {
+                this.x = x;
+                this.y = y;
+                this.vx = Math.cos(angle) * 12;
+                this.vy = Math.sin(angle) * 12;
+                this.radius = 6;
+                this.color = '#ffff00';
+                this.distance = 0;
+                this.maxDistance = 500;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.distance += Math.hypot(this.vx, this.vy);
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        class Enemy {
+            constructor() {
+                // Spawna fuori dallo schermo
+                const side = Math.random();
+                if (side < 0.25) { this.x = -30; this.y = Math.random() * height; }
+                else if (side < 0.5) { this.x = width + 30; this.y = Math.random() * height; }
+                else if (side < 0.75) { this.x = Math.random() * width; this.y = -30; }
+                else { this.x = Math.random() * width; this.y = height + 30; }
+                
+                this.radius = 20;
+                this.speed = Math.random() * 1.5 + 1;
+                this.hp = 30;
+                this.color = '#ff3333';
+            }
+
+            update() {
+                // Insegui il giocatore (IA Base)
+                const dx = player.x - this.x;
+                const dy = player.y - this.y;
+                const angle = Math.atan2(dy, dx);
+                this.x += Math.cos(angle) * this.speed;
+                this.y += Math.sin(angle) * this.speed;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.strokeStyle = '#880000';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+        }
+
+        // --- INIZIALIZZAZIONE E LOOP ---
+        let player = new Player(width / 2, height / 2);
+        let bullets = [];
+        let enemies = [];
+        let particles = [];
+        let frameCount = 0;
+
+        function init() {
+            player = new Player(width / 2, height / 2);
+            bullets = [];
+            enemies = [];
+            score = 0;
+            scoreEl.innerText = score;
+            gameActive = true;
+            document.getElementById('gameOverScreen').style.display = 'none';
+            loop();
+        }
+
+        function drawJoysticks() {
+            ctx.lineWidth = 2;
+            if (input.left.active) {
+                ctx.beginPath();
+                ctx.arc(input.left.startX, input.left.startY, maxJoyRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(input.left.currX, input.left.currY, 20, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fill();
+            }
+            if (input.right.active) {
+                ctx.beginPath();
+                ctx.arc(input.right.startX, input.right.startY, maxJoyRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255, 50, 50, 0.3)';
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(input.right.currX, input.right.currY, 20, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 50, 50, 0.5)';
+                ctx.fill();
+            }
+        }
+
+        function loop() {
+            if (!gameActive) return;
+            requestAnimationFrame(loop);
+            
+            // Background stile prato/arena
+            ctx.fillStyle = '#228B22';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Griglia terreno (effetto visuale)
+            ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+            ctx.lineWidth = 1;
+            for(let i=0; i<width; i+=50) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,height); ctx.stroke(); }
+            for(let i=0; i<height; i+=50) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(width,i); ctx.stroke(); }
+
+            player.update();
+            player.draw();
+
+            // Aggiorna proiettili
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                let b = bullets[i];
+                b.update();
+                b.draw();
+                
+                // Rimuovi se fuori range
+                if (b.distance > b.maxDistance || b.x < 0 || b.x > width || b.y < 0 || b.y > height) {
+                    bullets.splice(i, 1);
+                }
+            }
+
+            // Spawn nemici
+            if (frameCount % 60 === 0) { // 1 nemico al secondo (circa)
+                enemies.push(new Enemy());
+            }
+
+            // Aggiorna nemici e Collisioni
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let e = enemies[i];
+                e.update();
+                e.draw();
+
+                // Danno al player
+                const distToPlayer = Math.hypot(player.x - e.x, player.y - e.y);
+                if (distToPlayer < player.radius + e.radius) {
+                    player.hp -= 1;
+                    if (player.hp <= 0) {
+                        gameActive = false;
+                        document.getElementById('finalScore').innerText = score;
+                        document.getElementById('gameOverScreen').style.display = 'flex';
+                    }
+                }
+
+                // Collisione proiettile-nemico
+                for (let j = bullets.length - 1; j >= 0; j--) {
+                    let b = bullets[j];
+                    const dist = Math.hypot(e.x - b.x, e.y - b.y);
+                    if (dist < e.radius + b.radius) {
+                        e.hp -= 15; // Danno proiettile
+                        bullets.splice(j, 1); // Rimuovi proiettile
+                        
+                        if (e.hp <= 0) {
+                            enemies.splice(i, 1);
+                            score += 1;
+                            scoreEl.innerText = score;
+                            break; // Nemico morto, passa al prossimo
+                        }
+                    }
+                }
+            }
+
+            drawJoysticks();
+            frameCount++;
+        }
+
+        // Fullscreen API Wrapper
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Errore Fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        document.getElementById('restartBtn').addEventListener('click', init);
+
+        // Avvia!
+        init();
+
     </script>
 </body>
 </html>
