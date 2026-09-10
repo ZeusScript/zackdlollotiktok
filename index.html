@@ -3,316 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meme Studio - Crea e Scarica Meme</title>
+    <title>Brawl 2D - Mini Brawl Stars</title>
     <style>
-        :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --border: #334155;
-            --accent: #8b5cf6;
-            --accent-hover: #7c3aed;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Impact', 'Arial Black', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        body { background-color: #0b0f19; color: white; font-family: 'Arial Black', sans-serif; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
         
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
+        #game-container { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        canvas { background: #22c55e; border: 4px solid #15803d; box-shadow: 0 0 30px rgba(0,0,0,0.8); cursor: crosshair; }
 
-        header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+        /* HUD Interfaccia */
+        .hud { position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .hud-box { background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 10px; border: 2px solid #fff; font-size: 1.2rem; }
+        
+        .super-btn { position: absolute; bottom: 30px; right: 30px; background: #eab308; border: 4px solid #fff; color: #000; padding: 15px 25px; border-radius: 50px; font-size: 1.2rem; font-weight: bold; display: none; cursor: pointer; box-shadow: 0 0 20px #eab308; }
 
-        header h1 {
-            font-size: 2.5rem;
-            color: #f43f5e;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media(min-width: 800px) {
-            .grid { grid-template-columns: 350px 1fr; }
-        }
-
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            height: fit-content;
-        }
-
-        .card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        input[type="text"], select, input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            background: #0f172a;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: white;
-            font-size: 0.9rem;
-            font-family: sans-serif;
-        }
-
-        .controls-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: sans-serif;
-        }
-
-        .btn-download {
-            background: #10b981;
-            color: #000;
-            margin-top: 15px;
-        }
-
-        .btn-download:hover {
-            background: #059669;
-            color: #fff;
-        }
-
-        /* Area Canvas e Anteprima */
-        .preview-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .canvas-container {
-            width: 100%;
-            max-width: 600px;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        }
-
-        canvas {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+        /* Game Over Screen */
+        #game-over { position: absolute; background: rgba(0,0,0,0.85); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; display: none; }
+        #game-over h1 { font-size: 3.5rem; color: #ef4444; text-shadow: 0 0 10px #000; }
+        .restart-btn { background: #3b82f6; border: none; color: white; padding: 15px 40px; font-size: 1.5rem; font-family: inherit; border-radius: 12px; cursor: pointer; border: 3px solid #fff; }
+        .restart-btn:hover { background: #2563eb; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🔥 MEME GENERATOR & DOWNLOADER</h1>
-        <p>Scegli un template o carica una foto, aggiungi il testo e scarica il tuo meme gratis</p>
-    </header>
+    <div id="game-container">
+        <canvas id="canvas"></canvas>
 
-    <div class="grid">
-        <!-- PANNELLO CONTROLLI -->
-        <div class="card">
-            <h2>⚙️ Personalizza Meme</h2>
-
-            <div class="form-group">
-                <label>1. Scegli un Template Famoso</label>
-                <select id="templateSelect" onchange="loadSelectedTemplate()">
-                    <option value="">Caricamento template in corso...</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>...oppure Carica la tua foto</label>
-                <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)">
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
-
-            <div class="form-group">
-                <label>Testo Superiore (In Alto)</label>
-                <input type="text" id="topText" placeholder="QUANDO IL PROFESSORE..." oninput="drawMeme()">
-            </div>
-
-            <div class="form-group">
-                <label>Testo Inferiore (In Basso)</label>
-                <input type="text" id="bottomText" placeholder="MA TU HAI GIÀ STUDIATO" oninput="drawMeme()">
-            </div>
-
-            <div class="controls-row">
-                <div class="form-group" style="flex:1;">
-                    <label>Dimensione Testo</label>
-                    <input type="number" id="fontSize" value="40" min="20" max="80" oninput="drawMeme()">
-                </div>
-                <div class="form-group" style="flex:1;">
-                    <label>Colore Testo</label>
-                    <input type="color" id="textColor" value="#ffffff" onchange="drawMeme()" style="height: 40px; padding: 2px; width: 100%;">
-                </div>
-            </div>
-
-            <button class="btn btn-download" onclick="downloadMeme()">📥 SCARICA MEME (PNG)</button>
+        <div class="hud">
+            <div class="hud-box" style="color: #60a5fa;">🥊 SCONFITTI: <span id="score">0</span></div>
+            <div class="hud-box" style="color: #facc15;">💎 POWER CUBES: <span id="cubes">0</span></div>
         </div>
 
-        <!-- ANTEPRIMA MEME -->
-        <div class="card preview-area">
-            <h2>🖼️ Anteprima in tempo reale</h2>
-            <div class="canvas-container">
-                <canvas id="memeCanvas"></canvas>
-            </div>
+        <button id="superBtn" class="super-btn" onclick="useSuper()">🔥 SUPER PRONTA! (BARRA SPAZIO)</button>
+
+        <div id="game-over">
+            <h1>SEI STATO ELIMINATO!</h1>
+            <p style="font-size: 1.5rem;">Brawler Sconfitti: <span id="finalScore">0</span></p>
+            <button class="restart-btn" onclick="restartGame()">GIOCA ANCORA</button>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('memeCanvas');
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let currentImage = new Image();
-        currentImage.crossOrigin = "anonymous";
+        
+        canvas.width = Math.min(window.innerWidth - 20, 1000);
+        canvas.height = Math.min(window.innerHeight - 20, 700);
 
-        // Carica i 100 template di meme più famosi via API
-        async function fetchTemplates() {
+        // Audio Synth
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(freq, duration) {
             try {
-                const response = await fetch('https://api.imgflip.com/get_memes');
-                const data = await response.json();
-                const memes = data.data.memes;
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e){}
+        }
 
-                const select = document.getElementById('templateSelect');
-                select.innerHTML = '';
-                
-                memes.forEach((meme, index) => {
-                    const option = document.createElement('option');
-                    option.value = meme.url;
-                    option.textContent = meme.name;
-                    select.appendChild(option);
+        // Stato Giocatore
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 22,
+            hp: 100,
+            maxHp: 100,
+            speed: 4,
+            ammo: 3,
+            maxAmmo: 3,
+            ammoTimer: 0,
+            superCharge: 0, // max 100
+            cubes: 0,
+            damage: 25
+        };
+
+        let keys = {};
+        let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+        let bullets = [];
+        let enemies = [];
+        let cubes = [];
+        let score = 0;
+        let isGameOver = false;
+
+        // Input
+        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; if(e.code === 'Space') useSuper(); });
+        window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+        canvas.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        canvas.addEventListener('mousedown', shoot);
+
+        function shoot() {
+            if (isGameOver || player.ammo < 1) return;
+            
+            player.ammo--;
+            playSound(400, 0.1);
+
+            let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+            bullets.push({
+                x: player.x,
+                y: player.y,
+                dx: Math.cos(angle) * 12,
+                dy: Math.sin(angle) * 12,
+                radius: 6,
+                isSuper: false,
+                damage: player.damage
+            });
+        }
+
+        function useSuper() {
+            if (player.superCharge < 100 || isGameOver) return;
+            player.superCharge = 0;
+            document.getElementById('superBtn').style.display = 'none';
+            playSound(800, 0.3);
+
+            // Spara 8 proiettili a cerchio
+            for (let i = 0; i < 12; i++) {
+                let angle = (Math.PI * 2 / 12) * i;
+                bullets.push({
+                    x: player.x,
+                    y: player.y,
+                    dx: Math.cos(angle) * 14,
+                    dy: Math.sin(angle) * 14,
+                    radius: 12,
+                    isSuper: true,
+                    damage: player.damage * 2
+                });
+            }
+        }
+
+        function spawnEnemy() {
+            if (isGameOver) return;
+            let x = Math.random() < 0.5 ? 0 : canvas.width;
+            let y = Math.random() * canvas.height;
+            enemies.push({
+                x: x, y: y,
+                radius: 20,
+                hp: 60, maxHp: 60,
+                speed: 1.8 + Math.random() * 0.8,
+                lastShot: Date.now()
+            });
+        }
+        setInterval(spawnEnemy, 2000);
+
+        function update() {
+            if (isGameOver) return;
+
+            // Movimento Player (WASD / Frecce)
+            if ((keys['w'] || keys['arrowup']) && player.y > player.radius) player.y -= player.speed;
+            if ((keys['s'] || keys['arrowdown']) && player.y < canvas.height - player.radius) player.y += player.speed;
+            if ((keys['a'] || keys['arrowleft']) && player.x > player.radius) player.x -= player.speed;
+            if ((keys['d'] || keys['arrowright']) && player.x < canvas.width - player.radius) player.x += player.speed;
+
+            // Ricarica Munizioni
+            if (player.ammo < player.maxAmmo) {
+                player.ammoTimer += 0.02;
+                if (player.ammoTimer >= 1) {
+                    player.ammo++;
+                    player.ammoTimer = 0;
+                }
+            }
+
+            // Aggiorna Proiettili
+            bullets.forEach((b, i) => {
+                b.x += b.dx;
+                b.y += b.dy;
+                if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+                    bullets.splice(i, 1);
+                }
+            });
+
+            // Aggiorna Nemici
+            enemies.forEach((e, ei) => {
+                let angle = Math.atan2(player.y - e.y, player.x - e.x);
+                e.x += Math.cos(angle) * e.speed;
+                e.y += Math.sin(angle) * e.speed;
+
+                // Collisione Proiettili -> Nemici
+                bullets.forEach((b, bi) => {
+                    let dist = Math.hypot(b.x - e.x, b.y - e.y);
+                    if (dist < b.radius + e.radius) {
+                        e.hp -= b.damage;
+                        playSound(200, 0.05);
+
+                        // Carica Super
+                        if (player.superCharge < 100) {
+                            player.superCharge += 15;
+                            if (player.superCharge >= 100) {
+                                player.superCharge = 100;
+                                document.getElementById('superBtn').style.display = 'block';
+                            }
+                        }
+
+                        if (!b.isSuper) bullets.splice(bi, 1);
+
+                        // Nemico Sconfitto
+                        if (e.hp <= 0) {
+                            cubes.push({ x: e.x, y: e.y }); // Rilascia Power Cube
+                            enemies.splice(ei, 1);
+                            score++;
+                            document.getElementById('score').textContent = score;
+                        }
+                    }
                 });
 
-                // Carica il primo meme di default
-                if(memes.length > 0) {
-                    loadImgFromUrl(memes[0].url);
+                // Danno al Giocatore
+                let distPlayer = Math.hypot(player.x - e.x, player.y - e.y);
+                if (distPlayer < player.radius + e.radius) {
+                    player.hp -= 0.5;
+                    playSound(100, 0.05);
+                    if (player.hp <= 0) gameOver();
                 }
-            } catch (error) {
-                console.error("Errore nel caricamento dei template:", error);
-            }
+            });
+
+            // Raccolta Power Cubes
+            cubes.forEach((c, ci) => {
+                let dist = Math.hypot(player.x - c.x, player.y - c.y);
+                if (dist < player.radius + 15) {
+                    cubes.splice(ci, 1);
+                    player.cubes++;
+                    player.maxHp += 15;
+                    player.hp = Math.min(player.hp + 20, player.maxHp);
+                    player.damage += 5;
+                    document.getElementById('cubes').textContent = player.cubes;
+                    playSound(600, 0.15);
+                }
+            });
         }
 
-        function loadSelectedTemplate() {
-            const url = document.getElementById('templateSelect').value;
-            if (url) loadImgFromUrl(url);
-        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        function loadImgFromUrl(url) {
-            currentImage = new Image();
-            currentImage.crossOrigin = "anonymous";
-            currentImage.src = url;
-            currentImage.onload = () => {
-                drawMeme();
-            };
-        }
+            // Griglia Erba
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            for(let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
+            for(let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
 
-        function handleImageUpload(e) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                currentImage = new Image();
-                currentImage.src = event.target.result;
-                currentImage.onload = () => {
-                    drawMeme();
+            // Disegna Power Cubes
+            cubes.forEach(c => {
+                ctx.fillStyle = '#facc15';
+                ctx.fillRect(c.x - 10, c.y - 10, 20, 20);
+                ctx.strokeStyle = '#fff';
+                ctx.strokeRect(c.x - 10, c.y - 10, 20, 20);
+            });
+
+            // Disegna Proiettili
+            bullets.forEach(b => {
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+                ctx.fillStyle = b.isSuper ? '#eab308' : '#3b82f6';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#fff';
+                ctx.stroke();
+            });
+
+            // Disegna Nemici (Red Brawlers)
+            enemies.forEach(e => {
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#ef4444';
+                ctx.fill();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#000';
+                ctx.stroke();
+
+                // Barra Vita Nemico
+                ctx.fillStyle = '#000';
+                ctx.fillRect(e.x - 20, e.y - 32, 40, 6);
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(e.x - 20, e.y - 32, (e.hp / e.maxHp) * 40, 6);
+            });
+
+            // Disegna Giocatore (Blue Brawler)
+            if (!isGameOver) {
+                ctx.beginPath();
+                ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#3b82f6';
+                ctx.fill();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#fff';
+                ctx.stroke();
+
+                // Direzione Sguardo
+                let angle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+                ctx.beginPath();
+                ctx.moveTo(player.x, player.y);
+                ctx.lineTo(player.x + Math.cos(angle) * 30, player.y + Math.sin(angle) * 30);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = '#000';
+                ctx.stroke();
+
+                // Barra Vita Player (Verde)
+                ctx.fillStyle = '#000';
+                ctx.fillRect(player.x - 25, player.y - 45, 50, 7);
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(player.x - 25, player.y - 45, Math.max(0, (player.hp / player.maxHp) * 50), 7);
+
+                // Slot Munizioni (Arancioni)
+                for (let i = 0; i < player.maxAmmo; i++) {
+                    ctx.fillStyle = '#000';
+                    ctx.fillRect(player.x - 25 + (i * 18), player.y - 35, 14, 5);
+                    if (i < player.ammo) {
+                        ctx.fillStyle = '#f97316';
+                        ctx.fillRect(player.x - 25 + (i * 18), player.y - 35, 14, 5);
+                    }
                 }
             }
-            if(e.target.files[0]) {
-                reader.readAsDataURL(e.target.files[0]);
-            }
         }
 
-        function drawMeme() {
-            if (!currentImage.complete || currentImage.width === 0) return;
-
-            // Imposta dimensioni del canvas pari all'immagine
-            canvas.width = currentImage.width;
-            canvas.height = currentImage.height;
-
-            // Disegna Immagine
-            ctx.drawImage(currentImage, 0, 0);
-
-            // Lettura input testo
-            const topText = document.getElementById('topText').value.toUpperCase();
-            const bottomText = document.getElementById('bottomText').value.toUpperCase();
-            const fontSize = parseInt(document.getElementById('fontSize').value) || 40;
-            const textColor = document.getElementById('textColor').value;
-
-            // Configurazione Stile Testo Meme (stile Impact classico)
-            ctx.fillStyle = textColor;
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = Math.max(3, fontSize / 8);
-            ctx.textAlign = 'center';
-            ctx.font = `900 ${fontSize}px Impact, 'Arial Black', sans-serif`;
-
-            // Disegna Testo In Alto
-            if (topText) {
-                ctx.textBaseline = 'top';
-                ctx.strokeText(topText, canvas.width / 2, 15);
-                ctx.fillText(topText, canvas.width / 2, 15);
-            }
-
-            // Disegna Testo In Basso
-            if (bottomText) {
-                ctx.textBaseline = 'bottom';
-                ctx.strokeText(bottomText, canvas.width / 2, canvas.height - 15);
-                ctx.fillText(bottomText, canvas.width / 2, canvas.height - 15);
-            }
+        function gameLoop() {
+            update();
+            draw();
+            if (!isGameOver) requestAnimationFrame(gameLoop);
         }
 
-        function downloadMeme() {
-            const link = document.createElement('a');
-            link.download = 'mio-meme.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+        function gameOver() {
+            isGameOver = true;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('game-over').style.display = 'flex';
         }
 
-        // Inizializza
-        fetchTemplates();
+        function restartGame() {
+            player.hp = 100;
+            player.maxHp = 100;
+            player.ammo = 3;
+            player.cubes = 0;
+            player.damage = 25;
+            player.superCharge = 0;
+            player.x = canvas.width / 2;
+            player.y = canvas.height / 2;
+            enemies = [];
+            bullets = [];
+            cubes = [];
+            score = 0;
+            isGameOver = false;
+            document.getElementById('score').textContent = '0';
+            document.getElementById('cubes').textContent = '0';
+            document.getElementById('superBtn').style.display = 'none';
+            document.getElementById('game-over').style.display = 'none';
+            gameLoop();
+        }
+
+        gameLoop();
     </script>
 </body>
 </html>
