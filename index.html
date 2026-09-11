@@ -2,137 +2,89 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Brawl Stars HTML5 - Fixed Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brawl Stars HTML5</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
 <body>
 
-    <div class="bg-pattern"></div>
-
     <!-- LOBBY SCREEN -->
     <div id="lobby-screen" class="screen active">
-        <div class="top-bar">
-            <div class="profile-badge">
-                <div class="profile-avatar">🏆</div>
-                <div>
-                    <div class="profile-name" id="user-name">ProGamer</div>
-                    <div class="profile-trophies">
-                        <span>🏆</span> <span id="trophies-count">1250</span>
-                    </div>
-                </div>
-            </div>
-            <div class="currencies">
-                <div class="currency-item">
-                    <span style="color:#FFCC00">🪙</span>
-                    <span id="coins-count">850</span>
-                </div>
-                <div class="currency-item">
-                    <span style="color:#00E640">💎</span>
-                    <span id="gems-count">45</span>
-                </div>
-                <button class="btn-bs" onclick="toggleFullScreen()">FULLSCREEN</button>
-            </div>
+        <div class="header">
+            <div class="title">BRAWL HTML</div>
+            <button class="btn btn-blue" style="width:auto; padding:6px 12px;" onclick="toggleFullScreen()">Fullscreen</button>
         </div>
 
-        <div class="lobby-main">
-            <div class="brawler-display-container">
-                <div class="brawler-pedestal"></div>
-                <div class="brawler-display" id="lobby-brawler-img"></div>
-                <div class="brawler-name" id="lobby-brawler-name">SHELBY</div>
-                <div class="brawler-rarity-tag" id="lobby-rarity-tag">Comune</div>
-            </div>
+        <div class="brawler-preview">
+            <div id="lobby-brawler-img" class="brawler-avatar"></div>
+            <div id="lobby-brawler-name" class="brawler-name">SHELBY</div>
+            <div id="lobby-rarity-tag" class="rarity-tag">Comune</div>
         </div>
 
-        <div class="bottom-nav">
-            <button class="nav-btn" onclick="openModal('brawlers-modal')">
-                <span style="font-size:18px;">⚔️</span>
-                <span>BRAWLERS</span>
-            </button>
-            <button class="nav-btn" onclick="openModal('skins-modal')">
-                <span style="font-size:18px;">🎨</span>
-                <span>SKIN</span>
-            </button>
-            <button class="nav-btn play-btn" onclick="startGame()">GIOCA</button>
-            <button class="nav-btn" onclick="openModal('maps-modal')">
-                <span style="font-size:18px;">🗺️</span>
-                <span>MAPPA</span>
-            </button>
-            <button class="nav-btn" onclick="openModal('multiplayer-modal')">
-                <span style="font-size:18px;">💬</span>
-                <span>SOCIAL</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- MODALS -->
-    <div id="brawlers-modal" class="modal">
-        <div class="modal-header">
-            <div class="modal-title">SELEZIONA BRAWLER</div>
-            <button class="close-btn" onclick="closeModal('brawlers-modal')">✕</button>
-        </div>
-        <div class="grid-list" id="brawlers-list"></div>
-    </div>
-
-    <div id="skins-modal" class="modal">
-        <div class="modal-header">
-            <div class="modal-title">SKIN DISPONIBILI</div>
-            <button class="close-btn" onclick="closeModal('skins-modal')">✕</button>
-        </div>
-        <div class="grid-list" id="skins-list"></div>
-    </div>
-
-    <div id="maps-modal" class="modal">
-        <div class="modal-header">
-            <div class="modal-title">SELEZIONA MAPPA</div>
-            <button class="close-btn" onclick="closeModal('maps-modal')">✕</button>
-        </div>
-        <div class="grid-list" id="maps-list"></div>
-    </div>
-
-    <div id="multiplayer-modal" class="modal">
-        <div class="modal-header">
-            <div class="modal-title">STANZA & CLUB CHAT</div>
-            <button class="close-btn" onclick="closeModal('multiplayer-modal')">✕</button>
-        </div>
-        <div style="margin-bottom: 12px;">
-            <div style="font-size: 12px; color: #aaa; margin-bottom: 4px;">IL TUO CODICE STANZA:</div>
-            <input type="text" id="my-peer-id" readonly class="chat-input" value="Generazione codice..." style="width: 100%; text-align: center; font-weight: bold; color: var(--brawl-yellow);">
-        </div>
-        <div style="margin-bottom: 12px; display: flex; gap: 8px;">
-            <input type="text" id="join-peer-id" class="chat-input" placeholder="Codice Amico...">
-            <button class="btn-bs" onclick="connectToPeer()">CONNETTI</button>
-        </div>
-        <div style="font-size: 13px; color: var(--brawl-blue); margin-bottom: 6px;">CHAT DEL CLUB</div>
-        <div class="chat-container">
-            <div class="chat-messages" id="chat-box">
-                <div style="color: #666;">[Sistema]: Benvenuto nella Chat di Gruppo!</div>
-            </div>
-            <div class="chat-input-group">
-                <input type="text" id="chat-msg" class="chat-input" placeholder="Scrivi un messaggio...">
-                <button class="btn-bs" onclick="sendChatMessage()">INVIA</button>
-            </div>
+        <div class="menu-buttons">
+            <button class="btn btn-blue" onclick="openModal('brawlers-modal')">Brawler</button>
+            <button class="btn btn-purple" onclick="openModal('skins-modal')">Skin</button>
+            <button class="btn btn-yellow" onclick="startGameIntro()">GIOCA</button>
         </div>
     </div>
 
     <!-- GAME SCREEN -->
     <div id="game-screen" class="screen">
         <canvas id="gameCanvas"></canvas>
-        <div class="game-hud">
-            <div style="width: 100%; display: flex; justify-content: flex-end; pointer-events: auto;">
-                <button class="btn-bs" style="background: linear-gradient(180deg, #FF2A2A 0%, #990000 100%);" onclick="exitGame()">ESCI</button>
+
+        <div class="hud">
+            <div class="gem-counter">💎 Blu: <span id="blue-gems">0</span> | Rosse: <span id="red-gems">0</span></div>
+            <div class="timer" id="match-timer">01:00</div>
+        </div>
+
+        <button class="btn-exit" onclick="exitGame()">ESCI</button>
+
+        <div class="controls-layer">
+            <div id="joystick-move" class="joystick-container">
+                <div id="knob-move" class="joystick-knob"></div>
             </div>
-            <div class="touch-controls">
-                <div class="joystick-zone" id="joystick-zone">
-                    <div class="joystick-knob" id="joystick-knob"></div>
+
+            <div class="action-buttons">
+                <div id="joystick-aim" class="joystick-container" style="width:80px; height:80px;">
+                    <div id="knob-aim" class="joystick-knob" style="width:35px; height:35px; background:#FF2A2A;"></div>
                 </div>
-                <div class="action-buttons">
-                    <button class="super-btn" id="btn-super">SUPER</button>
-                    <button class="attack-btn" id="btn-attack">SPARA</button>
-                </div>
+                <button id="btn-super" class="btn-action btn-super">SUPER</button>
             </div>
+        </div>
+
+        <!-- SCHERMATA VS -->
+        <div id="vs-overlay">
+            <div class="vs-card">
+                <div id="vs-p1-img" style="width:120px; height:120px;"></div>
+                <h2 id="vs-p1-name">TU</h2>
+            </div>
+            <div class="vs-title">VS</div>
+            <div class="vs-card">
+                <div id="vs-p2-img" style="width:120px; height:120px;"></div>
+                <h2 id="vs-p2-name">NEMICO</h2>
+            </div>
+        </div>
+
+        <!-- COUNTDOWN -->
+        <div id="countdown-overlay">3</div>
+    </div>
+
+    <!-- SELEZIONE BRAWLER MODAL -->
+    <div id="brawlers-modal" class="modal">
+        <div class="modal-content">
+            <h3>Scegli Brawler</h3>
+            <div id="brawlers-list" style="margin-top:15px;"></div>
+            <button class="btn btn-blue" onclick="closeModal('brawlers-modal')" style="width:100%; margin-top:10px;">Chiudi</button>
+        </div>
+    </div>
+
+    <!-- SELEZIONE SKIN MODAL -->
+    <div id="skins-modal" class="modal">
+        <div class="modal-content">
+            <h3>Scegli Skin</h3>
+            <div id="skins-list" style="margin-top:15px;"></div>
+            <button class="btn btn-purple" onclick="closeModal('skins-modal')" style="width:100%; margin-top:10px;">Chiudi</button>
         </div>
     </div>
 
