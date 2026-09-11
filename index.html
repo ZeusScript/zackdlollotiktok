@@ -3,24 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brawl Stars HTML5 - Full Game</title>
+    <title>Brawl Stars HTML5 - Ultimate Edition</title>
+    <!-- Font Montserrat extra-bold per stile Brawl Stars -->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
     <!-- PeerJS per Multiplayer Peer-to-Peer -->
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
+        :root {
+            --brawl-yellow: #ffca28;
+            --brawl-orange: #ff9800;
+            --brawl-red: #f44336;
+            --brawl-purple: #ab47bc;
+            --brawl-blue: #29b6f6;
+            --brawl-green: #00e676;
+            --brawl-dark: #0b0e14;
+            --brawl-card: #182232;
+            --brawl-border: #3b4d6b;
+        }
+
         * {
             box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
+            font-family: 'Lilita One', 'Montserrat', sans-serif;
         }
+
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #0b0e14;
+            background-color: var(--brawl-dark);
             color: #fff;
-            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
         }
 
@@ -35,7 +50,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, #101625 0%, #1e2942 100%);
+            background: radial-gradient(circle, #243552 0%, #0c121e 100%);
             z-index: 10;
         }
         .screen.active {
@@ -45,70 +60,74 @@
         /* HEADER & TOP BAR */
         .top-bar {
             width: 100%;
-            padding: 10px 15px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(0, 0, 0, 0.4);
-            border-bottom: 2px solid #ffca28;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
             z-index: 12;
         }
         .profile-badge {
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 3px solid #ffca28;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .profile-avatar {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: #ff9800;
+            background: linear-gradient(135deg, #ff9800, #f44336);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 0 8px rgba(255, 152, 0, 0.8);
+            font-size: 20px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.8);
         }
         .currencies {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             align-items: center;
         }
         .currency-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 4px 10px;
-            border-radius: 12px;
-            border: 1px solid #444;
+            gap: 6px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 2px solid #546e7a;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
         }
-        .coin-icon { color: #ffd700; }
-        .gem-icon { color: #00e676; }
-        .trophy-icon { color: #ff9100; }
+        .icon-svg {
+            width: 22px;
+            height: 22px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+        }
 
         /* PULSANTE FULLSCREEN */
         .fullscreen-btn {
-            background: #29b6f6;
+            background: linear-gradient(180deg, #29b6f6 0%, #0288d1 100%);
             color: #fff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
+            border: 2px solid #fff;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 3px 0 #0288d1;
+            box-shadow: 0 4px 0 #01579b, 0 6px 10px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 2px #000;
+            transition: transform 0.1s;
         }
         .fullscreen-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 #0288d1;
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #01579b;
         }
 
         /* LOBBY CONTENT */
@@ -119,6 +138,7 @@
             position: relative;
             justify-content: center;
             align-items: center;
+            background: radial-gradient(circle, rgba(255,202,40,0.15) 0%, rgba(0,0,0,0) 70%);
         }
         .brawler-preview {
             display: flex;
@@ -126,83 +146,95 @@
             align-items: center;
             justify-content: center;
             z-index: 5;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
         }
         .brawler-display {
-            width: 110px;
-            height: 110px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            border: 4px solid #fff;
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+            border: 6px solid #fff;
+            box-shadow: 0 0 35px rgba(255, 202, 40, 0.6), inset 0 0 15px rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            transition: transform 0.3s ease;
+            background-size: cover;
+            background-position: center;
         }
-        .brawler-display:hover {
-            transform: scale(1.05);
+        .brawler-display svg {
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
         }
         .brawler-name {
-            font-size: 24px;
-            font-weight: 900;
-            margin-top: 10px;
+            font-size: 32px;
+            margin-top: 15px;
             text-transform: uppercase;
-            text-shadow: 0 3px 6px rgba(0,0,0,0.8);
-            letter-spacing: 1px;
+            text-shadow: 3px 3px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+            letter-spacing: 2px;
+            color: #fff;
         }
-        .brawler-skin-tag {
-            font-size: 12px;
-            color: #29b6f6;
+        .brawler-rarity-tag {
+            font-size: 13px;
             font-weight: bold;
-            margin-top: 2px;
-            background: rgba(0,0,0,0.6);
-            padding: 2px 8px;
-            border-radius: 10px;
+            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 2px solid #fff;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+            margin-top: 5px;
+            letter-spacing: 1px;
         }
 
         /* BOTTOM NAVBAR LOBBY */
         .bottom-nav {
             width: 100%;
-            padding: 10px 15px;
+            padding: 12px 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
-            background: rgba(0, 0, 0, 0.85);
-            border-top: 2px solid #333;
+            gap: 15px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
             z-index: 12;
         }
         .nav-btn {
-            background: linear-gradient(180deg, #37474f 0%, #212121 100%);
-            border: 2px solid #546e7a;
+            background: linear-gradient(180deg, #455a64 0%, #263238 100%);
+            border: 3px solid #78909c;
             color: #fff;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 13px;
+            padding: 10px 16px;
+            border-radius: 16px;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 3px;
-            min-width: 65px;
-            box-shadow: 0 4px 0 #101010;
+            gap: 4px;
+            min-width: 85px;
+            box-shadow: 0 5px 0 #1c272b, 0 8px 12px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px #000;
+            transition: transform 0.1s;
         }
         .nav-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #101010;
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #1c272b;
         }
         .play-btn {
-            background: linear-gradient(180deg, #ff9800 0%, #e65100 100%);
-            border: 2px solid #ffe082;
-            padding: 10px 24px;
-            font-size: 18px;
-            border-radius: 16px;
-            box-shadow: 0 5px 0 #b23c00;
+            background: linear-gradient(180deg, #76ff03 0%, #33691e 100%);
+            border: 3px solid #ccff90;
+            padding: 12px 36px;
+            font-size: 24px;
+            border-radius: 20px;
+            box-shadow: 0 6px 0 #1b5e20, 0 10px 15px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
             animation: pulse 1.5s infinite alternate;
         }
         @keyframes pulse {
             0% { transform: scale(1); }
-            100% { transform: scale(1.04); }
+            100% { transform: scale(1.05); }
         }
 
         /* MODALI / POPUP MENU */
@@ -211,17 +243,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            max-width: 420px;
+            width: 92%;
+            max-width: 520px;
             max-height: 85%;
-            background: #182232;
-            border: 3px solid #ffca28;
-            border-radius: 20px;
+            background: var(--brawl-card);
+            border: 4px solid var(--brawl-yellow);
+            border-radius: 24px;
             padding: 20px;
             display: none;
             flex-direction: column;
             z-index: 20;
-            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            box-shadow: 0 0 50px rgba(0,0,0,0.95);
             overflow-y: auto;
         }
         .modal.active { display: flex; }
@@ -229,53 +261,92 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #334155;
-            padding-bottom: 10px;
+            border-bottom: 3px solid var(--brawl-border);
+            padding-bottom: 12px;
             margin-bottom: 15px;
         }
-        .modal-title { font-size: 20px; font-weight: 900; color: #ffca28; text-transform: uppercase; }
+        .modal-title { 
+            font-size: 22px; 
+            color: var(--brawl-yellow); 
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0 #000;
+            letter-spacing: 1px;
+        }
         .close-btn {
-            background: #e53935;
+            background: linear-gradient(180deg, #ff5252 0%, #b71c1c 100%);
             color: #fff;
-            border: none;
-            width: 30px;
-            height: 30px;
+            border: 2px solid #fff;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            font-weight: bold;
+            font-size: 18px;
             cursor: pointer;
+            box-shadow: 0 3px 0 #5f0909;
         }
 
-        /* ELEMENTI MODALI */
+        /* ELEMENTI MODALI E CARDS */
         .grid-list {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 14px;
         }
         .card-item {
-            background: #233148;
-            border: 2px solid #3b4d6b;
-            border-radius: 12px;
-            padding: 10px;
+            background: linear-gradient(135deg, #1f2c40 0%, #121a26 100%);
+            border: 3px solid var(--brawl-border);
+            border-radius: 16px;
+            padding: 12px;
             display: flex;
-            flex-direction: column;
+            gap: 12px;
             align-items: center;
-            text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .card-item:hover {
+            transform: scale(1.02);
+            border-color: var(--brawl-yellow);
         }
         .card-item.selected {
-            border-color: #00e676;
-            background: #1e3a34;
+            border-color: var(--brawl-green);
+            background: linear-gradient(135deg, #1b382b 0%, #0e241a 100%);
+            box-shadow: 0 0 15px rgba(0,230,118,0.4);
         }
-        .card-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-bottom: 6px;
+        .card-img-box {
+            width: 70px;
+            height: 70px;
+            border-radius: 14px;
+            border: 2px solid #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            flex-shrink: 0;
+            background-size: cover;
+        }
+        .card-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .card-title {
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .card-stats {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            color: #b0bec5;
+        }
+        .stat-badge {
+            background: rgba(0,0,0,0.5);
+            padding: 2px 6px;
+            border-radius: 6px;
+            border: 1px solid #455a64;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* CANVAS DI GIOCO */
@@ -291,7 +362,7 @@
             background-color: #2e7d32;
         }
 
-        /* HUD DI GIOCO (JOYSTICK E SCONTRO) */
+        /* HUD DI GIOCO */
         .game-hud {
             position: absolute;
             top: 0;
@@ -311,85 +382,97 @@
             pointer-events: auto;
         }
         .health-bar-container {
-            width: 140px;
-            height: 16px;
+            width: 180px;
+            height: 22px;
             background: #000;
-            border: 2px solid #fff;
-            border-radius: 10px;
+            border: 3px solid #fff;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+            position: relative;
         }
         .health-bar-fill {
             width: 100%;
             height: 100%;
-            background: #00e676;
-            transition: width 0.2s;
+            background: linear-gradient(180deg, #00e676 0%, #00a152 100%);
+            transition: width 0.2s ease-out;
+        }
+        .health-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            text-shadow: 1px 1px 2px #000;
         }
 
         /* CONTROLLI TOUCH */
         .touch-controls {
             position: absolute;
-            bottom: 20px;
+            bottom: 25px;
             width: 100%;
-            padding: 0 20px;
+            padding: 0 25px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
             pointer-events: auto;
         }
         .joystick-zone {
-            width: 110px;
-            height: 110px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             position: relative;
             touch-action: none;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
         }
         .joystick-knob {
-            width: 45px;
-            height: 45px;
-            background: #ffca28;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #ffca28 0%, #ff8f00 100%);
+            border: 2px solid #fff;
             border-radius: 50%;
             position: absolute;
-            top: 32px;
-            left: 32px;
-            box-shadow: 0 0 10px rgba(255, 202, 40, 0.8);
+            top: 33px;
+            left: 33px;
+            box-shadow: 0 0 15px rgba(255, 202, 40, 0.8);
             pointer-events: none;
         }
         .action-buttons {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
         }
         .attack-btn {
-            width: 65px;
-            height: 65px;
-            background: linear-gradient(180deg, #ff5252 0%, #b71c1c 100%);
-            border: 3px solid #ff8a80;
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(180deg, #ff5252 0%, #d50000 100%);
+            border: 4px solid #fff;
             border-radius: 50%;
             color: #fff;
-            font-weight: 900;
             font-size: 14px;
-            box-shadow: 0 4px 0 #5f0909;
+            box-shadow: 0 5px 0 #8e0000, 0 8px 12px rgba(0,0,0,0.5);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-shadow: 1px 1px 2px #000;
         }
         .super-btn {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(180deg, #ab47bc 0%, #4a148c 100%);
-            border: 3px solid #e1bee7;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(180deg, #e040fb 0%, #aa00ff 100%);
+            border: 3px solid #fff;
             border-radius: 50%;
             color: #fff;
-            font-weight: 900;
-            font-size: 11px;
-            box-shadow: 0 4px 0 #20003b;
+            font-size: 12px;
+            box-shadow: 0 5px 0 #4a0072, 0 8px 12px rgba(0,0,0,0.5);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-shadow: 1px 1px 2px #000;
         }
         .attack-btn:active, .super-btn:active {
             transform: scale(0.92);
@@ -400,27 +483,30 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
-            height: 200px;
+            height: 220px;
         }
         .chat-messages {
             flex: 1;
-            background: #101722;
-            border-radius: 8px;
+            background: #0f172a;
+            border-radius: 12px;
             padding: 10px;
             overflow-y: auto;
-            font-size: 12px;
+            font-size: 13px;
+            border: 2px solid var(--brawl-border);
+            font-family: 'Montserrat', sans-serif;
         }
         .chat-input-group {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
         .chat-input {
             flex: 1;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #334155;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid var(--brawl-border);
             background: #0f172a;
             color: #fff;
+            font-family: 'Montserrat', sans-serif;
         }
     </style>
 </head>
@@ -431,45 +517,66 @@
         <!-- TOP BAR -->
         <div class="top-bar">
             <div class="profile-badge">
-                <div class="profile-avatar" id="user-avatar">S</div>
+                <div class="profile-avatar" id="user-avatar">🏆</div>
                 <div>
-                    <div style="font-weight: 900; font-size: 13px;" id="user-name">ProGamer</div>
-                    <div style="font-size: 11px; color: #aaa;"><span class="trophy-icon">🏆</span> <span id="trophies-count">1250</span></div>
+                    <div style="font-size: 14px; text-shadow: 1px 1px 0 #000;" id="user-name">ProGamer</div>
+                    <div style="font-size: 12px; color: #ffca28; display: flex; align-items: center; gap: 4px;">
+                        <svg class="icon-svg" viewBox="0 0 24 24"><path fill="#ffca28" d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V18H8v2h8v-2h-3v-2.1c2.22-.49 3.88-2.32 3.99-4.68C19.22 10.82 21 8.84 21 6.5V5c0-1.1-.9-2-2-2z"/></svg>
+                        <span id="trophies-count">1250</span>
+                    </div>
                 </div>
             </div>
             <div class="currencies">
-                <div class="currency-item"><span class="coin-icon">🪙</span> <span id="coins-count">850</span></div>
-                <div class="currency-item"><span class="gem-icon">💎</span> <span id="gems-count">45</span></div>
-                <button class="fullscreen-btn" onclick="toggleFullScreen()">📱 SCHERMO INTERO</button>
+                <div class="currency-item">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#ffd700"/><circle cx="12" cy="12" r="6" fill="#ffaa00"/></svg>
+                    <span id="coins-count">850</span>
+                </div>
+                <div class="currency-item">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path fill="#00e676" d="M12 2L5 9l7 13 7-13z"/></svg>
+                    <span id="gems-count">45</span>
+                </div>
+                <button class="fullscreen-btn" onclick="toggleFullScreen()">FULLSCREEN</button>
             </div>
         </div>
 
         <!-- ANTEPRIMA BRAWLER CENTRALE -->
         <div class="lobby-main">
             <div class="brawler-preview">
-                <div class="brawler-display" id="lobby-brawler-img" style="background-color: #1e88e5;">
-                    <span style="font-size: 40px;" id="lobby-brawler-icon">💥</span>
+                <div class="brawler-display" id="lobby-brawler-img">
+                    <div id="lobby-brawler-icon-svg"></div>
                 </div>
                 <div class="brawler-name" id="lobby-brawler-name">SHELBY</div>
-                <div class="brawler-skin-tag" id="lobby-skin-name">Skin Predefinita</div>
+                <div class="brawler-rarity-tag" id="lobby-rarity-tag">Comune</div>
             </div>
         </div>
 
         <!-- NAVBAR IN BASSO -->
         <div class="bottom-nav">
-            <button class="nav-btn" onclick="openModal('brawlers-modal')">🎮<span>BRAWLERS</span></button>
-            <button class="nav-btn" onclick="openModal('skins-modal')">🎨<span>SKIN</span></button>
-            <button class="nav-btn play-btn" onclick="startGame()">⚔️ GIOCA</button>
-            <button class="nav-btn" onclick="openModal('maps-modal')">🗺️<span>MAPPA</span></button>
-            <button class="nav-btn" onclick="openModal('multiplayer-modal')">🌐<span>MULTIPLAYER</span></button>
+            <button class="nav-btn" onclick="openModal('brawlers-modal')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path fill="#fff" d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.2-6.3-4.6-6.3 4.6 2.3-7.2-6-4.6h7.6z"/></svg>
+                <span>BRAWLERS</span>
+            </button>
+            <button class="nav-btn" onclick="openModal('skins-modal')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path fill="#fff" d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.58 10.57 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                <span>SKIN</span>
+            </button>
+            <button class="nav-btn play-btn" onclick="startGame()">GIOCA</button>
+            <button class="nav-btn" onclick="openModal('maps-modal')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path fill="#fff" d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5z"/></svg>
+                <span>MAPPA</span>
+            </button>
+            <button class="nav-btn" onclick="openModal('multiplayer-modal')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path fill="#fff" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>SOCIAL</span>
+            </button>
         </div>
     </div>
 
-    <!-- MODALE BRAWLERS -->
+    <!-- MODALE BRAWLERS CON CARATTERISTICHE -->
     <div id="brawlers-modal" class="modal">
         <div class="modal-header">
             <div class="modal-title">SELEZIONA BRAWLER</div>
-            <button class="close-btn" onclick="closeModal('brawlers-modal')">X</button>
+            <button class="close-btn" onclick="closeModal('brawlers-modal')">✕</button>
         </div>
         <div class="grid-list" id="brawlers-list"></div>
     </div>
@@ -478,16 +585,16 @@
     <div id="skins-modal" class="modal">
         <div class="modal-header">
             <div class="modal-title">SKIN DISPONIBILI</div>
-            <button class="close-btn" onclick="closeModal('skins-modal')">X</button>
+            <button class="close-btn" onclick="closeModal('skins-modal')">✕</button>
         </div>
         <div class="grid-list" id="skins-list"></div>
     </div>
 
-    <!-- MODALE MAPPE -->
+    <!-- MODALE MAPPE CON CARATTERISTICHE -->
     <div id="maps-modal" class="modal">
         <div class="modal-header">
             <div class="modal-title">SELEZIONA MAPPA</div>
-            <button class="close-btn" onclick="closeModal('maps-modal')">X</button>
+            <button class="close-btn" onclick="closeModal('maps-modal')">✕</button>
         </div>
         <div class="grid-list" id="maps-list"></div>
     </div>
@@ -496,17 +603,17 @@
     <div id="multiplayer-modal" class="modal">
         <div class="modal-header">
             <div class="modal-title">STANZA & CLUB CHAT</div>
-            <button class="close-btn" onclick="closeModal('multiplayer-modal')">X</button>
+            <button class="close-btn" onclick="closeModal('multiplayer-modal')">✕</button>
         </div>
         <div style="margin-bottom: 15px;">
             <div style="font-size: 12px; color: #aaa; margin-bottom: 5px;">IL TUO CODICE STANZA (PEERJS):</div>
-            <input type="text" id="my-peer-id" readonly class="chat-input" value="Generazione codice..." style="width: 100%; text-align: center; font-weight: bold; color: #ffca28;">
+            <input type="text" id="my-peer-id" readonly class="chat-input" value="Generazione codice..." style="width: 100%; text-align: center; font-weight: bold; color: var(--brawl-yellow);">
         </div>
-        <div style="margin-bottom: 15px; display: flex; gap: 5px;">
+        <div style="margin-bottom: 15px; display: flex; gap: 8px;">
             <input type="text" id="join-peer-id" class="chat-input" placeholder="Inserisci Codice Amico...">
             <button class="fullscreen-btn" onclick="connectToPeer()">CONNETTI</button>
         </div>
-        <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #29b6f6;">CHAT DEL CLUB</div>
+        <div style="font-size: 14px; color: var(--brawl-blue); margin-bottom: 6px;">CHAT DEL CLUB</div>
         <div class="chat-container">
             <div class="chat-messages" id="chat-box">
                 <div style="color: #666;">[Sistema]: Benvenuto nella Chat di Gruppo!</div>
@@ -525,8 +632,9 @@
             <div class="game-top-bar">
                 <div class="health-bar-container">
                     <div class="health-bar-fill" id="player-hp-bar"></div>
+                    <div class="health-text" id="player-hp-text">1000 / 1000</div>
                 </div>
-                <button class="fullscreen-btn" style="background: #e53935;" onclick="exitGame()">ESCI</button>
+                <button class="fullscreen-btn" style="background: linear-gradient(180deg, #ff5252 0%, #b71c1c 100%);" onclick="exitGame()">ESCI</button>
             </div>
             <div class="touch-controls">
                 <div class="joystick-zone" id="joystick-zone">
@@ -541,11 +649,50 @@
     </div>
 
     <script>
-        /* === DATI DI GIOCO === */
+        /* === DATI COMPLETI DI GIOCO (BRAWLERS, MAPPE, SKINS) === */
         const BRAWLERS = [
-            { id: 'shelby', name: 'SHELBY', color: '#1e88e5', icon: '💥', hp: 1000, speed: 3.5, desc: 'Sparatutto Bilanciato' },
-            { id: 'bull', name: 'BULL', color: '#e53935', icon: '🐂', hp: 1600, speed: 2.8, desc: 'Tank a Corto Raggio' },
-            { id: 'crow', name: 'CROW', color: '#8e24aa', icon: '🦅', hp: 700, speed: 4.2, desc: 'Veloce e Velenoso' }
+            { 
+                id: 'shelby', 
+                name: 'SHELBY', 
+                rarity: 'Comune', 
+                rarityColor: '#29b6f6',
+                color: '#1e88e5', 
+                hp: 1200, 
+                damage: 210, 
+                speed: 3.6, 
+                range: 'Medio',
+                class: 'Danni',
+                desc: 'Spara una raffica di pallini a corto e medio raggio con il suo fucile a pompa.',
+                svg: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#1e88e5"/><path d="M30 40 L70 40 L50 75 Z" fill="#fff"/><circle cx="40" cy="40" r="8" fill="#000"/><circle cx="60" cy="40" r="8" fill="#000"/></svg>`
+            },
+            { 
+                id: 'bull', 
+                name: 'BULL', 
+                rarity: 'Raro', 
+                rarityColor: '#00e676',
+                color: '#e53935', 
+                hp: 1800, 
+                damage: 320, 
+                speed: 3.0, 
+                range: 'Corto',
+                class: 'Peso Massimo',
+                desc: 'Devastante a distanza ravvicinata. La sua Super abbatte gli ostacoli e carica i nemici.',
+                svg: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#e53935"/><path d="M25 30 L50 15 L75 30 L50 85 Z" fill="#ffca28"/><circle cx="35" cy="45" r="7" fill="#fff"/><circle cx="65" cy="45" r="7" fill="#fff"/></svg>`
+            },
+            { 
+                id: 'crow', 
+                name: 'CROW', 
+                rarity: 'Leggendario', 
+                rarityColor: '#ffca28',
+                color: '#8e24aa', 
+                hp: 850, 
+                damage: 140, 
+                speed: 4.3, 
+                range: 'Lungo',
+                class: 'Assassino',
+                desc: 'Lancia tre pugnali avvelenati che infliggono danni continui nel tempo.',
+                svg: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#8e24aa"/><path d="M20 50 L50 20 L80 50 L50 80 Z" fill="#00e5ff"/><circle cx="50" cy="45" r="10" fill="#fff"/></svg>`
+            }
         ];
 
         const SKINS = [
@@ -555,9 +702,33 @@
         ];
 
         const MAPS = [
-            { id: 'gem_grab', name: 'Arraffagemme', bg: '#2e7d32', border: '#1b5e20' },
-            { id: 'brawl_ball', name: 'Brawl Ball', bg: '#1565c0', border: '#0d47a1' },
-            { id: 'desert', name: 'Scontro Deserto', bg: '#d84315', border: '#bf360c' }
+            { 
+                id: 'gem_grab', 
+                name: 'Arraffagemme', 
+                mode: '3v3 Standard',
+                bg: '#2e7d32', 
+                border: '#1b5e20',
+                bestBrawler: 'Shelby, Crow',
+                desc: 'Raccogli 10 gemme che fuoriescono dalla miniera centrale e difendile fino allo scadere del tempo!'
+            },
+            { 
+                id: 'brawl_ball', 
+                name: 'Brawl Ball', 
+                mode: 'Azione Sportiva',
+                bg: '#1565c0', 
+                border: '#0d47a1',
+                bestBrawler: 'Bull',
+                desc: 'Porta la palla nella porta avversaria per segnare! Vince la squadra che segna per prima 2 goal.'
+            },
+            { 
+                id: 'desert', 
+                name: 'Scontro Deserto', 
+                mode: 'Sopravvivenza',
+                bg: '#d84315', 
+                border: '#bf360c',
+                bestBrawler: 'Crow',
+                desc: 'Mappa aperta e piena di cespugli secchi. Elimina tutti gli avversari per essere l\'ultimo brawler rimasto.'
+            }
         ];
 
         // Stato Selezionato
@@ -570,20 +741,28 @@
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
         function renderSelectionLists() {
-            // Lista Brawlers
+            // Render Lista Brawlers
             const bContainer = document.getElementById('brawlers-list');
             bContainer.innerHTML = '';
             BRAWLERS.forEach(b => {
                 const item = document.createElement('div');
                 item.className = `card-item ${currentBrawler.id === b.id ? 'selected' : ''}`;
                 item.onclick = () => { currentBrawler = b; updateLobbyDisplay(); renderSelectionLists(); closeModal('brawlers-modal'); };
-                item.innerHTML = `<div class="card-img" style="background:${b.color}">${b.icon}</div>
-                                  <div style="font-weight:bold; font-size:13px;">${b.name}</div>
-                                  <div style="font-size:10px; color:#aaa;">${b.desc}</div>`;
+                item.innerHTML = `
+                    <div class="card-img-box" style="background:${b.color}">${b.svg}</div>
+                    <div class="card-info">
+                        <div class="card-title">${b.name} <span style="font-size:10px; color:${b.rarityColor};">(${b.rarity})</span></div>
+                        <div style="font-size:11px; color:#cfd8dc;">${b.desc}</div>
+                        <div class="card-stats">
+                            <span class="stat-badge">❤️ HP: ${b.hp}</span>
+                            <span class="stat-badge">⚔️ Danno: ${b.damage}</span>
+                            <span class="stat-badge">⚡ Vel: ${b.speed}</span>
+                        </div>
+                    </div>`;
                 bContainer.appendChild(item);
             });
 
-            // Lista Skin
+            // Render Lista Skin
             const sContainer = document.getElementById('skins-list');
             sContainer.innerHTML = '';
             SKINS.forEach(s => {
@@ -591,28 +770,40 @@
                 item.className = `card-item ${currentSkin.id === s.id ? 'selected' : ''}`;
                 item.onclick = () => { currentSkin = s; updateLobbyDisplay(); renderSelectionLists(); closeModal('skins-modal'); };
                 const color = s.color || currentBrawler.color;
-                item.innerHTML = `<div class="card-img" style="background:${color}">${currentBrawler.icon}</div>
-                                  <div style="font-weight:bold; font-size:13px;">${s.name}</div>`;
+                item.innerHTML = `
+                    <div class="card-img-box" style="background:${color}">${currentBrawler.svg}</div>
+                    <div class="card-info">
+                        <div class="card-title">${s.name}</div>
+                        <div style="font-size:12px; color:#aaa;">Skin speciale per ${currentBrawler.name}</div>
+                    </div>`;
                 sContainer.appendChild(item);
             });
 
-            // Lista Mappe
+            // Render Lista Mappe
             const mContainer = document.getElementById('maps-list');
             mContainer.innerHTML = '';
             MAPS.forEach(m => {
                 const item = document.createElement('div');
                 item.className = `card-item ${currentMap.id === m.id ? 'selected' : ''}`;
                 item.onclick = () => { currentMap = m; renderSelectionLists(); closeModal('maps-modal'); };
-                item.innerHTML = `<div class="card-img" style="background:${m.bg}">🗺️</div>
-                                  <div style="font-weight:bold; font-size:13px;">${m.name}</div>`;
+                item.innerHTML = `
+                    <div class="card-img-box" style="background:${m.bg}">🗺️</div>
+                    <div class="card-info">
+                        <div class="card-title">${m.name} <span style="font-size:11px; color:#ffca28;">[${m.mode}]</span></div>
+                        <div style="font-size:11px; color:#cfd8dc;">${m.desc}</div>
+                        <div class="card-stats">
+                            <span class="stat-badge">🏆 Consigliato: ${m.bestBrawler}</span>
+                        </div>
+                    </div>`;
                 mContainer.appendChild(item);
             });
         }
 
         function updateLobbyDisplay() {
             document.getElementById('lobby-brawler-name').innerText = currentBrawler.name;
-            document.getElementById('lobby-skin-name').innerText = currentSkin.name;
-            document.getElementById('lobby-brawler-icon').innerText = currentBrawler.icon;
+            document.getElementById('lobby-rarity-tag').innerText = `${currentBrawler.rarity} - ${currentBrawler.class}`;
+            document.getElementById('lobby-rarity-tag').style.backgroundColor = currentBrawler.rarityColor;
+            document.getElementById('lobby-brawler-icon-svg').innerHTML = currentBrawler.svg;
             document.getElementById('lobby-brawler-img').style.backgroundColor = currentSkin.color || currentBrawler.color;
         }
 
@@ -633,8 +824,8 @@
         /* === MOTORE DI GIOCO CANVAS === */
         let canvas, ctx;
         let gameRunning = false;
-        let player = { x: 0, y: 0, radius: 18, hp: 1000, maxHp: 1000, vx: 0, vy: 0, angle: 0 };
-        let enemy = { x: 200, y: 150, radius: 20, hp: 800, maxHp: 800 };
+        let player = { x: 0, y: 0, radius: 20, hp: 1000, maxHp: 1000, vx: 0, vy: 0, angle: 0 };
+        let enemy = { x: 200, y: 150, radius: 22, hp: 1200, maxHp: 1200 };
         let bullets = [];
 
         function startGame() {
@@ -665,116 +856,112 @@
 
         function triggerAttack() {
             if(!gameRunning) return;
-            // Spara proiettile nella direzione dell'angolo attuale
             bullets.push({
                 x: player.x,
                 y: player.y,
-                vx: Math.cos(player.angle) * 9,
-                vy: Math.sin(player.angle) * 9,
-                radius: 6
+                vx: Math.cos(player.angle) * 10,
+                vy: Math.sin(player.angle) * 10,
+                radius: 7,
+                damage: currentBrawler.damage
             });
         }
 
         function triggerSuper() {
             if(!gameRunning) return;
-            // Super mossa: Spara 5 proiettili a ventaglio
             for(let i = -2; i <= 2; i++) {
-                let a = player.angle + (i * 0.2);
+                let a = player.angle + (i * 0.25);
                 bullets.push({
                     x: player.x,
                     y: player.y,
-                    vx: Math.cos(a) * 12,
-                    vy: Math.sin(a) * 12,
-                    radius: 9,
+                    vx: Math.cos(a) * 13,
+                    vy: Math.sin(a) * 13,
+                    radius: 10,
+                    damage: currentBrawler.damage * 1.5,
                     isSuper: true
                 });
             }
         }
 
         function updateGameLogic() {
-            // Movimento Giocatore
             player.x += player.vx;
             player.y += player.vy;
 
-            // Limiti Mappa
             player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
             player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
 
-            // Aggiorna Proiettili
             for(let i = bullets.length - 1; i >= 0; i--) {
                 let b = bullets[i];
                 b.x += b.vx;
                 b.y += b.vy;
 
-                // Collisione Nemico
                 let dx = b.x - enemy.x;
                 let dy = b.y - enemy.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
                 if(dist < b.radius + enemy.radius) {
-                    enemy.hp -= b.isSuper ? 250 : 100;
+                    enemy.hp -= b.damage;
                     if(enemy.hp <= 0) enemy.hp = enemy.maxHp;
                     bullets.splice(i, 1);
                     continue;
                 }
 
-                // Rimuovi fuori schermo
                 if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
                     bullets.splice(i, 1);
                 }
             }
 
-            // Aggiorna HUD
             document.getElementById('player-hp-bar').style.width = `${(player.hp / player.maxHp) * 100}%`;
+            document.getElementById('player-hp-text').innerText = `${Math.max(0, player.hp)} / ${player.maxHp}`;
         }
 
         function drawGame() {
-            // Disegna Sfondo Mappa Selezionata
             ctx.fillStyle = currentMap.bg;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Bordo Mappa
             ctx.strokeStyle = currentMap.border;
-            ctx.lineWidth = 10;
+            ctx.lineWidth = 12;
             ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-            // Disegna Nemico (Bot/Avversario)
+            // Nemico
             ctx.beginPath();
             ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#e53935';
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = '#fff';
-            ctx.stroke();
-
-            // Barra HP Nemico
-            ctx.fillStyle = '#000';
-            ctx.fillRect(enemy.x - 20, enemy.y - 32, 40, 6);
-            ctx.fillStyle = '#00e676';
-            ctx.fillRect(enemy.x - 20, enemy.y - 32, (enemy.hp / enemy.maxHp) * 40, 6);
-
-            // Disegna Giocatore (Con Skin)
-            ctx.beginPath();
-            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-            ctx.fillStyle = currentSkin.color || currentBrawler.color;
+            ctx.fillStyle = '#f44336';
             ctx.fill();
             ctx.lineWidth = 3;
             ctx.strokeStyle = '#fff';
             ctx.stroke();
 
-            // Indicatore Direzione Sguardo
+            // Barra HP Nemico
+            ctx.fillStyle = '#000';
+            ctx.fillRect(enemy.x - 25, enemy.y - 36, 50, 8);
+            ctx.fillStyle = '#00e676';
+            ctx.fillRect(enemy.x - 25, enemy.y - 36, (enemy.hp / enemy.maxHp) * 50, 8);
+
+            // Giocatore
             ctx.beginPath();
-            ctx.moveTo(player.x, player.y);
-            ctx.lineTo(player.x + Math.cos(player.angle) * 28, player.y + Math.sin(player.angle) * 28);
-            ctx.strokeStyle = '#ffca28';
+            ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+            ctx.fillStyle = currentSkin.color || currentBrawler.color;
+            ctx.fill();
             ctx.lineWidth = 4;
+            ctx.strokeStyle = '#fff';
             ctx.stroke();
 
-            // Disegna Proiettili
+            // Sguardo
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y);
+            ctx.lineTo(player.x + Math.cos(player.angle) * 32, player.y + Math.sin(player.angle) * 32);
+            ctx.strokeStyle = '#ffca28';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+
+            // Proiettili
             bullets.forEach(b => {
                 ctx.beginPath();
                 ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-                ctx.fillStyle = b.isSuper ? '#ab47bc' : '#ffca28';
+                ctx.fillStyle = b.isSuper ? '#e040fb' : '#ffca28';
                 ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
             });
         }
 
@@ -814,7 +1001,6 @@
 
                 knob.style.transform = `translate(${dx}px, ${dy}px)`;
 
-                // Imposta Velocità e Angolo del Giocatore
                 player.vx = (dx / maxRadius) * currentBrawler.speed;
                 player.vy = (dy / maxRadius) * currentBrawler.speed;
                 if(dx !== 0 || dy !== 0) {
@@ -879,7 +1065,7 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // Inizializzazione dati
+        // Inizializzazione
         renderSelectionLists();
         updateLobbyDisplay();
     </script>
