@@ -6,8 +6,6 @@ const SVG_ASSETS = {
         <circle cx="65" cy="45" r="8" fill="#FFF" stroke="#000" stroke-width="2"/>
         <circle cx="37" cy="45" r="4" fill="#000"/>
         <circle cx="67" cy="45" r="4" fill="#000"/>
-        <path d="M 30 25 Q 50 10 70 25 L 80 35 L 20 35 Z" fill="#990000" stroke="#000" stroke-width="3"/>
-        <path d="M 40 68 Q 50 78 60 68" stroke="#000" stroke-width="4" fill="none" stroke-linecap="round"/>
     </svg>`,
     bull: `<svg viewBox="0 0 100 100" width="100%" height="100%">
         <circle cx="50" cy="50" r="45" fill="#FF2A2A" stroke="#000" stroke-width="4"/>
@@ -17,278 +15,306 @@ const SVG_ASSETS = {
         <circle cx="65" cy="45" r="7" fill="#FFF" stroke="#000" stroke-width="2"/>
         <circle cx="35" cy="45" r="3" fill="#000"/>
         <circle cx="65" cy="45" r="3" fill="#000"/>
-        <path d="M 30 25 L 70 25 L 50 40 Z" fill="#333" stroke="#000" stroke-width="2"/>
-        <circle cx="50" cy="65" r="10" fill="#FFCC00" stroke="#000" stroke-width="3"/>
-        <circle cx="50" cy="65" r="5" fill="#FF2A2A"/>
     </svg>`,
     crow: `<svg viewBox="0 0 100 100" width="100%" height="100%">
         <circle cx="50" cy="50" r="45" fill="#A628F7" stroke="#000" stroke-width="4"/>
-        <path d="M 25 50 L 75 50 L 50 90 Z" fill="#FF6600" stroke="#000" stroke-width="4"/>
         <ellipse cx="35" cy="40" rx="8" ry="12" fill="#FFF" stroke="#000" stroke-width="2"/>
         <ellipse cx="65" cy="40" rx="8" ry="12" fill="#FFF" stroke="#000" stroke-width="2"/>
         <circle cx="35" cy="40" r="4" fill="#FF2A2A"/>
         <circle cx="65" cy="40" r="4" fill="#FF2A2A"/>
-        <path d="M 20 20 L 50 35 L 80 20 L 50 10 Z" fill="#1A2434" stroke="#000" stroke-width="3"/>
     </svg>`
 };
 
 const BRAWLERS = [
-    { id: 'shelby', name: 'SHELBY', rarity: 'Comune', rarityColor: '#0099FF', color: '#0099FF', hp: 1200, damage: 210, speed: 4, class: 'Danni', desc: 'Raffica ad ampio raggio.', svg: SVG_ASSETS.shelby },
-    { id: 'bull', name: 'BULL', rarity: 'Raro', rarityColor: '#00E640', color: '#FF2A2A', hp: 1800, damage: 340, speed: 3.5, class: 'Peso Massimo', desc: 'Devastante da vicino.', svg: SVG_ASSETS.bull },
-    { id: 'crow', name: 'CROW', rarity: 'Leggendario', rarityColor: '#FFCC00', color: '#A628F7', hp: 900, damage: 160, speed: 5, class: 'Assassino', desc: 'Velocissimo nei movimenti.', svg: SVG_ASSETS.crow }
+    { id: 'shelby', name: 'SHELBY', rarity: 'Comune', rarityColor: '#0099FF', color: '#0099FF', hp: 1200, damage: 220, speed: 4, svg: SVG_ASSETS.shelby },
+    { id: 'bull', name: 'BULL', rarity: 'Raro', rarityColor: '#00E640', color: '#FF2A2A', hp: 1800, damage: 320, speed: 3.5, svg: SVG_ASSETS.bull },
+    { id: 'crow', name: 'CROW', rarity: 'Leggendario', rarityColor: '#FFCC00', color: '#A628F7', hp: 900, damage: 170, speed: 5, svg: SVG_ASSETS.crow }
 ];
 
-const SKINS = [
-    { id: 'default', name: 'Predefinita' },
-    { id: 'gold', name: 'Oro Puro' },
-    { id: 'mecha', name: 'Mecha Cyber' }
-];
+const SKINS = [{ id: 'default', name: 'Predefinita' }];
 
-const MAPS = [
-    { 
-        id: 'gem_grab', name: 'Miniera Gemme', mode: '3v3 Standard', bg: '#2E4C1E', gridColor: '#243D17', wallColor: '#5C4033', desc: 'Mappa aperta con ripari tattici.',
-        grid: [
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
-            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,2,2,0,0,1,1,0,0,0,0,0,1,1,0,0,2,2,0],
-            [0,2,2,0,0,1,0,0,3,3,3,0,0,1,0,0,2,2,0],
-            [0,2,2,0,0,1,1,0,0,0,0,0,1,1,0,0,2,2,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
-            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        ]
-    }
+const MAP_GRID = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+    [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,2,2,0,0,1,1,0,0,0,0,0,1,1,0,0,2,2,0],
+    [0,2,2,0,0,1,0,0,0,0,0,0,0,1,0,0,2,2,0],
+    [0,2,2,0,0,1,1,0,0,0,0,0,1,1,0,0,2,2,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+    [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 ];
 
 let currentBrawler = BRAWLERS[0];
 let currentSkin = SKINS[0];
-let currentMap = MAPS[0];
+
+let canvas, ctx;
+let gameRunning = false;
+let gameTime = 60;
+let timerInterval = null;
+let gemSpawnerInterval = null;
+
+let player = { x: 0, y: 0, radius: 20, hp: 1000, maxHp: 1000, vx: 0, vy: 0, aimAngle: 0, gems: 0 };
+let enemy = { x: 0, y: 0, radius: 20, hp: 1200, maxHp: 1200, vx: 1.5, vy: 1.5, brawler: BRAWLERS[1], gems: 0, lastShoot: 0 };
+
+let bullets = [];
+let gemsOnGround = [];
+let mapObstacles = [];
+let mapBushes = [];
+let minePos = { x: 0, y: 0 };
+let tileSize = 32;
 
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-function renderSelectionLists() {
-    const bContainer = document.getElementById('brawlers-list');
-    if(bContainer) {
-        bContainer.innerHTML = '';
-        BRAWLERS.forEach(b => {
-            const item = document.createElement('div');
-            item.className = `card-item ${currentBrawler.id === b.id ? 'selected' : ''}`;
-            item.onclick = () => { currentBrawler = b; updateLobbyDisplay(); renderSelectionLists(); closeModal('brawlers-modal'); };
-            item.innerHTML = `
-                <div class="card-img-box" style="border-color:${b.rarityColor}">${b.svg}</div>
-                <div class="card-info">
-                    <div class="card-title">${b.name} <span style="font-size:11px; color:${b.rarityColor};">(${b.rarity})</span></div>
-                    <div style="font-size:10px; color:#CBD5E1;">${b.desc}</div>
-                    <div class="card-stats">
-                        <span class="stat-badge">❤️ ${b.hp}</span>
-                        <span class="stat-badge">⚔️ ${b.damage}</span>
-                    </div>
-                </div>`;
-            bContainer.appendChild(item);
-        });
-    }
-
-    const sContainer = document.getElementById('skins-list');
-    if(sContainer) {
-        sContainer.innerHTML = '';
-        SKINS.forEach(s => {
-            const item = document.createElement('div');
-            item.className = `card-item ${currentSkin.id === s.id ? 'selected' : ''}`;
-            item.onclick = () => { currentSkin = s; updateLobbyDisplay(); renderSelectionLists(); closeModal('skins-modal'); };
-            item.innerHTML = `
-                <div class="card-img-box">${currentBrawler.svg}</div>
-                <div class="card-info">
-                    <div class="card-title">${s.name}</div>
-                    <div style="font-size:11px; color:#aaa;">Skin per ${currentBrawler.name}</div>
-                </div>`;
-            sContainer.appendChild(item);
-        });
-    }
-
-    const mContainer = document.getElementById('maps-list');
-    if(mContainer) {
-        mContainer.innerHTML = '';
-        MAPS.forEach(m => {
-            const item = document.createElement('div');
-            item.className = `card-item ${currentMap.id === m.id ? 'selected' : ''}`;
-            item.onclick = () => { currentMap = m; renderSelectionLists(); closeModal('maps-modal'); };
-            item.innerHTML = `
-                <div class="card-img-box" style="background:${m.bg}">🗺️</div>
-                <div class="card-info">
-                    <div class="card-title">${m.name} <span style="font-size:10px; color:var(--brawl-yellow);">[${m.mode}]</span></div>
-                    <div style="font-size:10px; color:#CBD5E1;">${m.desc}</div>
-                </div>`;
-            mContainer.appendChild(item);
-        });
-    }
+function updateLobbyDisplay() {
+    document.getElementById('lobby-brawler-name').innerText = currentBrawler.name;
+    document.getElementById('lobby-rarity-tag').innerText = currentBrawler.rarity;
+    document.getElementById('lobby-rarity-tag').style.backgroundColor = currentBrawler.rarityColor;
+    document.getElementById('lobby-brawler-img').innerHTML = currentBrawler.svg;
 }
 
-function updateLobbyDisplay() {
-    const nameEl = document.getElementById('lobby-brawler-name');
-    const tagEl = document.getElementById('lobby-rarity-tag');
-    const imgEl = document.getElementById('lobby-brawler-img');
-    if(nameEl) nameEl.innerText = currentBrawler.name;
-    if(tagEl) {
-        tagEl.innerText = `${currentBrawler.rarity} - ${currentBrawler.class}`;
-        tagEl.style.backgroundColor = currentBrawler.rarityColor;
-    }
-    if(imgEl) imgEl.innerHTML = currentBrawler.svg;
+function renderSelectionLists() {
+    const bContainer = document.getElementById('brawlers-list');
+    bContainer.innerHTML = '';
+    BRAWLERS.forEach(b => {
+        const item = document.createElement('div');
+        item.className = `card-item ${currentBrawler.id === b.id ? 'selected' : ''}`;
+        item.onclick = () => { currentBrawler = b; updateLobbyDisplay(); closeModal('brawlers-modal'); };
+        item.innerHTML = `<div class="card-img-box">${b.svg}</div><div>${b.name}</div>`;
+        bContainer.appendChild(item);
+    });
 }
 
 function toggleFullScreen() {
-    let doc = window.document;
-    let docEl = doc.documentElement;
-    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-        (docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen).call(docEl);
-    } else {
-        (doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen).call(doc);
-    }
+    if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); }
+    else { document.exitFullscreen(); }
 }
 
-let canvas, ctx;
-let gameRunning = false;
-let player = { x: 0, y: 0, radius: 22, hp: 1000, maxHp: 1000, vx: 0, vy: 0, angle: 0 };
-let enemy = { x: 0, y: 0, radius: 22, hp: 1200, maxHp: 1200, vx: 1.5, vy: 1.5, brawler: BRAWLERS[1] };
-let bullets = [];
-let mapObstacles = [];
-let mapBushes = [];
-let tileSize = 32;
-
-function buildMapLayout() {
-    mapObstacles = [];
-    mapBushes = [];
-    const grid = currentMap.grid;
-    const rows = grid.length;
-    const cols = grid[0].length;
-
-    tileSize = Math.min(canvas.width / cols, canvas.height / rows);
-    const offsetX = (canvas.width - cols * tileSize) / 2;
-    const offsetY = (canvas.height - rows * tileSize) / 2;
-
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            let cell = grid[r][c];
-            let x = offsetX + c * tileSize;
-            let y = offsetY + r * tileSize;
-
-            if (cell === 1) {
-                mapObstacles.push({ x, y, w: tileSize, h: tileSize });
-            } else if (cell === 2) {
-                mapBushes.push({ x: x + tileSize / 2, y: y + tileSize / 2, r: tileSize / 1.8 });
-            }
-        }
-    }
-}
-
-function startGame() {
+/* AVVIO E SCHERMATA VS */
+function startGameIntro() {
     document.getElementById('lobby-screen').classList.remove('active');
     document.getElementById('game-screen').classList.add('active');
 
+    document.getElementById('vs-p1-img').innerHTML = currentBrawler.svg;
+    document.getElementById('vs-p1-name').innerText = currentBrawler.name;
+    document.getElementById('vs-p2-img').innerHTML = enemy.brawler.svg;
+    document.getElementById('vs-p2-name').innerText = enemy.brawler.name;
+
+    const vsOverlay = document.getElementById('vs-overlay');
+    vsOverlay.classList.add('active');
+
+    setTimeout(() => {
+        vsOverlay.classList.remove('active');
+        runCountdown();
+    }, 2500);
+}
+
+function runCountdown() {
+    const cdOverlay = document.getElementById('countdown-overlay');
+    cdOverlay.classList.add('active');
+    let count = 3;
+    cdOverlay.innerText = count;
+
+    let interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+            cdOverlay.innerText = count;
+        } else if (count === 0) {
+            cdOverlay.innerText = "VIA!";
+        } else {
+            clearInterval(interval);
+            cdOverlay.classList.remove('active');
+            initMatch();
+        }
+    }, 800);
+}
+
+function initMatch() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    buildMapLayout();
+    buildMap();
 
     player.x = canvas.width / 2;
     player.y = canvas.height * 0.8;
     player.hp = currentBrawler.hp;
     player.maxHp = currentBrawler.hp;
+    player.gems = 0;
 
     enemy.x = canvas.width / 2;
     enemy.y = canvas.height * 0.2;
     enemy.hp = enemy.brawler.hp;
     enemy.maxHp = enemy.brawler.hp;
+    enemy.gems = 0;
 
     bullets = [];
+    gemsOnGround = [];
+    gameTime = 60;
     gameRunning = true;
-    initJoystick();
-    bindActionButtons();
+
+    initJoysticks();
+    bindSuperButton();
+
+    if(timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        if(!gameRunning) return;
+        gameTime--;
+        let sec = gameTime % 60;
+        document.getElementById('match-timer').innerText = `00:${sec < 10 ? '0' : ''}${sec}`;
+        if(gameTime <= 0) endGame();
+    }, 1000);
+
+    if(gemSpawnerInterval) clearInterval(gemSpawnerInterval);
+    gemSpawnerInterval = setInterval(() => {
+        if(!gameRunning || gemsOnGround.length >= 10) return;
+        gemsOnGround.push({ x: minePos.x + (Math.random()*20 - 10), y: minePos.y + (Math.random()*20 - 10) });
+    }, 4000);
+
     requestAnimationFrame(gameLoop);
 }
 
-function exitGame() {
-    gameRunning = false;
-    document.getElementById('game-screen').classList.remove('active');
-    document.getElementById('lobby-screen').classList.add('active');
-}
+function buildMap() {
+    mapObstacles = [];
+    mapBushes = [];
+    const rows = MAP_GRID.length;
+    const cols = MAP_GRID[0].length;
 
-function triggerAttack() {
-    if(!gameRunning) return;
-    bullets.push({
-        x: player.x, y: player.y,
-        vx: Math.cos(player.angle) * 10, vy: Math.sin(player.angle) * 10,
-        radius: 8, damage: currentBrawler.damage, isPlayer: true
-    });
-}
+    tileSize = Math.min(canvas.width / cols, canvas.height / rows);
+    const offsetX = (canvas.width - cols * tileSize) / 2;
+    const offsetY = (canvas.height - rows * tileSize) / 2;
 
-function triggerSuper() {
-    if(!gameRunning) return;
-    for(let i = -2; i <= 2; i++) {
-        let a = player.angle + (i * 0.25);
-        bullets.push({
-            x: player.x, y: player.y,
-            vx: Math.cos(a) * 12, vy: Math.sin(a) * 12,
-            radius: 10, damage: currentBrawler.damage * 1.3, isPlayer: true
-        });
-    }
-}
+    minePos = { x: canvas.width / 2, y: canvas.height / 2 };
 
-function bindActionButtons() {
-    const btnAttack = document.getElementById('btn-attack');
-    const btnSuper = document.getElementById('btn-super');
-    if(btnAttack) {
-        btnAttack.onpointerdown = (e) => { e.preventDefault(); e.stopPropagation(); triggerAttack(); };
-    }
-    if(btnSuper) {
-        btnSuper.onpointerdown = (e) => { e.preventDefault(); e.stopPropagation(); triggerSuper(); };
-    }
-}
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            let cell = MAP_GRID[r][c];
+            let x = offsetX + c * tileSize;
+            let y = offsetY + r * tileSize;
 
-function checkWallCollisions(ent) {
-    mapObstacles.forEach(w => {
-        if (ent.x + ent.radius > w.x && ent.x - ent.radius < w.x + w.w &&
-            ent.y + ent.radius > w.y && ent.y - ent.radius < w.y + w.h) {
-            ent.x -= ent.vx;
-            ent.y -= ent.vy;
+            if (cell === 1) mapObstacles.push({ x, y, w: tileSize, h: tileSize });
+            else if (cell === 2) mapBushes.push({ x: x + tileSize / 2, y: y + tileSize / 2, r: tileSize / 1.8 });
         }
+    }
+}
+
+function shootBullet(ent, angle, isPlayer) {
+    bullets.push({
+        x: ent.x, y: ent.y,
+        vx: Math.cos(angle) * 9, vy: Math.sin(angle) * 9,
+        radius: 6, damage: isPlayer ? currentBrawler.damage : enemy.brawler.damage,
+        isPlayer: isPlayer
     });
+}
+
+function initJoysticks() {
+    // MOVIMENTO
+    const moveZone = document.getElementById('joystick-move');
+    const moveKnob = document.getElementById('knob-move');
+    let moveActive = false, moveTouchId = null, mStartX, mStartY;
+
+    moveZone.onpointerdown = e => {
+        moveActive = true; moveTouchId = e.pointerId;
+        moveZone.setPointerCapture(e.pointerId);
+        let r = moveZone.getBoundingClientRect();
+        mStartX = r.left + r.width / 2; mStartY = r.top + r.height / 2;
+    };
+
+    moveZone.onpointermove = e => {
+        if(!moveActive || e.pointerId !== moveTouchId) return;
+        let dx = e.clientX - mStartX, dy = e.clientY - mStartY;
+        let dist = Math.sqrt(dx*dx + dy*dy), maxR = 35;
+        if(dist > maxR) { dx = (dx/dist)*maxR; dy = (dy/dist)*maxR; }
+        moveKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        player.vx = (dx/maxR) * currentBrawler.speed;
+        player.vy = (dy/maxR) * currentBrawler.speed;
+    };
+
+    const resetMove = e => {
+        if(e && e.pointerId === moveTouchId) {
+            moveActive = false; moveKnob.style.transform = `translate(-50%, -50%)`;
+            player.vx = 0; player.vy = 0;
+        }
+    };
+    moveZone.onpointerup = resetMove; moveZone.onpointercancel = resetMove;
+
+    // MIRA E SPARO
+    const aimZone = document.getElementById('joystick-aim');
+    const aimKnob = document.getElementById('knob-aim');
+    let aimActive = false, aimTouchId = null, aStartX, aStartY;
+
+    aimZone.onpointerdown = e => {
+        aimActive = true; aimTouchId = e.pointerId;
+        aimZone.setPointerCapture(e.pointerId);
+        let r = aimZone.getBoundingClientRect();
+        aStartX = r.left + r.width / 2; aStartY = r.top + r.height / 2;
+    };
+
+    aimZone.onpointermove = e => {
+        if(!aimActive || e.pointerId !== aimTouchId) return;
+        let dx = e.clientX - aStartX, dy = e.clientY - aStartY;
+        let dist = Math.sqrt(dx*dx + dy*dy), maxR = 25;
+        if(dist > maxR) { dx = (dx/dist)*maxR; dy = (dy/dist)*maxR; }
+        aimKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        if(dist > 5) player.aimAngle = Math.atan2(dy, dx);
+    };
+
+    aimZone.onpointerup = e => {
+        if(e && e.pointerId === aimTouchId) {
+            aimActive = false; aimKnob.style.transform = `translate(-50%, -50%)`;
+            let angle = player.aimAngle !== undefined ? player.aimAngle : Math.atan2(enemy.y - player.y, enemy.x - player.x);
+            shootBullet(player, angle, true);
+        }
+    };
+}
+
+function bindSuperButton() {
+    const btnSuper = document.getElementById('btn-super');
+    btnSuper.onpointerdown = e => {
+        e.preventDefault(); e.stopPropagation();
+        let baseAngle = player.aimAngle || Math.atan2(enemy.y - player.y, enemy.x - player.x);
+        for(let i = -2; i <= 2; i++) {
+            shootBullet(player, baseAngle + (i * 0.2), true);
+        }
+    };
 }
 
 function updateGameLogic() {
-    player.x += player.vx;
-    player.y += player.vy;
+    // Movimento Giocatore
+    player.x += player.vx; player.y += player.vy;
     player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
     player.y = Math.max(player.radius, Math.min(canvas.height - player.radius, player.y));
-    checkWallCollisions(player);
+    checkObstacleCollisions(player);
 
-    enemy.x += enemy.vx;
-    enemy.y += enemy.vy;
+    // Movimento e Sparo IA Nemico
+    enemy.x += enemy.vx; enemy.y += enemy.vy;
     if(enemy.x < 40 || enemy.x > canvas.width - 40) enemy.vx *= -1;
     if(enemy.y < 40 || enemy.y > canvas.height * 0.4) enemy.vy *= -1;
-    checkWallCollisions(enemy);
+    checkObstacleCollisions(enemy);
 
+    let now = Date.now();
+    if(now - enemy.lastShoot > 1800) {
+        enemy.lastShoot = now;
+        let angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
+        shootBullet(enemy, angle, false);
+    }
+
+    // Gestione Proiettili
     for(let i = bullets.length - 1; i >= 0; i--) {
         let b = bullets[i];
-        b.x += b.vx;
-        b.y += b.vy;
+        b.x += b.vx; b.y += b.vy;
 
-        if(b.isPlayer) {
-            let dx = b.x - enemy.x;
-            let dy = b.y - enemy.y;
-            if(Math.sqrt(dx*dx + dy*dy) < b.radius + enemy.radius) {
-                enemy.hp -= b.damage;
-                if(enemy.hp <= 0) enemy.hp = enemy.maxHp;
-                bullets.splice(i, 1);
-                continue;
-            }
+        let target = b.isPlayer ? enemy : player;
+        let dx = b.x - target.x, dy = b.y - target.y;
+        if(Math.sqrt(dx*dx + dy*dy) < b.radius + target.radius) {
+            target.hp -= b.damage;
+            bullets.splice(i, 1);
+            if(target.hp <= 0) handleDeath(target);
+            continue;
         }
 
         mapObstacles.forEach(w => {
@@ -297,82 +323,109 @@ function updateGameLogic() {
             }
         });
 
-        if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
-            bullets.splice(i, 1);
+        if(b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) bullets.splice(i, 1);
+    }
+
+    // Raccolta Gemme
+    for(let i = gemsOnGround.length - 1; i >= 0; i--) {
+        let g = gemsOnGround[i];
+        if(Math.hypot(player.x - g.x, player.y - g.y) < player.radius + 10) {
+            player.gems++; gemsOnGround.splice(i, 1);
+        } else if(Math.hypot(enemy.x - g.x, enemy.y - g.y) < enemy.radius + 10) {
+            enemy.gems++; gemsOnGround.splice(i, 1);
         }
     }
+
+    document.getElementById('blue-gems').innerText = player.gems;
+    document.getElementById('red-gems').innerText = enemy.gems;
 }
 
-function drawPlayerShape(ent, color, isPlayer) {
-    ctx.save();
-    ctx.translate(ent.x, ent.y);
+function handleDeath(ent) {
+    let droppedGems = ent.gems;
+    ent.gems = 0;
+    for(let i=0; i<droppedGems; i++) {
+        gemsOnGround.push({ x: ent.x + (Math.random()*40-20), y: ent.y + (Math.random()*40-20) });
+    }
+    ent.hp = ent.maxHp;
+    if(ent === player) { ent.x = canvas.width/2; ent.y = canvas.height*0.8; }
+    else { ent.x = canvas.width/2; ent.y = canvas.height*0.2; }
+}
 
-    ctx.beginPath();
-    ctx.arc(0, 0, ent.radius, 0, Math.PI * 2);
-    ctx.fillStyle = color;
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = '#000';
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(0, 0, ent.radius * 0.5, 0, Math.PI * 2);
-    ctx.fillStyle = isPlayer ? '#FFF' : '#FFD700';
-    ctx.fill();
-
-    ctx.restore();
-
-    const barWidth = 44;
-    const barHeight = 6;
-    const barX = ent.x - barWidth / 2;
-    const barY = ent.y - ent.radius - 14;
-
-    ctx.fillStyle = '#000';
-    ctx.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
-    ctx.fillStyle = isPlayer ? '#00E640' : '#FF2A2A';
-    ctx.fillRect(barX, barY, barWidth * Math.max(0, ent.hp / ent.maxHp), barHeight);
+function checkObstacleCollisions(ent) {
+    mapObstacles.forEach(w => {
+        if (ent.x + ent.radius > w.x && ent.x - ent.radius < w.x + w.w &&
+            ent.y + ent.radius > w.y && ent.y - ent.radius < w.y + w.h) {
+            ent.x -= ent.vx; ent.y -= ent.vy;
+        }
+    });
 }
 
 function drawGame() {
-    ctx.fillStyle = currentMap.bg;
+    ctx.fillStyle = '#2E4C1E';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = currentMap.gridColor;
-    ctx.lineWidth = 1;
-    for(let x = 0; x < canvas.width; x += tileSize) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-    }
-    for(let y = 0; y < canvas.height; y += tileSize) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-    }
-
+    // Mappa e Ostacoli
     mapObstacles.forEach(w => {
-        ctx.fillStyle = currentMap.wallColor;
-        ctx.fillRect(w.x, w.y, w.w, w.h);
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(w.x, w.y, w.w, w.h);
+        ctx.fillStyle = '#5C4033'; ctx.fillRect(w.x, w.y, w.w, w.h);
+        ctx.strokeStyle = '#000'; ctx.lineWidth = 2; ctx.strokeRect(w.x, w.y, w.w, w.h);
     });
 
     mapBushes.forEach(b => {
         ctx.fillStyle = 'rgba(0, 180, 50, 0.7)';
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
     });
 
-    drawPlayerShape(enemy, enemy.brawler.color, false);
-    drawPlayerShape(player, currentBrawler.color, true);
+    // Miniera Gemme
+    ctx.fillStyle = '#444';
+    ctx.fillRect(minePos.x - 20, minePos.y - 20, 40, 40);
+    ctx.fillStyle = '#A628F7';
+    ctx.beginPath(); ctx.arc(minePos.x, minePos.y, 8, 0, Math.PI * 2); ctx.fill();
 
+    // Gemme a terra
+    gemsOnGround.forEach(g => {
+        ctx.fillStyle = '#A628F7'; ctx.beginPath(); ctx.arc(g.x, g.y, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#FFF'; ctx.lineWidth = 1; ctx.stroke();
+    });
+
+    // Entità (Player e Enemy)
+    drawEntity(enemy, enemy.brawler.color, false);
+    drawEntity(player, currentBrawler.color, true);
+
+    // Proiettili
     bullets.forEach(b => {
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFCC00';
-        ctx.fill();
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        ctx.fillStyle = b.isPlayer ? '#FFCC00' : '#FF2A2A';
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2); ctx.fill();
     });
+}
+
+function drawEntity(ent, color, isPlayer) {
+    ctx.save();
+    ctx.translate(ent.x, ent.y);
+
+    ctx.beginPath(); ctx.arc(0, 0, ent.radius, 0, Math.PI * 2);
+    ctx.fillStyle = color; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = '#000'; ctx.stroke();
+
+    if(isPlayer && player.aimAngle) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(player.aimAngle)*50, Math.sin(player.aimAngle)*50);
+        ctx.stroke();
+    }
+    ctx.restore();
+
+    // Barra Vita e Conteggio Gemme
+    const barW = 40, barH = 5;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(ent.x - barW/2 - 1, ent.y - ent.radius - 12, barW + 2, barH + 2);
+    ctx.fillStyle = isPlayer ? '#00E640' : '#FF2A2A';
+    ctx.fillRect(ent.x - barW/2, ent.y - ent.radius - 11, barW * (ent.hp/ent.maxHp), barH);
+
+    if(ent.gems > 0) {
+        ctx.fillStyle = '#A628F7'; ctx.font = '12px Arial';
+        ctx.fillText(`💎${ent.gems}`, ent.x - 10, ent.y - ent.radius - 16);
+    }
 }
 
 function gameLoop() {
@@ -382,106 +435,22 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-function initJoystick() {
-    const zone = document.getElementById('joystick-zone');
-    const knob = document.getElementById('joystick-knob');
-    if(!zone || !knob) return;
-
-    let active = false;
-    let touchId = null;
-    let startX, startY;
-
-    zone.onpointerdown = e => {
-        active = true;
-        touchId = e.pointerId;
-        zone.setPointerCapture(e.pointerId);
-        let rect = zone.getBoundingClientRect();
-        startX = rect.left + rect.width / 2;
-        startY = rect.top + rect.height / 2;
-    };
-
-    zone.onpointermove = e => {
-        if(!active || e.pointerId !== touchId) return;
-        let dx = e.clientX - startX;
-        let dy = e.clientY - startY;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        let maxRadius = 35;
-
-        if(dist > maxRadius) {
-            dx = (dx / dist) * maxRadius;
-            dy = (dy / dist) * maxRadius;
-        }
-
-        knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-        player.vx = (dx / maxRadius) * currentBrawler.speed;
-        player.vy = (dy / maxRadius) * currentBrawler.speed;
-        if(dx !== 0 || dy !== 0) player.angle = Math.atan2(dy, dx);
-    };
-
-    const reset = e => {
-        if (e && e.pointerId === touchId) {
-            active = false;
-            knob.style.transform = `translate(-50%, -50%)`;
-            player.vx = 0; player.vy = 0;
-        }
-    };
-    zone.onpointerup = reset;
-    zone.onpointercancel = reset;
+function endGame() {
+    gameRunning = false;
+    clearInterval(timerInterval);
+    clearInterval(gemSpawnerInterval);
+    let msg = player.gems > enemy.gems ? "VITTORIA!" : (player.gems < enemy.gems ? "SCONFITTA!" : "PAREGGIO!");
+    alert(`Partita Finita! ${msg}\nGemme Tue: ${player.gems} - Gemme Nemiche: ${enemy.gems}`);
+    exitGame();
 }
 
-let peer = null;
-let conn = null;
-
-try {
-    if (typeof Peer !== 'undefined') {
-        peer = new Peer();
-        peer.on('open', id => { 
-            const idEl = document.getElementById('my-peer-id');
-            if(idEl) idEl.value = id; 
-        });
-        peer.on('connection', c => { conn = c; setupChatConnection(); });
-    }
-} catch(e) {
-    console.log("PeerJS non caricato", e);
+function exitGame() {
+    gameRunning = false;
+    if(timerInterval) clearInterval(timerInterval);
+    if(gemSpawnerInterval) clearInterval(gemSpawnerInterval);
+    document.getElementById('game-screen').classList.remove('active');
+    document.getElementById('lobby-screen').classList.add('active');
 }
 
-function connectToPeer() {
-    let remoteId = document.getElementById('join-peer-id').value;
-    if(remoteId && peer) { conn = peer.connect(remoteId); setupChatConnection(); }
-}
-
-function setupChatConnection() {
-    if(!conn) return;
-    conn.on('data', data => { if(data.type === 'chat') appendChatMessage("Amico", data.msg); });
-    appendChatMessage("Sistema", "Connesso!");
-}
-
-function sendChatMessage() {
-    let input = document.getElementById('chat-msg');
-    if(input && input.value) {
-        appendChatMessage("Tu", input.value);
-        if(conn) conn.send({ type: 'chat', msg: input.value });
-        input.value = '';
-    }
-}
-
-function appendChatMessage(author, msg) {
-    let box = document.getElementById('chat-box');
-    if(box) {
-        let div = document.createElement('div');
-        div.innerHTML = `<strong>${author}:</strong> ${msg}`;
-        box.appendChild(div);
-        box.scrollTop = box.scrollHeight;
-    }
-}
-
-window.addEventListener('resize', () => {
-    if (gameRunning && canvas) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        buildMapLayout();
-    }
-});
-
-renderSelectionLists();
 updateLobbyDisplay();
+renderSelectionLists();
