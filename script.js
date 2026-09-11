@@ -33,9 +33,9 @@ const SVG_ASSETS = {
 };
 
 const BRAWLERS = [
-    { id: 'shelby', name: 'SHELBY', rarity: 'Comune', rarityColor: '#0099FF', color: '#0099FF', hp: 1200, damage: 210, speed: 3.8, class: 'Danni', desc: 'Raffica ad ampio raggio.', svg: SVG_ASSETS.shelby },
-    { id: 'bull', name: 'BULL', rarity: 'Raro', rarityColor: '#00E640', color: '#FF2A2A', hp: 1800, damage: 340, speed: 3.2, class: 'Peso Massimo', desc: 'Devastante da vicino.', svg: SVG_ASSETS.bull },
-    { id: 'crow', name: 'CROW', rarity: 'Leggendario', rarityColor: '#FFCC00', color: '#A628F7', hp: 900, damage: 160, speed: 4.5, class: 'Assassino', desc: 'Velocissimo nei movimenti.', svg: SVG_ASSETS.crow }
+    { id: 'shelby', name: 'SHELBY', rarity: 'Comune', rarityColor: '#0099FF', color: '#0099FF', hp: 1200, damage: 210, speed: 4, class: 'Danni', desc: 'Raffica ad ampio raggio.', svg: SVG_ASSETS.shelby },
+    { id: 'bull', name: 'BULL', rarity: 'Raro', rarityColor: '#00E640', color: '#FF2A2A', hp: 1800, damage: 340, speed: 3.5, class: 'Peso Massimo', desc: 'Devastante da vicino.', svg: SVG_ASSETS.bull },
+    { id: 'crow', name: 'CROW', rarity: 'Leggendario', rarityColor: '#FFCC00', color: '#A628F7', hp: 900, damage: 160, speed: 5, class: 'Assassino', desc: 'Velocissimo nei movimenti.', svg: SVG_ASSETS.crow }
 ];
 
 const SKINS = [
@@ -44,60 +44,23 @@ const SKINS = [
     { id: 'mecha', name: 'Mecha Cyber' }
 ];
 
-// MODIFICA MAPPE: MATRICI TILE GRIDS CON LOGICA STRUTTURALE BILANCIATA (0: vuoto, 1: muro, 2: cespuglio, 3: meta/obiettivo)
 const MAPS = [
     { 
-        id: 'gem_grab', name: 'Miniera Gemme', mode: '3v3 Standard', bg: '#2E4C1E', gridColor: '#243D17', wallColor: '#5C4033', desc: 'Controllo centrale bilanciato con zone speculari.',
+        id: 'gem_grab', name: 'Miniera Gemme', mode: '3v3 Standard', bg: '#2E4C1E', gridColor: '#243D17', wallColor: '#5C4033', desc: 'Mappa aperta con ripari tattici.',
         grid: [
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,0,0,2,2,2,0,0,1,1,0,1],
-            [1,0,1,1,0,0,2,2,2,0,0,1,1,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,2,2,0,0,1,1,0,1,1,0,0,2,2,1],
-            [1,2,2,0,0,1,0,3,0,1,0,0,2,2,1],
-            [1,2,2,0,0,1,1,0,1,1,0,0,2,2,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,0,0,2,2,2,0,0,1,1,0,1],
-            [1,0,1,1,0,0,2,2,2,0,0,1,1,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-        ]
-    },
-    { 
-        id: 'brawl_ball', name: 'Stadio Brawl', mode: 'Azione Sportiva', bg: '#1E3A5F', gridColor: '#162C48', wallColor: '#3B4D6B', desc: 'Pareti difensive laterali e corsie libere verso le porte.',
-        grid: [
-            [1,1,1,1,1,1,0,0,0,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,1,1,1,0,0,0,0,0,1,1,1,0,1],
-            [1,0,1,1,1,0,0,0,0,0,1,1,1,0,1],
-            [1,0,0,0,0,0,2,2,2,0,0,0,0,0,1],
-            [1,1,0,0,0,0,2,2,2,0,0,0,0,1,1],
-            [1,1,0,0,0,0,0,3,0,0,0,0,0,1,1],
-            [1,1,0,0,0,0,2,2,2,0,0,0,0,1,1],
-            [1,0,0,0,0,0,2,2,2,0,0,0,0,0,1],
-            [1,0,1,1,1,0,0,0,0,0,1,1,1,0,1],
-            [1,0,1,1,1,0,0,0,0,0,1,1,1,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,1,1,1,1,1,0,0,0,1,1,1,1,1,1]
-        ]
-    },
-    { 
-        id: 'desert', name: 'Canyon Secco', mode: 'Sopravvivenza', bg: '#8B4513', gridColor: '#72380F', wallColor: '#A0522D', desc: 'Mappa labirintica con ampie macchie di cespugli tattici.',
-        grid: [
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,2,2,2,0,0,0,1,0,0,0,2,2,2,1],
-            [1,2,2,2,0,1,0,1,0,1,0,2,2,2,1],
-            [1,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
-            [1,0,1,1,0,1,1,0,1,1,0,1,1,0,1],
-            [1,0,1,0,0,0,2,2,2,0,0,0,1,0,1],
-            [1,1,1,0,0,2,2,3,2,2,0,0,1,1,1],
-            [1,0,1,0,0,0,2,2,2,0,0,0,1,0,1],
-            [1,0,1,1,0,1,1,0,1,1,0,1,1,0,1],
-            [1,0,0,0,0,1,0,0,0,1,0,0,0,0,1],
-            [1,2,2,2,0,1,0,1,0,1,0,2,2,2,1],
-            [1,2,2,2,0,0,0,1,0,0,0,2,2,2,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,2,2,0,0,1,1,0,0,0,0,0,1,1,0,0,2,2,0],
+            [0,2,2,0,0,1,0,0,3,3,3,0,0,1,0,0,2,2,0],
+            [0,2,2,0,0,1,1,0,0,0,0,0,1,1,0,0,2,2,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+            [0,0,1,1,0,0,2,2,2,0,2,2,2,0,0,1,1,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         ]
     }
 ];
@@ -111,60 +74,71 @@ function closeModal(id) { document.getElementById(id).classList.remove('active')
 
 function renderSelectionLists() {
     const bContainer = document.getElementById('brawlers-list');
-    bContainer.innerHTML = '';
-    BRAWLERS.forEach(b => {
-        const item = document.createElement('div');
-        item.className = `card-item ${currentBrawler.id === b.id ? 'selected' : ''}`;
-        item.onclick = () => { currentBrawler = b; updateLobbyDisplay(); renderSelectionLists(); closeModal('brawlers-modal'); };
-        item.innerHTML = `
-            <div class="card-img-box" style="border-color:${b.rarityColor}">${b.svg}</div>
-            <div class="card-info">
-                <div class="card-title">${b.name} <span style="font-size:11px; color:${b.rarityColor};">(${b.rarity})</span></div>
-                <div style="font-size:10px; color:#CBD5E1;">${b.desc}</div>
-                <div class="card-stats">
-                    <span class="stat-badge">❤️ ${b.hp}</span>
-                    <span class="stat-badge">⚔️ ${b.damage}</span>
-                </div>
-            </div>`;
-        bContainer.appendChild(item);
-    });
+    if(bContainer) {
+        bContainer.innerHTML = '';
+        BRAWLERS.forEach(b => {
+            const item = document.createElement('div');
+            item.className = `card-item ${currentBrawler.id === b.id ? 'selected' : ''}`;
+            item.onclick = () => { currentBrawler = b; updateLobbyDisplay(); renderSelectionLists(); closeModal('brawlers-modal'); };
+            item.innerHTML = `
+                <div class="card-img-box" style="border-color:${b.rarityColor}">${b.svg}</div>
+                <div class="card-info">
+                    <div class="card-title">${b.name} <span style="font-size:11px; color:${b.rarityColor};">(${b.rarity})</span></div>
+                    <div style="font-size:10px; color:#CBD5E1;">${b.desc}</div>
+                    <div class="card-stats">
+                        <span class="stat-badge">❤️ ${b.hp}</span>
+                        <span class="stat-badge">⚔️ ${b.damage}</span>
+                    </div>
+                </div>`;
+            bContainer.appendChild(item);
+        });
+    }
 
     const sContainer = document.getElementById('skins-list');
-    sContainer.innerHTML = '';
-    SKINS.forEach(s => {
-        const item = document.createElement('div');
-        item.className = `card-item ${currentSkin.id === s.id ? 'selected' : ''}`;
-        item.onclick = () => { currentSkin = s; updateLobbyDisplay(); renderSelectionLists(); closeModal('skins-modal'); };
-        item.innerHTML = `
-            <div class="card-img-box">${currentBrawler.svg}</div>
-            <div class="card-info">
-                <div class="card-title">${s.name}</div>
-                <div style="font-size:11px; color:#aaa;">Skin per ${currentBrawler.name}</div>
-            </div>`;
-        sContainer.appendChild(item);
-    });
+    if(sContainer) {
+        sContainer.innerHTML = '';
+        SKINS.forEach(s => {
+            const item = document.createElement('div');
+            item.className = `card-item ${currentSkin.id === s.id ? 'selected' : ''}`;
+            item.onclick = () => { currentSkin = s; updateLobbyDisplay(); renderSelectionLists(); closeModal('skins-modal'); };
+            item.innerHTML = `
+                <div class="card-img-box">${currentBrawler.svg}</div>
+                <div class="card-info">
+                    <div class="card-title">${s.name}</div>
+                    <div style="font-size:11px; color:#aaa;">Skin per ${currentBrawler.name}</div>
+                </div>`;
+            sContainer.appendChild(item);
+        });
+    }
 
     const mContainer = document.getElementById('maps-list');
-    mContainer.innerHTML = '';
-    MAPS.forEach(m => {
-        const item = document.createElement('div');
-        item.className = `card-item ${currentMap.id === m.id ? 'selected' : ''}`;
-        item.onclick = () => { currentMap = m; renderSelectionLists(); closeModal('maps-modal'); };
-        item.innerHTML = `
-            <div class="card-img-box" style="background:${m.bg}">🗺️</div>
-            <div class="card-info">
-                <div class="card-title">${m.name} <span style="font-size:10px; color:var(--brawl-yellow);">[${m.mode}]</span></div>
-                <div style="font-size:10px; color:#CBD5E1;">${m.desc}</div>
-            </div>`;
-        mContainer.appendChild(item);
-    });
+    if(mContainer) {
+        mContainer.innerHTML = '';
+        MAPS.forEach(m => {
+            const item = document.createElement('div');
+            item.className = `card-item ${currentMap.id === m.id ? 'selected' : ''}`;
+            item.onclick = () => { currentMap = m; renderSelectionLists(); closeModal('maps-modal'); };
+            item.innerHTML = `
+                <div class="card-img-box" style="background:${m.bg}">🗺️</div>
+                <div class="card-info">
+                    <div class="card-title">${m.name} <span style="font-size:10px; color:var(--brawl-yellow);">[${m.mode}]</span></div>
+                    <div style="font-size:10px; color:#CBD5E1;">${m.desc}</div>
+                </div>`;
+            mContainer.appendChild(item);
+        });
+    }
 }
 
 function updateLobbyDisplay() {
-    document.getElementById('lobby-brawler-name').innerText = currentBrawler.name;
-    document.getElementById('lobby-rarity-tag').innerText = `${currentBrawler.rarity} - ${currentBrawler.class}`;
-    document.getElementById('lobby-rarity-tag').style.backgroundColor = currentBrawler.rarityColor;
-    document.getElementById('lobby-brawler-img').innerHTML = currentBrawler.svg;
+    const nameEl = document.getElementById('lobby-brawler-name');
+    const tagEl = document.getElementById('lobby-rarity-tag');
+    const imgEl = document.getElementById('lobby-brawler-img');
+    if(nameEl) nameEl.innerText = currentBrawler.name;
+    if(tagEl) {
+        tagEl.innerText = `${currentBrawler.rarity} - ${currentBrawler.class}`;
+        tagEl.style.backgroundColor = currentBrawler.rarityColor;
+    }
+    if(imgEl) imgEl.innerHTML = currentBrawler.svg;
 }
 
 function toggleFullScreen() {
@@ -177,25 +151,14 @@ function toggleFullScreen() {
     }
 }
 
-/* --- GAME ENGINE CON GRIGLIA TILE PER LE MAPPE --- */
 let canvas, ctx;
 let gameRunning = false;
-let player = { x: 0, y: 0, radius: 18, hp: 1000, maxHp: 1000, vx: 0, vy: 0, angle: 0 };
-let enemy = { x: 0, y: 0, radius: 18, hp: 1200, maxHp: 1200, vx: 1.5, vy: 1.5, brawler: BRAWLERS[1] };
+let player = { x: 0, y: 0, radius: 22, hp: 1000, maxHp: 1000, vx: 0, vy: 0, angle: 0 };
+let enemy = { x: 0, y: 0, radius: 22, hp: 1200, maxHp: 1200, vx: 1.5, vy: 1.5, brawler: BRAWLERS[1] };
 let bullets = [];
-let brawlerImages = {};
 let mapObstacles = [];
 let mapBushes = [];
 let tileSize = 32;
-
-function cacheBrawlerSVGs() {
-    BRAWLERS.forEach(b => {
-        const img = new Image();
-        const blob = new Blob([b.svg], {type: 'image/svg+xml'});
-        img.src = URL.createObjectURL(blob);
-        brawlerImages[b.id] = img;
-    });
-}
 
 function buildMapLayout() {
     mapObstacles = [];
@@ -204,7 +167,6 @@ function buildMapLayout() {
     const rows = grid.length;
     const cols = grid[0].length;
 
-    // Adatta la dimensione delle tessere alla risoluzione dello schermo
     tileSize = Math.min(canvas.width / cols, canvas.height / rows);
     const offsetX = (canvas.width - cols * tileSize) / 2;
     const offsetY = (canvas.height - rows * tileSize) / 2;
@@ -236,12 +198,12 @@ function startGame() {
     buildMapLayout();
 
     player.x = canvas.width / 2;
-    player.y = canvas.height * 0.85;
+    player.y = canvas.height * 0.8;
     player.hp = currentBrawler.hp;
     player.maxHp = currentBrawler.hp;
 
     enemy.x = canvas.width / 2;
-    enemy.y = canvas.height * 0.15;
+    enemy.y = canvas.height * 0.2;
     enemy.hp = enemy.brawler.hp;
     enemy.maxHp = enemy.brawler.hp;
 
@@ -262,19 +224,19 @@ function triggerAttack() {
     if(!gameRunning) return;
     bullets.push({
         x: player.x, y: player.y,
-        vx: Math.cos(player.angle) * 12, vy: Math.sin(player.angle) * 12,
-        radius: 6, damage: currentBrawler.damage, isPlayer: true
+        vx: Math.cos(player.angle) * 10, vy: Math.sin(player.angle) * 10,
+        radius: 8, damage: currentBrawler.damage, isPlayer: true
     });
 }
 
 function triggerSuper() {
     if(!gameRunning) return;
     for(let i = -2; i <= 2; i++) {
-        let a = player.angle + (i * 0.2);
+        let a = player.angle + (i * 0.25);
         bullets.push({
             x: player.x, y: player.y,
-            vx: Math.cos(a) * 14, vy: Math.sin(a) * 14,
-            radius: 9, damage: currentBrawler.damage * 1.3, isPlayer: true
+            vx: Math.cos(a) * 12, vy: Math.sin(a) * 12,
+            radius: 10, damage: currentBrawler.damage * 1.3, isPlayer: true
         });
     }
 }
@@ -282,11 +244,12 @@ function triggerSuper() {
 function bindActionButtons() {
     const btnAttack = document.getElementById('btn-attack');
     const btnSuper = document.getElementById('btn-super');
-    const bind = (el, cb) => {
-        el.onpointerdown = (e) => { e.preventDefault(); e.stopPropagation(); cb(); };
-    };
-    bind(btnAttack, triggerAttack);
-    bind(btnSuper, triggerSuper);
+    if(btnAttack) {
+        btnAttack.onpointerdown = (e) => { e.preventDefault(); e.stopPropagation(); triggerAttack(); };
+    }
+    if(btnSuper) {
+        btnSuper.onpointerdown = (e) => { e.preventDefault(); e.stopPropagation(); triggerSuper(); };
+    }
 }
 
 function checkWallCollisions(ent) {
@@ -340,25 +303,29 @@ function updateGameLogic() {
     }
 }
 
-function drawCharacter(ent, brawlerData, isPlayer) {
+function drawPlayerShape(ent, color, isPlayer) {
     ctx.save();
     ctx.translate(ent.x, ent.y);
 
     ctx.beginPath();
-    ctx.ellipse(0, ent.radius - 2, ent.radius, ent.radius / 2, 0, 0, Math.PI * 2);
-    ctx.fillStyle = isPlayer ? 'rgba(0, 230, 64, 0.4)' : 'rgba(255, 42, 42, 0.4)';
+    ctx.arc(0, 0, ent.radius, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#000';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, ent.radius * 0.5, 0, Math.PI * 2);
+    ctx.fillStyle = isPlayer ? '#FFF' : '#FFD700';
     ctx.fill();
 
-    const img = brawlerImages[brawlerData.id];
-    if (img) {
-        ctx.drawImage(img, -ent.radius, -ent.radius - 4, ent.radius * 2, ent.radius * 2);
-    }
     ctx.restore();
 
-    const barWidth = 40;
+    const barWidth = 44;
     const barHeight = 6;
     const barX = ent.x - barWidth / 2;
-    const barY = ent.y - ent.radius - 18;
+    const barY = ent.y - ent.radius - 14;
 
     ctx.fillStyle = '#000';
     ctx.fillRect(barX - 1, barY - 1, barWidth + 2, barHeight + 2);
@@ -388,20 +355,23 @@ function drawGame() {
     });
 
     mapBushes.forEach(b => {
-        ctx.fillStyle = 'rgba(0, 153, 51, 0.75)';
+        ctx.fillStyle = 'rgba(0, 180, 50, 0.7)';
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
         ctx.fill();
     });
 
-    drawCharacter(enemy, enemy.brawler, false);
-    drawCharacter(player, currentBrawler, true);
+    drawPlayerShape(enemy, enemy.brawler.color, false);
+    drawPlayerShape(player, currentBrawler.color, true);
 
     bullets.forEach(b => {
         ctx.beginPath();
         ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
         ctx.fillStyle = '#FFCC00';
         ctx.fill();
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+        ctx.stroke();
     });
 }
 
@@ -415,20 +385,22 @@ function gameLoop() {
 function initJoystick() {
     const zone = document.getElementById('joystick-zone');
     const knob = document.getElementById('joystick-knob');
+    if(!zone || !knob) return;
+
     let active = false;
     let touchId = null;
     let startX, startY;
 
-    zone.addEventListener('pointerdown', e => {
+    zone.onpointerdown = e => {
         active = true;
         touchId = e.pointerId;
         zone.setPointerCapture(e.pointerId);
         let rect = zone.getBoundingClientRect();
         startX = rect.left + rect.width / 2;
         startY = rect.top + rect.height / 2;
-    });
+    };
 
-    zone.addEventListener('pointermove', e => {
+    zone.onpointermove = e => {
         if(!active || e.pointerId !== touchId) return;
         let dx = e.clientX - startX;
         let dy = e.clientY - startY;
@@ -444,37 +416,49 @@ function initJoystick() {
         player.vx = (dx / maxRadius) * currentBrawler.speed;
         player.vy = (dy / maxRadius) * currentBrawler.speed;
         if(dx !== 0 || dy !== 0) player.angle = Math.atan2(dy, dx);
-    });
+    };
 
     const reset = e => {
-        if (e.pointerId === touchId) {
+        if (e && e.pointerId === touchId) {
             active = false;
             knob.style.transform = `translate(-50%, -50%)`;
             player.vx = 0; player.vy = 0;
         }
     };
-    zone.addEventListener('pointerup', reset);
-    zone.addEventListener('pointercancel', reset);
+    zone.onpointerup = reset;
+    zone.onpointercancel = reset;
 }
 
-let peer = new Peer();
+let peer = null;
 let conn = null;
-peer.on('open', id => { document.getElementById('my-peer-id').value = id; });
-peer.on('connection', c => { conn = c; setupChatConnection(); });
+
+try {
+    if (typeof Peer !== 'undefined') {
+        peer = new Peer();
+        peer.on('open', id => { 
+            const idEl = document.getElementById('my-peer-id');
+            if(idEl) idEl.value = id; 
+        });
+        peer.on('connection', c => { conn = c; setupChatConnection(); });
+    }
+} catch(e) {
+    console.log("PeerJS non caricato", e);
+}
 
 function connectToPeer() {
     let remoteId = document.getElementById('join-peer-id').value;
-    if(remoteId) { conn = peer.connect(remoteId); setupChatConnection(); }
+    if(remoteId && peer) { conn = peer.connect(remoteId); setupChatConnection(); }
 }
 
 function setupChatConnection() {
+    if(!conn) return;
     conn.on('data', data => { if(data.type === 'chat') appendChatMessage("Amico", data.msg); });
     appendChatMessage("Sistema", "Connesso!");
 }
 
 function sendChatMessage() {
     let input = document.getElementById('chat-msg');
-    if(input.value) {
+    if(input && input.value) {
         appendChatMessage("Tu", input.value);
         if(conn) conn.send({ type: 'chat', msg: input.value });
         input.value = '';
@@ -483,20 +467,21 @@ function sendChatMessage() {
 
 function appendChatMessage(author, msg) {
     let box = document.getElementById('chat-box');
-    let div = document.createElement('div');
-    div.innerHTML = `<strong>${author}:</strong> ${msg}`;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
+    if(box) {
+        let div = document.createElement('div');
+        div.innerHTML = `<strong>${author}:</strong> ${msg}`;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
 }
 
 window.addEventListener('resize', () => {
-    if (gameRunning) {
+    if (gameRunning && canvas) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         buildMapLayout();
     }
 });
 
-cacheBrawlerSVGs();
 renderSelectionLists();
 updateLobbyDisplay();
