@@ -2,91 +2,112 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brawl Stars HTML5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Script Master Hub</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 </head>
 <body>
 
-    <!-- LOBBY SCREEN -->
-    <div id="lobby-screen" class="screen active">
-        <div class="header">
-            <div class="title">BRAWL HTML</div>
-            <button class="btn btn-blue" style="width:auto; padding:6px 12px;" onclick="toggleFullScreen()">Fullscreen</button>
-        </div>
+    <!-- Header & Navigazione -->
+    <header class="navbar">
+        <div class="logo">ROBLOX <span>HUB</span></div>
+        <nav>
+            <a href="#executors">Executor</a>
+            <a href="#scripts">Script</a>
+            <a href="#status">Stato Online</a>
+        </nav>
+    </header>
 
-        <div class="brawler-preview">
-            <div id="lobby-brawler-img" class="brawler-avatar"></div>
-            <div id="lobby-brawler-name" class="brawler-name">SHELBY</div>
-            <div id="lobby-rarity-tag" class="rarity-tag">Comune</div>
-        </div>
-
-        <div class="menu-buttons">
-            <button class="btn btn-blue" onclick="openModal('brawlers-modal')">Brawler</button>
-            <button class="btn btn-purple" onclick="openModal('skins-modal')">Skin</button>
-            <button class="btn btn-yellow" onclick="startGameIntro()">GIOCA</button>
-        </div>
+    <!-- Banner Notizie -->
+    <div class="ticker">
+        <span>STATO SITI & EXECUTOR: Tutti i sistemi sono operativi per l'ultima versione di Roblox!</span>
     </div>
 
-    <!-- GAME SCREEN -->
-    <div id="game-screen" class="screen">
-        <canvas id="gameCanvas"></canvas>
-
-        <div class="hud">
-            <div class="gem-counter">💎 Blu: <span id="blue-gems">0</span> | Rosse: <span id="red-gems">0</span></div>
-            <div class="timer" id="match-timer">01:00</div>
+    <!-- Sezione Principale (Hero) -->
+    <section class="hero">
+        <h1>ROBLOX SCRIPT & EXECUTOR HUB</h1>
+        <p>Il portale di risorse verificate per PC, Android e iOS.</p>
+        <div class="hero-buttons">
+            <a href="#executors" class="btn btn-primary">Vedi Executor</a>
+            <a href="#scripts" class="btn btn-secondary">Vedi Script</a>
         </div>
+    </section>
 
-        <button class="btn-exit" onclick="exitGame()">ESCI</button>
-
-        <div class="controls-layer">
-            <div id="joystick-move" class="joystick-container">
-                <div id="knob-move" class="joystick-knob"></div>
-            </div>
-
-            <div class="action-buttons">
-                <div id="joystick-aim" class="joystick-container" style="width:80px; height:80px;">
-                    <div id="knob-aim" class="joystick-knob" style="width:35px; height:35px; background:#FF2A2A;"></div>
+    <!-- Sezione Executor -->
+    <section id="executors" class="container">
+        <h2>Executor PC & Mobile</h2>
+        <div class="grid">
+            
+            <div class="card">
+                <span class="badge online">ONLINE</span>
+                <h3>PC Executor (Windows)</h3>
+                <p>Supporto Windows 10/11 64-bit. Elevata stabilità e iniezione rapida.</p>
+                <div class="tags">
+                    <span class="tag">PC</span>
+                    <span class="tag">KEYLESS</span>
                 </div>
-                <button id="btn-super" class="btn-action btn-super">SUPER</button>
+                <button class="btn-action" onclick="downloadItem('PC Executor')">SCARICA ORA</button>
             </div>
-        </div>
 
-        <!-- SCHERMATA VS -->
-        <div id="vs-overlay">
-            <div class="vs-card">
-                <div id="vs-p1-img" style="width:120px; height:120px;"></div>
-                <h2 id="vs-p1-name">TU</h2>
+            <div class="card">
+                <span class="badge online">ONLINE</span>
+                <h3>Mobile Executor (Android/APK)</h3>
+                <p>Compatibile con Android. Nessun root richiesto.</p>
+                <div class="tags">
+                    <span class="tag">ANDROID</span>
+                    <span class="tag">APK</span>
+                </div>
+                <button class="btn-action" onclick="downloadItem('Android Executor')">SCARICA APK</button>
             </div>
-            <div class="vs-title">VS</div>
-            <div class="vs-card">
-                <div id="vs-p2-img" style="width:120px; height:120px;"></div>
-                <h2 id="vs-p2-name">NEMICO</h2>
+
+            <div class="card">
+                <span class="badge warning">IN AGGIORNAMENTO</span>
+                <h3>Mobile Executor (iOS/IPA)</h3>
+                <p>Supporto iOS tramite sideloading (Scarlet / AltStore).</p>
+                <div class="tags">
+                    <span class="tag">IOS</span>
+                    <span class="tag">IPA</span>
+                </div>
+                <button class="btn-action secondary" onclick="downloadItem('iOS Executor')">SCARICA IPA</button>
             </div>
-        </div>
 
-        <!-- COUNTDOWN -->
-        <div id="countdown-overlay">3</div>
-    </div>
-
-    <!-- SELEZIONE BRAWLER MODAL -->
-    <div id="brawlers-modal" class="modal">
-        <div class="modal-content">
-            <h3>Scegli Brawler</h3>
-            <div id="brawlers-list" style="margin-top:15px;"></div>
-            <button class="btn btn-blue" onclick="closeModal('brawlers-modal')" style="width:100%; margin-top:10px;">Chiudi</button>
         </div>
-    </div>
+    </section>
 
-    <!-- SELEZIONE SKIN MODAL -->
-    <div id="skins-modal" class="modal">
-        <div class="modal-content">
-            <h3>Scegli Skin</h3>
-            <div id="skins-list" style="margin-top:15px;"></div>
-            <button class="btn btn-purple" onclick="closeModal('skins-modal')" style="width:100%; margin-top:10px;">Chiudi</button>
+    <!-- Sezione Script -->
+    <section id="scripts" class="container">
+        <h2>Script Popolari</h2>
+        <div class="grid">
+            
+            <div class="card">
+                <span class="badge online">VERIFICATO</span>
+                <h3>Blox Fruits Script</h3>
+                <p>Auto-farm, auto-quest e funzioni di ottimizzazione incluse.</p>
+                <div class="tags">
+                    <span class="tag">AUTO-FARM</span>
+                    <span class="tag">MOBILE FRIENDLY</span>
+                </div>
+                <button class="btn-action" onclick="copyScript('loadstring(game:HttpGet(\'https://raw.githubusercontent.com/example/script/main/bloxfruits.lua\'))()')">COPIA SCRIPT</button>
+            </div>
+
+            <div class="card">
+                <span class="badge online">VERIFICATO</span>
+                <h3>Pet Simulator Script</h3>
+                <p>Auto-hatch, auto-collect monete e teletrasporto mappe.</p>
+                <div class="tags">
+                    <span class="tag">PET SIM</span>
+                    <span class="tag">PC/MOBILE</span>
+                </div>
+                <button class="btn-action" onclick="copyScript('loadstring(game:HttpGet(\'https://raw.githubusercontent.com/example/script/main/petsim.lua\'))()')">COPIA SCRIPT</button>
+            </div>
+
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Roblox Script Master Hub. Progetto a scopo informativo.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
