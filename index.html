@@ -1,781 +1,807 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROBLOX SCRIPT & EXECUTOR PORTAL - PRO EDITION</title>
-    
-    <!-- Google Fonts & FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-main: #090a0f;
-            --bg-sidebar: #0f111a;
-            --bg-card: #151824;
-            --bg-card-hover: #1c2030;
-            --accent-cyan: #00f0ff;
-            --accent-purple: #7000ff;
-            --accent-green: #00e676;
-            --accent-pink: #ff0055;
-            --text-main: #f1f5f9;
-            --text-muted: #808a9d;
-            --border: rgba(255, 255, 255, 0.07);
-            --border-glow: rgba(0, 240, 255, 0.25);
-            --radius-md: 12px;
-            --radius-lg: 18px;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2A9BC4">
+<title>Meme Battle Generator</title>
+<style>
+  :root {
+    --bg: #2A9BC4;
+    --black: #000;
+    --white: #fff;
+    --green: #8AE000;
+    --gray: #666;
+    --cap: "Helvetica Neue", Arial, system-ui, sans-serif;
+    --mono: ui-monospace, Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    display: grid; place-items: center; overflow: hidden;
+    background: #000; font-family: var(--cap);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation; user-select: none; -webkit-user-select: none;
+  }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+  .stage {
+    position: relative;
+    height: 100vh; height: 100dvh;
+    width: calc(100vh * 9 / 16); width: calc(100dvh * 9 / 16);
+    max-width: 100vw;
+    container-type: size; overflow: hidden; background: var(--bg);
+  }
+  @media (max-width: 520px), (max-aspect-ratio: 9/16) {
+    .stage { width: 100vw; height: 100vh; height: 100dvh; }
+  }
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-        }
+  .screen {
+    position: absolute; inset: 0; display: none; flex-direction: column;
+    padding: max(5cqw, env(safe-area-inset-top)) 5cqw max(5cqw, env(safe-area-inset-bottom));
+    background: var(--bg);
+  }
+  .screen.is-active { display: flex; }
+  h1, h2 { font-weight: 800; outline: none; }
 
-        /* Header Professionale */
-        header {
-            height: 70px;
-            background: rgba(15, 17, 26, 0.85);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+  .cap { color: var(--white); font-weight: 800; text-align: center;
+         -webkit-text-stroke: .9cqw var(--black); paint-order: stroke fill; }
+  .h2 { font-size: 8.5cqw; line-height: 1.12; margin-top: 2cqw; }
+  .sub { text-align: center; color: var(--white); font-weight: 700; font-size: 4.4cqw;
+         margin: 2cqw 0 4cqw; text-shadow: 0 .35cqw 0 var(--black); }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            text-decoration: none;
-            color: #fff;
-        }
-        .brand-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 18px;
-        }
+  .btn {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 100%; padding: 3.4cqw 4cqw;
+    font-family: var(--cap); font-weight: 800; font-size: 6.2cqw; letter-spacing: .03em;
+    color: var(--white); background: var(--black); border: 0; border-radius: 2.4cqw;
+    cursor: pointer; transition: transform .08s ease;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn:disabled { opacity: .45; }
+  .btn--primary { background: var(--white); color: var(--black); }
+  .btn--xl { font-size: 8cqw; padding: 4.6cqw; }
+  .btn--sm { font-size: 5cqw; padding: 2.6cqw 3cqw; }
+  .btn--link { width: auto; background: none; color: var(--white); font-size: 4.8cqw;
+               padding: 0 1cqw; text-decoration: underline; text-underline-offset: .8cqw; }
+  .btn:focus-visible, select:focus-visible { outline: .8cqw solid var(--white); outline-offset: .5cqw; }
 
-        .search-bar-header {
-            width: 450px;
-            position: relative;
-        }
-        .search-bar-header input {
-            width: 100%;
-            padding: 10px 16px 10px 42px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-        .search-bar-header input:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
-            background: rgba(255, 255, 255, 0.07);
-        }
-        .search-bar-header i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 14px;
-        }
+  /* Menu */
+  #screen-menu { justify-content: space-between; }
+  .logo { margin-top: 6cqw; line-height: 1.02; }
+  .logo span { display: block; color: var(--white); -webkit-text-stroke: 1.5cqw var(--black);
+               paint-order: stroke fill; transform: rotate(var(--r)); }
+  .logo .l1 { font-size: 19cqw; --r: -2deg; }
+  .logo .l2 { font-size: 17cqw; --r: 1.5deg; }
+  .logo .l3 { font-size: 11.5cqw; --r: -1deg; }
+  @keyframes drop { from { transform: translateY(-40cqw) rotate(var(--r)); opacity: 0; }
+                    to   { transform: translateY(0) rotate(var(--r)); opacity: 1; } }
+  #screen-menu.is-active .logo span { animation: drop .5s cubic-bezier(.2,1.2,.4,1) both; }
+  #screen-menu.is-active .logo .l2 { animation-delay: .1s; }
+  #screen-menu.is-active .logo .l3 { animation-delay: .2s; }
+  .stack { display: flex; flex-direction: column; gap: 3.4cqw; }
+  .roster { display: flex; justify-content: center; flex-wrap: wrap; gap: 3.5cqw;
+            margin-top: 6cqw; font-size: 9.5cqw; line-height: 1; }
+  .roster span { filter: drop-shadow(0 1cqw 0 rgba(0,0,0,.3)); }
 
-        /* Layout Principale Sidebar + Contenuto */
-        .app-layout {
-            display: flex;
-            flex: 1;
-        }
+  .paper { flex: 1; margin: 5cqw 0 4cqw; padding: 5cqw; overflow-y: auto;
+           background: var(--black); color: var(--white); border-radius: 2.4cqw;
+           font-weight: 700; font-size: 4.6cqw; line-height: 1.5; }
+  .paper p + p, .paper ul { margin-top: 3.2cqw; }
+  .paper ul { padding-left: 5.5cqw; }
+  .paper li + li { margin-top: 1.4cqw; }
+  .paper strong { display: block; color: var(--green); font-size: 5.8cqw; }
 
-        /* Sidebar Cartelle & Navigazione */
-        sidebar {
-            width: 300px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-            height: calc(100vh - 70px);
-            position: sticky;
-            top: 70px;
-            overflow-y: auto;
-        }
+  .modes { flex: 1; display: flex; flex-direction: column; gap: 3.4cqw; margin-bottom: 4cqw; min-height: 0; }
+  .modes .btn { flex: 1; }
+  .btn__main { font-size: 10cqw; line-height: 1; }
+  .btn__sub { font-weight: 700; font-size: 4.2cqw; opacity: .75; margin-top: .8cqw; }
 
-        .nav-section-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--text-muted);
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+  .slots { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 3cqw;
+           padding: 0 .5cqw 2cqw; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .panel { flex-shrink: 0; }
+  .panel__head { padding: 1.8cqw 3cqw; font-size: 5.2cqw; font-weight: 800; text-transform: uppercase;
+                 text-align: center; letter-spacing: .06em; color: var(--white);
+                 background: var(--black); border-radius: 2cqw; }
+  .panel__body { display: flex; flex-direction: column; gap: 2.4cqw; padding: 2.6cqw .6cqw; }
+  .slot { display: grid; grid-template-columns: 26cqw 1fr; align-items: center; gap: 2.5cqw; }
+  .slot label { text-align: center; font-weight: 800; font-size: 4.6cqw; color: var(--white);
+                -webkit-text-stroke: .9cqw var(--black); paint-order: stroke fill; }
+  .sel { position: relative; }
+  .sel select { -webkit-appearance: none; appearance: none; width: 100%; min-height: 11cqw;
+                padding: 0 9cqw 0 3.5cqw; font-family: var(--cap); font-weight: 800;
+                font-size: max(16px, 4.6cqw); color: var(--black); background: var(--white);
+                border: .7cqw solid var(--black); border-radius: 1.8cqw; cursor: pointer; }
+  .sel::after { content: ""; position: absolute; right: 4cqw; top: 50%; width: 2.2cqw; height: 2.2cqw;
+                border-right: .8cqw solid var(--black); border-bottom: .8cqw solid var(--black);
+                transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .vs { flex-shrink: 0; align-self: center; margin: -1.2cqw 0; font-size: 8cqw; font-weight: 800;
+        color: var(--white); -webkit-text-stroke: 1.3cqw var(--black); paint-order: stroke fill; }
+  .actions { display: flex; flex-direction: column; align-items: center; gap: 3cqw; padding-top: 2.6cqw; }
 
-        .folder-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+  /* Arena stile video */
+  #screen-arena { padding: 0; }
+  .band { flex-shrink: 0; padding: 4.5cqw 5cqw 3.5cqw; background: var(--bg); }
+  .band--outro { padding: 3.5cqw 5cqw 4.5cqw; }
+  .bar { flex-shrink: 0; height: 3.4cqw; background: var(--black); }
+  .cap--title { font-size: 8.2cqw; line-height: 1.12; }
+  .cap--outro { font-size: 7.2cqw; margin-bottom: 3.2cqw; }
+  .arena { position: relative; flex: 1; min-height: 0; overflow: hidden; }
 
-        .folder-item {
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.15s ease;
-        }
-        .folder-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: #fff;
-        }
-        .folder-item.active {
-            background: linear-gradient(90deg, rgba(0, 240, 255, 0.15), transparent);
-            border-left: 3px solid var(--accent-cyan);
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-        .folder-item-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .count-badge {
-            background: rgba(255, 255, 255, 0.06);
-            font-size: 11px;
-            padding: 2px 7px;
-            border-radius: 12px;
-            color: var(--text-muted);
-        }
+  .fighter { position: absolute; width: 30cqw; display: flex; flex-direction: column;
+             align-items: center; transform: translate(-50%, -50%); will-change: transform, left, top; }
+  .cross { width: 13cqw; margin-bottom: -4cqw; position: relative; z-index: 2;
+           filter: drop-shadow(0 .6cqw 0 rgba(0,0,0,.25)); }
+  .sprite { font-size: 16cqw; line-height: 1; filter: drop-shadow(0 1.2cqw 0 rgba(0,0,0,.28)); }
+  .sprite img { display: block; width: 100%; }
+  .fname { margin-top: .6cqw; font-size: 4.2cqw; font-weight: 800;
+           -webkit-text-stroke: .8cqw var(--black); paint-order: stroke fill; }
+  .fighter.is-hit .sprite { animation: hit .22s ease-out; }
+  @keyframes hit { 50% { filter: brightness(1.8) drop-shadow(0 0 2cqw #fff); } }
+  .fighter.is-dead .sprite { transition: transform .5s ease-in, opacity .5s ease-in;
+                             transform: rotate(105deg) translate(5cqw, 7cqw); opacity: 0; }
+  .fighter.is-dead .cross, .fighter.is-dead .fname { transition: opacity .4s .15s; opacity: 0; }
+  .fighter.is-stun .sprite { filter: saturate(.4) brightness(1.2); }
 
-        /* Area Contenuto */
-        main {
-            flex: 1;
-            padding: 30px;
-            max-width: 1400px;
-        }
+  .dmg { position: absolute; z-index: 6; font-family: var(--mono); font-weight: 700; font-size: 6.5cqw;
+         color: var(--green); text-shadow: .45cqw .45cqw 0 rgba(0,0,0,.55);
+         pointer-events: none; animation: rise .9s ease-out forwards; white-space: nowrap; }
+  .dmg.crit { color: #FFD60A; font-size: 8cqw; }
+  .dmg.heal { color: #7CFF6B; }
+  @keyframes rise { from { opacity: 1; transform: translate(-50%,0); }
+                    to   { opacity: 0; transform: translate(-50%,-16cqw); } }
 
-        /* Griglia Executor con Loghi Specifici */
-        .executors-header {
-            margin-bottom: 25px;
-        }
-        .executors-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
-        }
+  .fx { position: absolute; z-index: 5; pointer-events: none; transform: translate(-50%,-50%); }
+  .fx--ring { border-radius: 50%; border: 1cqw solid var(--white); animation: ring .45s ease-out forwards; }
+  @keyframes ring { from { width: 4cqw; height: 4cqw; opacity: 1; }
+                    to   { width: 34cqw; height: 34cqw; opacity: 0; } }
+  .fx--fade { animation: fxfade .4s ease-out forwards; }
+  @keyframes fxfade { from { opacity: 1; } to { opacity: 0; } }
 
-        .executor-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: transform 0.2s, border-color 0.2s;
-            position: relative;
-        }
-        .executor-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent-cyan);
-        }
-        .executor-card.featured {
-            border-color: var(--accent-pink);
-            background: linear-gradient(145deg, var(--bg-card), rgba(255, 0, 85, 0.05));
-        }
+  .pu { position: absolute; width: 11cqw; transform: translate(-50%,-50%); z-index: 3;
+        animation: pubob 1.4s ease-in-out infinite; filter: drop-shadow(0 .8cqw 0 rgba(0,0,0,.35)); }
+  @keyframes pubob { 0%,100% { margin-top: 0; } 50% { margin-top: -1.6cqw; } }
 
-        .executor-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            font-size: 9px;
-            font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .badge-top { background: var(--accent-pink); color: #fff; }
-        .badge-free { background: var(--accent-green); color: #000; }
+  .proj { position: absolute; width: 5cqw; transform: translate(-50%,-50%); z-index: 4; }
 
-        .executor-logo {
-            width: 46px;
-            height: 46px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: 800;
-        }
-        /* Colorazioni tematiche loghi */
-        .logo-delta { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
-        .logo-codex { background: rgba(112, 0, 255, 0.15); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
-        .logo-solara { background: rgba(255, 183, 3, 0.15); color: #ffb703; border: 1px solid #ffb703; }
-        .logo-arceus { background: rgba(255, 0, 85, 0.15); color: var(--accent-pink); border: 1px solid var(--accent-pink); }
-        .logo-wave { background: rgba(0, 230, 118, 0.15); color: var(--accent-green); border: 1px solid var(--accent-green); }
+  .win { position: absolute; inset: 0; display: grid; place-items: center; font-size: 10.5cqw;
+         line-height: 1.15; padding: 0 6cqw; animation: pop .35s cubic-bezier(.2,1.4,.4,1) both; z-index: 9; }
+  @keyframes pop { from { transform: scale(.4); opacity: 0; } }
 
-        .executor-info h4 { font-size: 16px; color: #fff; font-weight: 700; }
-        .executor-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .rec { position: absolute; top: 2.4cqw; right: 2.4cqw; z-index: 8; display: flex; align-items: center;
+         gap: 1.4cqw; padding: 1.2cqw 2.6cqw; background: #E00000; color: var(--white);
+         font-weight: 800; font-size: 4.2cqw; border-radius: 1.4cqw; }
+  .rec::before { content: ""; width: 2cqw; height: 2cqw; background: var(--white); border-radius: 50%;
+                 animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
 
-        .btn-download {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        .btn-download:hover {
-            background: var(--accent-cyan);
-            color: #000;
-            border-color: var(--accent-cyan);
-        }
+  .controls { display: flex; align-items: center; gap: 2.4cqw; }
 
-        /* Sezione Script & Mappe Hub */
-        .content-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .content-header h2 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 22px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Virtualized Grid per Performance Estreme */
-        .script-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 18px;
-        }
-
-        .script-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 14px;
-        }
-        .script-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: var(--bg-card-hover);
-        }
-
-        .script-card-header {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-        .game-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: var(--accent-cyan);
-            flex-shrink: 0;
-        }
-        .script-meta h3 { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.3; }
-        .script-meta span { font-size: 12px; color: var(--text-muted); display: block; margin-top: 3px; }
-
-        .tag-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .tag {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border);
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            color: var(--text-muted);
-        }
-
-        .script-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .btn-action {
-            flex: 1;
-            padding: 9px;
-            border-radius: 6px;
-            border: none;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .btn-copy { background: var(--accent-cyan); color: #000; }
-        .btn-copy:hover { filter: brightness(1.1); }
-        .btn-inspect { background: rgba(255, 255, 255, 0.06); color: #fff; }
-        .btn-inspect:hover { background: rgba(255, 255, 255, 0.12); }
-
-        /* Controls Paginazione Intelligente */
-        .pagination-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        /* Modal Code Inspector */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-window {
-            background: #0d0e15;
-            border: 1px solid var(--accent-cyan);
-            border-radius: var(--radius-lg);
-            width: 90%;
-            max-width: 650px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .code-block {
-            background: #050508;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--accent-green);
-            max-height: 220px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-
-        /* Toast Feedback */
-        .toast {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: var(--accent-green);
-            color: #000;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 10px 25px rgba(0, 230, 118, 0.3);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2000;
-        }
-        .toast.visible {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        @media (max-width: 900px) {
-            sidebar { display: none; }
-            .search-bar-header { width: 100%; }
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce) {
+    #screen-menu.is-active .logo span, .dmg, .win, .rec::before, .pu { animation: none; }
+    .btn { transition: none; }
+  }
+</style>
 </head>
 <body>
+<main class="stage" id="stage">
 
-    <!-- Header Navigation -->
-    <header>
-        <a href="#" class="brand">
-            <div class="brand-icon"><i class="fa-solid fa-code"></i></div>
-            <span>ROBLOX<span style="color:var(--accent-cyan);">HUB</span></span>
-        </a>
-
-        <div class="search-bar-header">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="globalSearch" placeholder="Cerca tra 10.000+ Script o 500+ Mappe (es. Blox Fruits, Fisch, Auto Farm)..." onkeyup="onSearchInput()">
-        </div>
-    </header>
-
-    <div class="app-layout">
-        
-        <!-- Sidebar Cartelle Giochi & Mappe -->
-        <sidebar>
-            <div>
-                <div class="nav-section-title">EXECUTORS DIRECTORY</div>
-                <ul class="folder-list">
-                    <li class="folder-item active" onclick="switchMainTab('executors', this)">
-                        <div class="folder-item-left"><i class="fa-solid fa-shield-cat"></i> Tutti gli Executor</div>
-                        <span class="count-badge">8</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div>
-                <div class="nav-section-title">CARTELLE GIOCHI (500+ MAPPE)</div>
-                <ul class="folder-list" id="gameFoldersList">
-                    <!-- Popolato dinamicamente -->
-                </ul>
-            </div>
-        </sidebar>
-
-        <!-- Main Content View -->
-        <main>
-            
-            <!-- EXECUTORS SHOWCASE -->
-            <section id="executorsView">
-                <div class="executors-header">
-                    <h2 style="font-family:'Space Grotesk'; font-size:20px; display:flex; align-items:center; gap:8px;">
-                        <i class="fa-solid fa-bolt" style="color:var(--accent-cyan);"></i> EXECUTOR COMPATIBILI (PC & MOBILE)
-                    </h2>
-                </div>
-
-                <div class="executors-grid">
-                    <!-- Delta Executor -->
-                    <div class="executor-card featured">
-                        <span class="executor-badge badge-top">#1 SCELTO</span>
-                        <div class="executor-logo logo-delta"><i class="fa-solid fa-caret-up"></i></div>
-                        <div class="executor-info">
-                            <h4>Delta Executor</h4>
-                            <p>Android, iOS & Windows</p>
-                        </div>
-                        <button class="btn-download" onclick="triggerDownload('Delta Executor')"><i class="fa-solid fa-download"></i> SCARICA</button>
-                    </div>
-
-                    <!-- Codex Executor -->
-                    <div class="executor-card">
-                        <span class="executor-badge badge-free">KEYLESS</span>
-                        <div class="executor-logo logo-codex"><i class="fa-solid fa-terminal"></i></div>
-                        <div class="executor-info">
-                            <h4>Codex Executor</h4>
-                            <p>Android & iOS Fast Run</p>
-                        </div>
-                        <button class="btn-download" onclick="triggerDownload('Codex Executor')"><i class="fa-solid fa-download"></i> SCARICA</button>
-                    </div>
-
-                    <!-- Solara -->
-                    <div class="executor-card">
-                        <span class="executor-badge badge-free">PC BEST</span>
-                        <div class="executor-logo logo-solara"><i class="fa-solid fa-sun"></i></div>
-                        <div class="executor-info">
-                            <h4>Solara V3</h4>
-                            <p>Windows 10 / 11 64-bit</p>
-                        </div>
-                        <button class="btn-download" onclick="triggerDownload('Solara PC')"><i class="fa-solid fa-download"></i> SCARICA</button>
-                    </div>
-
-                    <!-- Arceus X -->
-                    <div class="executor-card">
-                        <span class="executor-badge badge-free">STABILE</span>
-                        <div class="executor-logo logo-arceus"><i class="fa-solid fa-shapes"></i></div>
-                        <div class="executor-info">
-                            <h4>Arceus X Neo</h4>
-                            <p>Android APK Mod</p>
-                        </div>
-                        <button class="btn-download" onclick="triggerDownload('Arceus X Neo')"><i class="fa-solid fa-download"></i> SCARICA</button>
-                    </div>
-
-                    <!-- Wave -->
-                    <div class="executor-card">
-                        <span class="executor-badge badge-top">LEVEL 8</span>
-                        <div class="executor-logo logo-wave"><i class="fa-solid fa-water"></i></div>
-                        <div class="executor-info">
-                            <h4>Wave Executor</h4>
-                            <p>Windows PC Premium</p>
-                        </div>
-                        <button class="btn-download" onclick="triggerDownload('Wave PC')"><i class="fa-solid fa-download"></i> SCARICA</button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- CATALOGO SCRIPT & MAPPE -->
-            <section id="scriptsView">
-                <div class="content-header">
-                    <h2>
-                        <i class="fa-solid fa-folder-open" style="color:var(--accent-cyan);"></i>
-                        <span id="currentFolderName">Tutti gli Script (10.000+)</span>
-                    </h2>
-                    <span id="scriptCountBadge" style="font-size:13px; color:var(--text-muted); font-weight:600;">Indicizzati: 10.000+</span>
-                </div>
-
-                <!-- Griglia Script Dinamica -->
-                <div class="script-grid" id="scriptGridContainer">
-                    <!-- Script iniettati senza lag via JS -->
-                </div>
-
-                <!-- Controllo Paginazione Veloce -->
-                <div class="pagination-container">
-                    <button class="btn-download" onclick="changePage(-1)"><i class="fa-solid fa-arrow-left"></i> Precedente</button>
-                    <span id="pageTracker" style="font-size:13px; font-weight:600; color:var(--text-muted);">Pagina 1 di 834</span>
-                    <button class="btn-download" onclick="changePage(1)">Successiva <i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-            </section>
-
-        </main>
+  <section class="screen is-active" id="screen-menu" aria-label="Menu principale">
+    <h1 class="logo" tabindex="-1" aria-label="MEME BATTLE GENERATOR">
+      <span class="l1" aria-hidden="true">MEME</span>
+      <span class="l2" aria-hidden="true">BATTLE</span>
+      <span class="l3" aria-hidden="true">GENERATOR</span>
+    </h1>
+    <div>
+      <nav class="stack" aria-label="Menu">
+        <button class="btn btn--primary btn--xl" data-go="mode">GIOCA</button>
+        <button class="btn" data-go="settings">IMPOSTAZIONI</button>
+        <button class="btn" data-go="credits">CREDITI</button>
+      </nav>
+      <div class="roster" aria-hidden="true">
+        <span>🌦️</span><span>📹</span><span>⛪</span><span>🎸</span><span>🕶️</span>
+        <span>🐕</span><span>💼</span><span>🗿</span><span>🤖</span><span>💰</span>
+      </div>
     </div>
+  </section>
 
-    <!-- Inspector Modal -->
-    <div class="modal-overlay" id="codeModal">
-        <div class="modal-window">
-            <h3 id="modalTitle" style="color:var(--accent-cyan); font-family:'Space Grotesk';">Script Preview</h3>
-            <div class="code-block" id="modalCode">-- Loading Code...</div>
-            <div style="display:flex; justify-content:flex-end; gap:10px;">
-                <button class="btn-download" onclick="closeModal()">Chiudi</button>
-                <button class="btn-action btn-copy" style="max-width:180px;" onclick="copyModalCode()"><i class="fa-solid fa-copy"></i> Copia Codice</button>
-            </div>
-        </div>
+  <section class="screen" id="screen-settings" aria-label="Impostazioni">
+    <h2 class="h2 cap" tabindex="-1">IMPOSTAZIONI</h2>
+    <div class="paper">
+      <p>Motore fisico attivo: i personaggi rimbalzano sui bordi, i melee caricano da vicino, i ranged sparano da lontano.</p>
+      <p>Ogni personaggio ha un'abilità speciale con cooldown.</p>
+      <p>Power-up con grafica disegnata (SVG): Padella, Pillola, Scudo, Cuore, Fulmine, Banana.</p>
+      <p>Slot immagini pronti: quando carichi i cutout e le grafiche di attacco/abilità vengono inserite al posto degli SVG.</p>
     </div>
+    <button class="btn" data-go="menu">TORNA AL MENU</button>
+  </section>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <i class="fa-solid fa-check-circle"></i>
-        <span id="toastMsg">Codice copiato negli appunti!</span>
+  <section class="screen" id="screen-credits" aria-label="Crediti">
+    <h2 class="h2 cap" tabindex="-1">CREDITI</h2>
+    <div class="paper">
+      <p><strong>MEME BATTLE GENERATOR</strong></p>
+      <p>Battaglie fisiche tra meme per video verticali 9:16, stile "Guy Fights".</p>
+      <p>Roster: Weather Guy, Camera Guy, Priest Guy, Guitar Guy, Henchman, Doge, Business Guy, Moai, NPC, Trade Offer Guy.</p>
     </div>
+    <button class="btn" data-go="menu">TORNA AL MENU</button>
+  </section>
 
-    <script>
-        // ARCHITETTURA DATI E GESTIONE 500+ MAPPE / 10.000+ SCRIPT
-        const popularGames = [
-            { id: "bloxfruits", name: "Blox Fruits", count: "1,420 script" },
-            { id: "fisch", name: "Fisch", count: "890 script" },
-            { id: "petsim99", name: "Pet Simulator 99", count: "1,150 script" },
-            { id: "bladeball", name: "Blade Ball", count: "640 script" },
-            { id: "rivals", name: "Rivals FPS", count: "510 script" },
-            { id: "dahood", name: "Da Hood", count: "920 script" },
-            { id: "mm2", name: "Murder Mystery 2", count: "780 script" },
-            { id: "anime", name: "Anime Defenders", count: "830 script" },
-            { id: "kinglegacy", name: "King Legacy", count: "450 script" },
-            { id: "brookhaven", name: "Brookhaven RP", count: "390 script" },
-            { id: "doors", name: "DOORS", count: "610 script" },
-            { id: "universal", name: "Universal / ESP", count: "1,500+ script" }
-        ];
+  <section class="screen" id="screen-mode" aria-label="Selezione modalità">
+    <h2 class="h2 cap" tabindex="-1">SCEGLI LA MODALITÀ</h2>
+    <p class="sub">Quanti personaggi scendono in campo?</p>
+    <div class="modes">
+      <button class="btn" data-mode="1v1"><span class="btn__main">1v1</span><span class="btn__sub">1 contro 1</span></button>
+      <button class="btn" data-mode="2v2"><span class="btn__main">2v2</span><span class="btn__sub">2 contro 2</span></button>
+      <button class="btn" data-mode="3v3"><span class="btn__main">3v3</span><span class="btn__sub">3 contro 3</span></button>
+      <button class="btn" data-mode="ffa"><span class="btn__main">FFA</span><span class="btn__sub">Tutti contro Tutti</span></button>
+    </div>
+    <button class="btn btn--link" data-go="menu">INDIETRO</button>
+  </section>
 
-        const scriptHubs = ["Redz Hub", "Hoho Hub", "Speed Hub", "W-Azure", "Voltz Hub", "Quartz V2", "Lunar Hub", "Thunder Z", "Nexus X"];
-        const scriptFeatures = ["Auto Farm Level", "Instant Kill", "ESP Players", "Auto Chest", "Silent Aimbot", "God Mode", "0ms Auto Parry", "Infinite Money"];
+  <section class="screen" id="screen-select" aria-label="Selezione personaggi">
+    <h2 class="h2 cap" tabindex="-1">SCEGLI I PERSONAGGI</h2>
+    <p class="sub" id="select-sub"></p>
+    <div class="slots" id="slots"></div>
+    <div class="actions">
+      <button class="btn btn--primary btn--xl" data-go="arena">AVVIA BATTAGLIA</button>
+      <button class="btn btn--link" data-go="mode">INDIETRO</button>
+    </div>
+  </section>
 
-        // Generazione ultraleggera in memoria di 10.000+ record senza rallentare il browser
-        const database = [];
-        let idCounter = 1;
+  <section class="screen" id="screen-arena" aria-label="Arena">
+    <div class="band band--title"><h2 class="cap cap--title" id="arena-title" tabindex="-1"></h2></div>
+    <div class="bar"></div>
+    <div class="arena" id="arena">
+      <div id="fighters"></div>
+      <div class="win cap" id="win-cap" hidden></div>
+      <div class="rec" id="rec-chip" hidden>REC</div>
+    </div>
+    <div class="bar"></div>
+    <div class="band band--outro">
+      <p class="cap cap--outro">Like and Subscribe!</p>
+      <div class="controls">
+        <button class="btn btn--primary" id="btn-fight">FIGHT!</button>
+        <button class="btn btn--sm" id="btn-rec">REC</button>
+        <button class="btn btn--link" data-go="select">CAMBIA</button>
+      </div>
+    </div>
+  </section>
 
-        for (let i = 0; i < 850; i++) {
-            popularGames.forEach(game => {
-                const hub = scriptHubs[i % scriptHubs.length];
-                const feat = scriptFeatures[(i + idCounter) % scriptFeatures.length];
-                database.push({
-                    id: idCounter,
-                    gameId: game.id,
-                    gameName: game.name,
-                    title: `${game.name} - ${hub} V${(i % 4) + 1}.0`,
-                    desc: `Hub completo con ${feat}, bypass anti-cheat e ottimizzazione CPU.`,
-                    code: `loadstring(game:HttpGet("https://raw.githubusercontent.com/script-master-repo/${game.id}/main/script_${idCounter}.lua"))()`,
-                    tags: ["VERIFICATO", "NO LAG", feat]
-                });
-                idCounter++;
-            });
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ============ DATI ============
+     img    = cutout del personaggio (PNG trasparente) — ora null, usa emoji
+     atkImg = grafica del colpo/proiettile — ora null, usa SVG
+     spcImg = grafica dell'abilità speciale — ora null, usa SVG        */
+  const CHARACTERS = [
+    { id:'weather',  name:'Weather Guy',  plural:'Weather Guys',  emoji:'🌦️', img:null, atkImg:null, spcImg:null,
+      hp:1000, atk:120, def:80,  spd:1.0, range:'ranged', spc:{ name:'Tempesta', cd:7 } },
+    { id:'camera',   name:'Camera Guy',   plural:'Camera Guys',   emoji:'📹', img:null, atkImg:null, spcImg:null,
+      hp:900,  atk:140, def:70,  spd:1.1, range:'melee',  spc:{ name:'Flash', cd:6 } },
+    { id:'priest',   name:'Priest Guy',   plural:'Priest Guys',   emoji:'⛪', img:null, atkImg:null, spcImg:null,
+      hp:1100, atk:100, def:100, spd:0.9, range:'ranged', spc:{ name:'Benedizione', cd:8 } },
+    { id:'guitar',   name:'Guitar Guy',   plural:'Guitar Guys',   emoji:'🎸', img:null, atkImg:null, spcImg:null,
+      hp:950,  atk:130, def:75,  spd:1.0, range:'ranged', spc:{ name:'Soundwave', cd:6 } },
+    { id:'henchman', name:'Henchman',     plural:'Henchmen Guys', emoji:'🕶️', img:null, atkImg:null, spcImg:null,
+      hp:1050, atk:125, def:85,  spd:1.15,range:'melee',  spc:{ name:'Blitz', cd:5 } },
+    { id:'doge',     name:'Doge',         plural:'Doges',         emoji:'🐕', img:null, atkImg:null, spcImg:null,
+      hp:1200, atk:90,  def:110, spd:1.2, range:'melee',  spc:{ name:'Such Wow', cd:7 } },
+    { id:'business', name:'Business Guy', plural:'Business Guys', emoji:'💼', img:null, atkImg:null, spcImg:null,
+      hp:1000, atk:115, def:90,  spd:1.0, range:'ranged', spc:{ name:'Valigetta', cd:6 } },
+    { id:'moai',     name:'Moai',         plural:'Moai',          emoji:'🗿', img:null, atkImg:null, spcImg:null,
+      hp:1300, atk:85,  def:120, spd:0.75,range:'melee',  spc:{ name:'Pelle di Pietra', cd:8 } },
+    { id:'npc',      name:'NPC',          plural:'NPCs',          emoji:'🤖', img:null, atkImg:null, spcImg:null,
+      hp:800,  atk:150, def:60,  spd:1.1, range:'melee',  spc:{ name:'Glitch', cd:5 } },
+    { id:'trade',    name:'Trade Offer',  plural:'Trade Offer Guys', emoji:'💰', img:null, atkImg:null, spcImg:null,
+      hp:950,  atk:135, def:80,  spd:1.0, range:'ranged', spc:{ name:'Affare', cd:7 } },
+  ];
+  const BY_ID = Object.fromEntries(CHARACTERS.map(c => [c.id, c]));
+
+  const TEAMS = { red:{ name:'Rosso', color:'#FF4D4D' }, blue:{ name:'Blu', color:'#4D8DFF' } };
+  const FFA_COLORS = ['#FF4D4D', '#4D8DFF', '#FFB800', '#1FC97F'];
+  const MODES = {
+    '1v1': { label:'1v1', type:'team', perTeam:1 },
+    '2v2': { label:'2v2', type:'team', perTeam:2 },
+    '3v3': { label:'3v3', type:'team', perTeam:3 },
+    'ffa': { label:'FFA', type:'ffa',  total:4 },
+  };
+
+  /* Power-up: grafica SVG disegnata a mano (niente emoji) */
+  const POWERUPS = {
+    pan:    { label:'PADELLA +60% DMG', svg:'<svg viewBox="0 0 64 64"><rect x="38" y="27" width="22" height="9" rx="4" fill="#222" stroke="#000" stroke-width="3"/><circle cx="26" cy="31" r="19" fill="#4a4a4a" stroke="#000" stroke-width="3"/><circle cx="26" cy="31" r="12" fill="#6e6e6e"/></svg>' },
+    pill:   { label:'PILLOLA VELOCITÀ', svg:'<svg viewBox="0 0 64 64"><g transform="rotate(-30 32 32)"><rect x="12" y="24" width="40" height="17" rx="8.5" fill="#fff"/><path d="M32 24 h11.5 a8.5 8.5 0 0 1 0 17 H32 z" fill="#E33"/><rect x="12" y="24" width="40" height="17" rx="8.5" fill="none" stroke="#000" stroke-width="3"/></g></svg>' },
+    shield: { label:'SCUDO 250', svg:'<svg viewBox="0 0 64 64"><path d="M32 5 L55 13 V31 C55 46 45 55 32 60 C19 55 9 46 9 31 V13 Z" fill="#5BC8FA" stroke="#000" stroke-width="3"/><path d="M28 20 h8 v8 h8 v8 h-8 v8 h-8 v-8 h-8 v-8 h8 z" fill="#fff"/></svg>' },
+    med:    { label:'CURA 250', svg:'<svg viewBox="0 0 64 64"><path d="M32 56 C10 40 6 26 14 17 C20 10 30 12 32 20 C34 12 44 10 50 17 C58 26 54 40 32 56 Z" fill="#FF3B5C" stroke="#000" stroke-width="3"/></svg>' },
+    bolt:   { label:'FULMINE 150', svg:'<svg viewBox="0 0 64 64"><polygon points="36,4 14,36 28,36 24,60 50,26 34,26" fill="#FFD60A" stroke="#000" stroke-width="3" stroke-linejoin="round"/></svg>' },
+    banana: { label:'BANANA STORDISCE', svg:'<svg viewBox="0 0 64 64"><path d="M12 32 C14 50 38 58 52 44 L47 37 C38 47 21 43 19 30 C18 24 11 26 12 32 Z" fill="#FFD60A" stroke="#000" stroke-width="3" stroke-linejoin="round"/></svg>' },
+  };
+  const PU_KEYS = Object.keys(POWERUPS);
+
+  /* ============ AUDIO ============ */
+  const SFX = {
+    ctx:null,
+    init(){ if(!this.ctx){ try{ this.ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } },
+    play(t){
+      if(!this.ctx) return;
+      const n = this.ctx.currentTime;
+      const mk = (type,f0,f1,dur,vol)=>{ const o=this.ctx.createOscillator(), g=this.ctx.createGain();
+        o.connect(g); g.connect(this.ctx.destination); o.type=type;
+        o.frequency.setValueAtTime(f0,n); o.frequency.exponentialRampToValueAtTime(Math.max(1,f1),n+dur);
+        g.gain.setValueAtTime(vol,n); g.gain.exponentialRampToValueAtTime(.01,n+dur);
+        o.start(n); o.stop(n+dur); };
+      if(t==='hit') mk('sawtooth',220,70,.15,.25);
+      else if(t==='miss') mk('sine',420,640,.1,.12);
+      else if(t==='shoot') mk('square',700,300,.12,.12);
+      else if(t==='zap') mk('sawtooth',900,120,.25,.2);
+      else if(t==='pickup') mk('sine',500,900,.15,.18);
+      else if(t==='special') mk('square',300,900,.3,.18);
+      else if(t==='win') [523,659,784,1046].forEach((f,i)=>{ const o=this.ctx.createOscillator(), g=this.ctx.createGain();
+        o.connect(g); g.connect(this.ctx.destination); o.type='square'; o.frequency.value=f;
+        g.gain.setValueAtTime(.15,n+i*.14); g.gain.exponentialRampToValueAtTime(.01,n+i*.14+.28);
+        o.start(n+i*.14); o.stop(n+i*.14+.28); });
+    }
+  };
+
+  /* ============ STATO / FSM ============ */
+  const FSM = { menu:['mode','settings','credits'], settings:['menu'], credits:['menu'],
+                mode:['menu','select'], select:['mode','arena'], arena:['select'] };
+  const RENDER = { select: renderSelect, arena: renderArena };
+  const app = { screen:'menu', mode:null, picks:[], sim:null, rec:null, chunks:[] };
+  const $ = s => document.querySelector(s);
+
+  function go(next){
+    if(!FSM[app.screen].includes(next)) return;
+    if(app.screen==='arena' && next!=='arena') stopSim();
+    $('#screen-'+app.screen).classList.remove('is-active');
+    app.screen = next;
+    if(RENDER[next]) RENDER[next]();
+    const sc = $('#screen-'+next);
+    sc.classList.add('is-active');
+    const h = sc.querySelector('h1,h2'); if(h) h.focus({ preventScroll:true });
+    const sl = sc.querySelector('.slots,.paper'); if(sl) sl.scrollTop = 0;
+  }
+
+  function slotsFor(k){
+    const c = MODES[k];
+    if(c.type==='ffa') return Array.from({length:c.total},(_,i)=>({ label:'Player '+(i+1), color:FFA_COLORS[i] }));
+    const out=[]; ['red','blue'].forEach(t=>{ for(let i=0;i<c.perTeam;i++) out.push({ label:TEAMS[t].name+' '+(i+1), color:TEAMS[t].color }); });
+    return out;
+  }
+  const el = (tag,cls,txt)=>{ const n=document.createElement(tag); if(cls)n.className=cls; if(txt!==undefined)n.textContent=txt; return n; };
+  const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+  /* ============ SELECT ============ */
+  function renderSelect(){
+    const cfg = MODES[app.mode], slots = slotsFor(app.mode), wrap = $('#slots');
+    wrap.replaceChildren();
+    $('#select-sub').textContent = cfg.type==='ffa' ? 'Modalità FFA (Tutti contro Tutti)'
+      : 'Modalità '+cfg.label+': Team Rosso vs Team Blu';
+    const groups = cfg.type==='ffa'
+      ? [{ title:'Tutti contro Tutti', from:0, to:4 }]
+      : [{ title:'Team Rosso', from:0, to:cfg.perTeam }, { title:'Team Blu', from:cfg.perTeam, to:cfg.perTeam*2 }];
+    groups.forEach((g,gi)=>{
+      if(gi>0) wrap.append(el('div','vs','VS'));
+      const panel = el('div','panel'); panel.append(el('div','panel__head',g.title));
+      const body = el('div','panel__body');
+      for(let i=g.from;i<g.to;i++){
+        const row = el('div','slot');
+        const lab = el('label','',slots[i].label); lab.htmlFor='slot-'+i;
+        const box = el('div','sel');
+        const sel = document.createElement('select'); sel.id='slot-'+i; sel.dataset.slotIndex=i;
+        CHARACTERS.forEach(c=>{ const o=el('option','',c.name); o.value=c.id; sel.append(o); });
+        sel.value = app.picks[i];
+        sel.addEventListener('change',()=>{ app.picks[i]=sel.value; refreshOpts(); });
+        box.append(sel); row.append(lab,box); body.append(row);
+      }
+      panel.append(body); wrap.append(panel);
+    });
+    refreshOpts();
+  }
+  function refreshOpts(){
+    const used = new Set(app.picks);
+    document.querySelectorAll('#slots select').forEach(sel=>{
+      Array.from(sel.options).forEach(o=>{ o.disabled = (o.value!==sel.value) && used.has(o.value); });
+    });
+  }
+
+  /* ============ SVG HELPERS ============ */
+  const crossSVG = hp => '<svg class="cross" viewBox="0 0 100 130">'
+    + '<path d="M36 0h28v36h36v28H64v66H36V64H0V36h36z" fill="#fff" stroke="#000" stroke-width="5" stroke-linejoin="round"/>'
+    + '<text class="hp-num" x="50" y="51" text-anchor="middle" dominant-baseline="central" font-size="30" font-weight="700" fill="#666" font-family="Arial,sans-serif">'+hp+'</text></svg>';
+  const projSVG = color => '<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="14" fill="'+color+'" stroke="#000" stroke-width="3"/><circle cx="15" cy="15" r="4" fill="#fff" opacity=".8"/></svg>';
+  const slashSVG = '<svg viewBox="0 0 60 60" width="100%"><path d="M8 40 Q30 8 52 22" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/></svg>';
+  const boltSVG  = '<svg viewBox="0 0 64 90"><polyline points="36,2 24,40 38,40 26,88" fill="none" stroke="#FFD60A" stroke-width="9" stroke-linejoin="round"/><polyline points="36,2 24,40 38,40 26,88" fill="none" stroke="#fff" stroke-width="3"/></svg>';
+
+  /* ============ ARENA RENDER ============ */
+  function sideTitle(ids){
+    const cnt = {}; ids.forEach(id=>cnt[id]=(cnt[id]||0)+1);
+    return Object.entries(cnt).map(([id,n])=> n>1 ? n+' '+BY_ID[id].plural : BY_ID[id].name).join(' & ');
+  }
+  function titleFor(){
+    const cfg = MODES[app.mode];
+    if(cfg.type==='ffa') return app.picks.map(id=>BY_ID[id].name).join(' vs ');
+    return sideTitle(app.picks.slice(0,cfg.perTeam))+' vs '+sideTitle(app.picks.slice(cfg.perTeam));
+  }
+
+  function renderArena(){
+    stopSim();
+    const cfg = MODES[app.mode], slots = slotsFor(app.mode);
+    $('#arena-title').textContent = titleFor();
+    $('#win-cap').hidden = true;
+    $('#fighters').replaceChildren();
+    $('#btn-fight').disabled = false;
+    $('#btn-fight').textContent = 'FIGHT!';
+
+    const pos = startPos(cfg);
+    app.sim = { fighters:[], projs:[], pus:[], running:false, over:false, puTimer:4, W:0, H:0, raf:0, last:0 };
+
+    slots.forEach((slot,i)=>{
+      const ch = BY_ID[app.picks[i]];
+      const node = el('div','fighter');
+      node.innerHTML = crossSVG(ch.hp)
+        + '<div class="sprite">'+(ch.img ? '<img src="'+ch.img+'" alt="">' : ch.emoji)+'</div>'
+        + '<div class="fname" style="color:'+slot.color+'">'+ch.name+'</div>';
+      $('#fighters').append(node);
+      app.sim.fighters.push({
+        i, ch, team: cfg.type==='ffa' ? i : (i < cfg.perTeam ? 'red':'blue'),
+        color: slot.color, x:pos[i][0], y:pos[i][1],
+        vx:(Math.random()-.5)*60, vy:(Math.random()-.5)*60,
+        hp:ch.hp, maxHp:ch.hp, cd:Math.random()*.6, spcCd:ch.spc.cd*.5,
+        stun:0, dmgMul:1, dmgT:0, spdMul:1, spdT:0, shield:0, dead:false,
+        el:node, hitT:0,
+      });
+    });
+    measure();
+    place();
+  }
+  function startPos(cfg){
+    if(cfg.type==='ffa') return [[27,30],[73,34],[27,70],[73,64]].map(p=>p);
+    const n = cfg.perTeam, out=[];
+    [24,76].forEach(x=>{ for(let i=0;i<n;i++) out.push([x, ((i+.5)/n)*100]); });
+    return out;
+  }
+  function measure(){ const r = $('#arena').getBoundingClientRect(); app.sim.W = r.width; app.sim.H = r.height; }
+  function place(){
+    const s = app.sim;
+    s.fighters.forEach(f=>{ f.el.style.left = (f.x/s.W*100)+'%'; f.el.style.top = (f.y/s.H*100)+'%'; });
+  }
+
+  /* ============ SIM FISICA ============ */
+  const R = () => app.sim.W * 0.075;              // raggio fighter
+  const MELEE = () => app.sim.W * 0.17;           // gittata melee
+  const RMAX  = () => app.sim.W * 0.80;           // gittata ranged max
+  const RMIN  = () => app.sim.W * 0.34;           // ranged sta lontano
+
+  function startSim(){
+    const s = app.sim; if(!s || s.over) return;
+    SFX.init(); measure();
+    s.running = true; s.last = performance.now();
+    $('#btn-fight').disabled = true; $('#btn-fight').textContent = 'IN CORSO…';
+    s.raf = requestAnimationFrame(tick);
+  }
+  function stopSim(){
+    if(app.sim && app.sim.raf) cancelAnimationFrame(app.sim.raf);
+    if(app.sim) app.sim.running = false;
+  }
+
+  function tick(now){
+    const s = app.sim; if(!s || !s.running) return;
+    let dt = Math.min(.033, (now - s.last)/1000); s.last = now;
+    step(dt);
+    s.raf = requestAnimationFrame(tick);
+  }
+
+  function step(dt){
+    const s = app.sim, W = s.W, H = s.H, r = R();
+    const alive = s.fighters.filter(f=>!f.dead);
+
+    /* power-up spawn */
+    s.puTimer -= dt;
+    if(s.puTimer <= 0 && s.pus.length < 3){ spawnPU(); s.puTimer = 6 + Math.random()*3; }
+
+    for(const f of alive){
+      /* timer */
+      f.cd -= dt; f.spcCd -= dt;
+      if(f.stun>0){ f.stun -= dt; f.el.classList.toggle('is-stun', f.stun>0); }
+      if(f.dmgT>0){ f.dmgT -= dt; if(f.dmgT<=0) f.dmgMul = 1; }
+      if(f.spdT>0){ f.spdT -= dt; if(f.spdT<=0) f.spdMul = 1; }
+
+      const tgt = nearestEnemy(f, alive);
+      if(tgt && f.stun<=0){
+        const dx = tgt.x-f.x, dy = tgt.y-f.y, d = Math.hypot(dx,dy)||1;
+        const ux = dx/d, uy = dy/d;
+        const ACC = W*2.4*f.ch.spd*f.spdMul, MAX = W*0.34*f.ch.spd*f.spdMul;
+        let ax = ux, ay = uy;
+        if(f.ch.range==='ranged'){
+          if(d > RMAX()*.85){ /* avvicinati */ }
+          else if(d < RMIN()*.8){ ax = -ux; ay = -uy; }          // scappa
+          else { ax = -uy*.7; ay = ux*.7; }                       // strafing
+        } else if(d < MELEE()*.8){ ax *= .15; ay *= .15; }        // melee fermo in range
+        f.vx += ax*ACC*dt; f.vy += ay*ACC*dt;
+        const sp = Math.hypot(f.vx,f.vy);
+        if(sp > MAX){ f.vx = f.vx/sp*MAX; f.vy = f.vy/sp*MAX; }
+
+        /* attacchi */
+        if(f.ch.range==='melee'){
+          if(d < MELEE() && f.cd<=0){ f.cd = 1.1; meleeAttack(f, tgt, ux, uy); }
+        } else {
+          if(d < RMAX() && f.cd<=0){ f.cd = 1.6; shoot(f, tgt); }
         }
+        /* abilità speciale */
+        if(f.spcCd<=0) trySpecial(f, tgt, d);
+      }
 
-        // STATO APPLICAZIONE
-        let currentFolder = "all";
-        let searchQuery = "";
-        let currentPage = 1;
-        const itemsPerPage = 12;
+      /* integrazione + rimbalzo bordi */
+      f.x += f.vx*dt; f.y += f.vy*dt;
+      if(f.x < r){ f.x = r; f.vx = Math.abs(f.vx); }
+      if(f.x > W-r){ f.x = W-r; f.vx = -Math.abs(f.vx); }
+      if(f.y < r){ f.y = r; f.vy = Math.abs(f.vy); }
+      if(f.y > H-r){ f.y = H-r; f.vy = -Math.abs(f.vy); }
+    }
 
-        // INIZIALIZZAZIONE SIDEBAR CARTELLE
-        function initFolders() {
-            const container = document.getElementById('gameFoldersList');
-            container.innerHTML = `
-                <li class="folder-item active" onclick="selectFolder('all', 'Tutti gli Script (10.000+)', this)">
-                    <div class="folder-item-left"><i class="fa-solid fa-folder"></i> Tutti i Giochi</div>
-                    <span class="count-badge">10,000+</span>
-                </li>
-            `;
-            popularGames.forEach(g => {
-                const li = document.createElement('li');
-                li.className = 'folder-item';
-                li.onclick = (e) => selectFolder(g.id, g.name, li);
-                li.innerHTML = `
-                    <div class="folder-item-left"><i class="fa-solid fa-folder"></i> ${g.name}</div>
-                    <span class="count-badge">${g.count}</span>
-                `;
-                container.appendChild(li);
-            });
-        }
+    /* separazione tra fighter (rimbalzo fra loro) */
+    for(let i=0;i<alive.length;i++) for(let j=i+1;j<alive.length;j++){
+      const a = alive[i], b = alive[j];
+      const dx = b.x-a.x, dy = b.y-a.y, d = Math.hypot(dx,dy)||1, min = r*1.7;
+      if(d < min){
+        const nx = dx/d, ny = dy/d, push = (min-d)/2;
+        a.x -= nx*push; a.y -= ny*push; b.x += nx*push; b.y += ny*push;
+        const va = a.vx*nx + a.vy*ny, vb = b.vx*nx + b.vy*ny;
+        a.vx += (vb-va)*nx; a.vy += (vb-va)*ny;
+        b.vx += (va-vb)*nx; b.vy += (va-vb)*ny;
+      }
+    }
 
-        // RENDERING GRIGLIA AD ALTE PRESTAZIONI
-        function renderScripts() {
-            const container = document.getElementById('scriptGridContainer');
-            container.innerHTML = "";
+    /* proiettili */
+    for(let i=s.projs.length-1;i>=0;i--){
+      const p = s.projs[i];
+      p.x += p.vx*dt; p.y += p.vy*dt; p.life -= dt;
+      p.el.style.left = (p.x/W*100)+'%'; p.el.style.top = (p.y/H*100)+'%';
+      const hit = alive.find(f=> f.i!==p.owner && !f.dead && Math.hypot(f.x-p.x,f.y-p.y) < r*1.05);
+      if(hit){ damage(p.owner, hit, p.dmg); p.el.remove(); s.projs.splice(i,1); continue; }
+      if(p.life<=0 || p.x<-40 || p.y<-40 || p.x>W+40 || p.y>H+40){ p.el.remove(); s.projs.splice(i,1); }
+    }
 
-            const filtered = database.filter(item => {
-                const matchFolder = (currentFolder === 'all' || item.gameId === currentFolder);
-                const matchSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.gameName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    item.desc.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchFolder && matchSearch;
-            });
+    /* raccolta power-up */
+    for(let i=s.pus.length-1;i>=0;i--){
+      const pu = s.pus[i];
+      const got = alive.find(f=> Math.hypot(f.x-pu.x, f.y-pu.y) < r*1.25);
+      if(got){ applyPU(got, pu.type); pu.el.remove(); s.pus.splice(i,1); }
+    }
 
-            const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
-            if (currentPage > totalPages) currentPage = 1;
+    place();
+    if(checkEnd()) endBattle();
+  }
 
-            document.getElementById('scriptCountBadge').innerText = `Trovati: ${filtered.length}`;
-            document.getElementById('pageTracker').innerText = `Pagina ${currentPage} di ${totalPages}`;
+  function nearestEnemy(f, alive){
+    let best=null, bd=1e9;
+    for(const o of alive){
+      if(o.i===f.i) continue;
+      if(app.sim && MODES[app.mode].type!=='ffa' && o.team===f.team) continue;
+      const d = Math.hypot(o.x-f.x, o.y-f.y);
+      if(d<bd){ bd=d; best=o; }
+    }
+    return best;
+  }
 
-            const start = (currentPage - 1) * itemsPerPage;
-            const pageData = filtered.slice(start, start + itemsPerPage);
+  /* ============ COMBATTIMENTO ============ */
+  function dmgCalc(a, b){
+    const base = a.ch.atk * (0.9 + Math.random()*0.4) * a.dmgMul;
+    const red = b.ch.def / (b.ch.def + 100);
+    let v = Math.max(8, Math.round(base * (1-red)));
+    const crit = Math.random() < .08;
+    if(crit) v = Math.round(v*1.8);
+    return { v, crit };
+  }
+  function damage(fromIdx, target, amount, crit){
+    const s = app.sim, src = s.fighters[fromIdx];
+    let v = amount;
+    if(target.shield > 0){
+      const abs = Math.min(target.shield, v);
+      target.shield -= abs; v -= abs;
+      fxRing(target.x, target.y, '#5BC8FA');
+    }
+    if(v > 0){
+      target.hp = Math.max(0, target.hp - v);
+      target.el.querySelector('.hp-num').textContent = Math.ceil(target.hp);
+      target.el.classList.add('is-hit');
+      setTimeout(()=>target.el.classList.remove('is-hit'), 240);
+      dmgNum(target.x, target.y - R(), '-'+v, crit);
+      SFX.play('hit');
+      /* knockback */
+      const dx = target.x-src.x, dy = target.y-src.y, d = Math.hypot(dx,dy)||1;
+      target.vx += dx/d * s.W*.25; target.vy += dy/d * s.W*.25;
+    }
+    if(target.hp<=0 && !target.dead){
+      target.dead = true; target.el.classList.add('is-dead');
+    }
+  }
+  function meleeAttack(f, tgt, ux, uy){
+    const s = app.sim;
+    f.vx += ux * s.W*1.1; f.vy += uy * s.W*1.1;   // scatto
+    setTimeout(()=>{
+      if(!app.sim || app.sim!==s || tgt.dead || f.dead) return;
+      const d = Math.hypot(tgt.x-f.x, tgt.y-f.y);
+      if(d < MELEE()*1.5){
+        const { v, crit } = dmgCalc(f, tgt);
+        fxAt((f.x+tgt.x)/2, (f.y+tgt.y)/2, slashSVG, 'fx--fade', 14);
+        damage(f.i, tgt, v, crit);
+      } else SFX.play('miss');
+    }, 130);
+  }
+  function shoot(f, tgt){
+    const s = app.sim;
+    const dx = tgt.x-f.x, dy = tgt.y-f.y, d = Math.hypot(dx,dy)||1;
+    const sp = s.W*.85;
+    const node = el('div','proj');
+    node.innerHTML = f.ch.atkImg ? '<img src="'+f.ch.atkImg+'" style="width:100%;display:block">' : projSVG(f.color);
+    $('#arena').append(node);
+    s.projs.push({ x:f.x, y:f.y, vx:dx/d*sp, vy:dy/d*sp, dmg:0, owner:f.i, life:2.2, el:node });
+    /* danno calcolato al lancio con piccola variazione */
+    const { v, crit } = dmgCalc(f, tgt);
+    s.projs[s.projs.length-1].dmg = v;
+    s.projs[s.projs.length-1].crit = crit;
+    node.style.left = (f.x/s.W*100)+'%'; node.style.top = (f.y/s.H*100)+'%';
+    SFX.play('shoot');
+  }
 
-            if (pageData.length === 0) {
-                container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px; color:var(--text-muted);">Nessun script trovato per i criteri selezionati.</div>`;
-                return;
-            }
+  /* ============ ABILITÀ SPECIALI ============ */
+  function trySpecial(f, tgt, d){
+    const s = app.sim, id = f.ch.id;
+    f.spcCd = f.ch.spc.cd;
+    SFX.play('special');
+    const icon = f.ch.spcImg ? '<img src="'+f.ch.spcImg+'" style="width:100%;display:block">' : null;
+    const flash = (color)=> fxRing(f.x, f.y, color);
+    switch(id){
+      case 'weather': { // fulmine dal cielo sul nemico più vicino
+        fxBolt(tgt.x, tgt.y); SFX.play('zap');
+        damage(f.i, tgt, 160); break; }
+      case 'camera': { // flash: stordisce i nemici vicini
+        flash('#fff');
+        s.fighters.forEach(o=>{ if(!o.dead && o.team!==f.team && o.i!==f.i && Math.hypot(o.x-f.x,o.y-f.y) < s.W*.35){ o.stun = 1.4; o.el.classList.add('is-stun'); } });
+        break; }
+      case 'priest': { // cura sé e l'alleato più vicino
+        const ally = nearestAlly(f);
+        [f, ally].forEach(a=>{ if(a){ a.hp = Math.min(a.maxHp, a.hp+220); a.el.querySelector('.hp-num').textContent = Math.ceil(a.hp); dmgNum(a.x, a.y-R(), '+220', false, true); } });
+        flash('#7CFF6B'); break; }
+      case 'guitar': { // onda ad area
+        flash('#FF3D81');
+        s.fighters.forEach(o=>{ if(!o.dead && o.team!==f.team && Math.hypot(o.x-f.x,o.y-f.y) < s.W*.4) damage(f.i, o, 110); });
+        break; }
+      case 'henchman': { // teletrasporto addosso al target + colpo
+        f.x = tgt.x + (Math.random()-.5)*30; f.y = tgt.y + (Math.random()-.5)*30;
+        flash('#000'); const { v, crit } = dmgCalc(f, tgt); damage(f.i, tgt, Math.round(v*1.4), crit); break; }
+      case 'doge': { // prossimo colpo x3 + velocità
+        f.dmgMul = 3; f.dmgT = 4; f.spdMul = 1.5; f.spdT = 4; flash('#FFD60A'); break; }
+      case 'business': { // valigetta: proiettile grosso
+        const dx=tgt.x-f.x, dy=tgt.y-f.y, dd=Math.hypot(dx,dy)||1, sp=s.W*.7;
+        const node = el('div','proj'); node.style.width = '9cqw';
+        node.innerHTML = icon || projSVG('#8B5A2B');
+        $('#arena').append(node);
+        s.projs.push({ x:f.x, y:f.y, vx:dx/dd*sp, vy:dy/dd*sp, dmg:200, owner:f.i, life:2.5, el:node });
+        node.style.left=(f.x/s.W*100)+'%'; node.style.top=(f.y/s.H*100)+'%';
+        break; }
+      case 'moai': { f.shield += 300; flash('#9aa7b0'); break; }
+      case 'npc': { // glitch: teleport casuale + velocità
+        f.x = R()+Math.random()*(s.W-2*R()); f.y = R()+Math.random()*(s.H-2*R());
+        f.spdMul = 1.6; f.spdT = 3; flash('#19D3F3'); break; }
+      case 'trade': { // rubavita
+        const v = 140; damage(f.i, tgt, v);
+        f.hp = Math.min(f.maxHp, f.hp+v); f.el.querySelector('.hp-num').textContent = Math.ceil(f.hp);
+        dmgNum(f.x, f.y-R(), '+'+v, false, true); flash('#2EE59D'); break; }
+    }
+  }
+  function nearestAlly(f){
+    let best=null, bd=1e9;
+    for(const o of app.sim.fighters){
+      if(o.dead || o.i===f.i || o.team!==f.team) continue;
+      const d = Math.hypot(o.x-f.x,o.y-f.y); if(d<bd){ bd=d; best=o; }
+    }
+    return best;
+  }
 
-            const fragment = document.createDocumentFragment();
-            pageData.forEach(s => {
-                const card = document.createElement('div');
-                card.className = 'script-card';
-                card.innerHTML = `
-                    <div>
-                        <div class="script-card-header">
-                            <div class="game-icon"><i class="fa-solid fa-scroll"></i></div>
-                            <div class="script-meta">
-                                <h3>${s.title}</h3>
-                                <span><i class="fa-solid fa-gamepad"></i> ${s.gameName}</span>
-                            </div>
-                        </div>
-                        <p style="font-size:12px; color:var(--text-muted); margin:12px 0;">${s.desc}</p>
-                        <div class="tag-row">
-                            ${s.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="script-actions">
-                        <button class="btn-action btn-copy" onclick="copyScriptCode('${s.code}')"><i class="fa-solid fa-copy"></i> COPIA</button>
-                        <button class="btn-action btn-inspect" onclick="inspectCode('${s.title}', '${s.code}')"><i class="fa-solid fa-code"></i></button>
-                    </div>
-                `;
-                fragment.appendChild(card);
-            });
-            container.appendChild(fragment);
-        }
+  /* ============ POWER-UP ============ */
+  function spawnPU(){
+    const s = app.sim, type = PU_KEYS[Math.floor(Math.random()*PU_KEYS.length)];
+    const x = s.W*(.15+Math.random()*.7), y = s.H*(.15+Math.random()*.7);
+    const node = el('div','pu'); node.innerHTML = POWERUPS[type].svg;
+    node.style.left = (x/s.W*100)+'%'; node.style.top = (y/s.H*100)+'%';
+    $('#arena').append(node);
+    s.pus.push({ type, x, y, el:node });
+  }
+  function applyPU(f, type){
+    const s = app.sim;
+    SFX.play('pickup');
+    dmgNum(f.x, f.y - R()*1.6, POWERUPS[type].label, false, true);
+    if(type==='pan'){ f.dmgMul = 1.6; f.dmgT = 6; }
+    else if(type==='pill'){ f.spdMul = 1.7; f.spdT = 6; }
+    else if(type==='shield'){ f.shield += 250; fxRing(f.x, f.y, '#5BC8FA'); }
+    else if(type==='med'){ f.hp = Math.min(f.maxHp, f.hp+250); f.el.querySelector('.hp-num').textContent = Math.ceil(f.hp); }
+    else if(type==='bolt'){ const t = nearestEnemy(f, s.fighters.filter(o=>!o.dead)); if(t){ fxBolt(t.x,t.y); SFX.play('zap'); damage(f.i, t, 150); } }
+    else if(type==='banana'){ const t = nearestEnemy(f, s.fighters.filter(o=>!o.dead)); if(t){ t.stun = 1.5; t.el.classList.add('is-stun'); } }
+  }
 
-        // EVENT HANDLERS
-        function selectFolder(folderId, folderName, el) {
-            document.querySelectorAll('.folder-item').forEach(i => i.classList.remove('active'));
-            if(el) el.classList.add('active');
-            currentFolder = folderId;
-            document.getElementById('currentFolderName').innerText = folderName;
-            currentPage = 1;
-            renderScripts();
-        }
+  /* ============ FX ============ */
+  function dmgNum(x,y,txt,crit,heal){
+    const s = app.sim, n = el('div','dmg'+(crit?' crit':'')+(heal?' heal':''), txt);
+    n.style.left = (x/s.W*100)+'%'; n.style.top = (y/s.H*100)+'%';
+    $('#arena').append(n); setTimeout(()=>n.remove(), 950);
+  }
+  function fxAt(x,y,inner,cls,sizeCqw){
+    const s = app.sim, n = el('div','fx '+cls); n.innerHTML = inner;
+    n.style.left = (x/s.W*100)+'%'; n.style.top = (y/s.H*100)+'%'; n.style.width = sizeCqw+'cqw';
+    $('#arena').append(n); setTimeout(()=>n.remove(), 450);
+  }
+  function fxRing(x,y,color){
+    const s = app.sim, n = el('div','fx fx--ring'); n.style.borderColor = color;
+    n.style.left = (x/s.W*100)+'%'; n.style.top = (y/s.H*100)+'%';
+    $('#arena').append(n); setTimeout(()=>n.remove(), 500);
+  }
+  function fxBolt(x,y){ fxAt(x, y-20, boltSVG, 'fx--fade', 12); }
 
-        function onSearchInput() {
-            searchQuery = document.getElementById('globalSearch').value;
-            currentPage = 1;
-            renderScripts();
-        }
+  /* ============ FINE BATTAGLIA ============ */
+  function checkEnd(){
+    const s = app.sim, cfg = MODES[app.mode];
+    const alive = s.fighters.filter(f=>!f.dead);
+    if(cfg.type==='ffa') return alive.length <= 1;
+    return new Set(alive.map(f=>f.team)).size <= 1;
+  }
+  function endBattle(){
+    const s = app.sim; s.running = false; s.over = true;
+    cancelAnimationFrame(s.raf);
+    const alive = s.fighters.filter(f=>!f.dead);
+    let txt;
+    if(MODES[app.mode].type==='ffa') txt = alive[0] ? alive[0].ch.name+' WINS!' : 'PAREGGIO!';
+    else txt = alive.length ? 'TEAM '+(alive[0].team==='red'?'ROSSO':'BLU')+' WINS!' : 'PAREGGIO!';
+    const w = $('#win-cap'); w.textContent = txt; w.hidden = false;
+    SFX.play('win');
+    $('#btn-fight').disabled = false; $('#btn-fight').textContent = 'RESET';
+  }
 
-        function changePage(direction) {
-            currentPage += direction;
-            renderScripts();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+  /* ============ REC ============ */
+  async function toggleRec(){
+    SFX.init();
+    if(app.rec && app.rec.state !== 'inactive'){ app.rec.stop(); return; }
+    try{
+      const stream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio:false });
+      app.chunks = [];
+      app.rec = new MediaRecorder(stream);
+      app.rec.ondataavailable = e => { if(e.data.size) app.chunks.push(e.data); };
+      app.rec.onstop = () => {
+        stream.getTracks().forEach(t=>t.stop());
+        const blob = new Blob(app.chunks, { type:'video/webm' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'meme-battle-'+Date.now()+'.webm';
+        a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+        $('#rec-chip').hidden = true; $('#btn-rec').textContent = 'REC';
+      };
+      app.rec.start();
+      $('#rec-chip').hidden = false; $('#btn-rec').textContent = 'STOP';
+    }catch(err){ alert('Registrazione non avviata (permesso negato o browser non supportato).'); }
+  }
 
-        function triggerDownload(name) {
-            showToast(`Download avviato per ${name}`);
-        }
-
-        function copyScriptCode(code) {
-            navigator.clipboard.writeText(code).then(() => showToast("Script copiato negli appunti!"));
-        }
-
-        function inspectCode(title, code) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalCode').innerText = code;
-            document.getElementById('codeModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('codeModal').style.display = 'none';
-        }
-
-        function copyModalCode() {
-            const code = document.getElementById('modalCode').innerText;
-            copyScriptCode(code);
-            closeModal();
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
-            toast.classList.add('visible');
-            setTimeout(() => toast.classList.remove('visible'), 2500);
-        }
-
-        // Inizializzazione
-        initFolders();
-        renderScripts();
-    </script>
+  /* ============ EVENTI ============ */
+  document.addEventListener('click', e => {
+    const m = e.target.closest('[data-mode]');
+    if(m){ app.mode = m.dataset.mode;
+      app.picks = slotsFor(app.mode).map((_,i)=>CHARACTERS[i%CHARACTERS.length].id);
+      go('select'); return; }
+    if(e.target.id === 'btn-fight'){
+      const s = app.sim;
+      if(!s) return;
+      if(s.over){ renderArena(); }
+      else if(!s.running){ startSim(); }
+      return; }
+    if(e.target.id === 'btn-rec'){ toggleRec(); return; }
+    const g = e.target.closest('[data-go]');
+    if(g) go(g.dataset.go);
+  });
+  window.addEventListener('resize', ()=>{ if(app.screen==='arena' && app.sim) measure(); });
+})();
+</script>
 </body>
 </html>
